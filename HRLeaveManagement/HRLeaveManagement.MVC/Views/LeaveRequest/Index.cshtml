@@ -1,0 +1,148 @@
+﻿@model AdminLeaveRequestViewVM
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="info-box">
+            <span class="info-box-icon bg-info"><i class="fas fa-tachometer-alt"></i></span>
+
+            <div class="info-box-content">
+                <span class="badge text-bg-info">@Model.TotalRequests</span>
+                <span class="info-box-number">@Html.DisplayNameFor(model => model.TotalRequests)</span>
+            </div>
+            <!-- /.info-box-content -->
+        </div>
+
+    </div>
+    <div class="col-md-3">
+        <div class="info-box">
+            <span class="info-box-icon bg-warning"><i class="fas fa-exclamation-circle"></i></span>
+
+            <div class="info-box-content">
+                <span class="info-box-text badge text-bg-warning">@Model.PendingRequests</span>
+                <span class="info-box-number">@Html.DisplayNameFor(model => model.PendingRequests)</span>
+            </div>
+            <!-- /.info-box-content -->
+        </div>
+
+    </div>
+    <div class="col-md-3">
+        <div class="info-box">
+            <span class="info-box-icon bg-success"><i class="far fa-check-circle"></i></span>
+
+            <div class="info-box-content">
+                <span class="info-box-text badge text-bg-success">@Model.ApprovedRequests</span>
+                <span class="info-box-number">@Html.DisplayNameFor(model => model.ApprovedRequests)</span>
+            </div>
+            <!-- /.info-box-content -->
+        </div>
+
+    </div>
+    <div class="col-md-3">
+        <div class="info-box">
+            <span class="info-box-icon bg-danger"><i class="far fa-times-circle"></i></span>
+
+            <div class="info-box-content">
+                <span class="info-box-text badge text-bg-danger">@Model.RejectedRequests</span>
+                <span class="info-box-number">@Html.DisplayNameFor(model => model.RejectedRequests)</span>
+            </div>
+            <!-- /.info-box-content -->
+        </div>
+
+    </div>
+</div>
+
+<br />
+<br />
+
+<hr />
+<h1>Leave Request Log</h1>
+<br />
+<table id="tblData" class="table">
+    <thead>
+        <tr>
+            <th>
+                Employee Name
+            </th>
+            <th>
+                Start Date
+            </th>
+            <th>
+                End Date
+            </th>
+            <th>
+                Leave Type
+            </th>
+            <th>
+                Date Requested
+            </th>
+
+            <th>
+                Approval Status
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.LeaveRequests)
+        {
+            var tblBg = "";
+
+            if (item.Cancelled) tblBg = "table-secondary";
+            else if (item.Approved == true) tblBg = "table-success";
+            else if (item.Approved == false) tblBg = "table-danger";
+            else tblBg = "table-warning";
+
+            <tr class="@tblBg">
+                <td>
+                    @Html.DisplayFor(modelItem => item.Employee.Firstname) @Html.DisplayFor(modelItem => item.Employee.Lastname)
+                </td>
+                <td>
+                    @item.StartDate.ToShortDateString()
+                </td>
+                <td>
+                    @item.EndDate.ToShortDateString()
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LeaveType.Name)
+                </td>
+                <td>
+                    @item.DateRequested.ToShortDateString()
+                </td>
+                <td>
+                    @if (item.Cancelled)
+                    {
+                        <span class="badge bg-secondary">Cancelled</span>
+                    }
+                    else if (item.Approved == true)
+                    {
+                        <span class="badge bg-success">Approved</span>
+                    }
+                    else if (item.Approved == false)
+                    {
+                        <span class="badge bg-danger">Rejected</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-warning">Pending Approval</span>
+                    }
+                </td>
+                <td>
+                    @if (!item.Cancelled)
+                    {
+                        <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">
+                            <i class="fa fa-file"></i>Review
+                        </a>
+                    }
+
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
