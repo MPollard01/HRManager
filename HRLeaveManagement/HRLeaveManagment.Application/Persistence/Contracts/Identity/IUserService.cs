@@ -11,5 +11,8 @@ namespace HRLeaveManagment.Application.Persistence.Contracts.Identity
     {
         Task<List<Employee>> GetEmployees();
         Task<Employee> GetEmployee(string userId);
+        Task<int> GetAllocatedDays(string userId);
+        //Task<int> GetRemainingDays(string userId);
+        //Task<int> GetTotalDays(string userId);
     }
 }

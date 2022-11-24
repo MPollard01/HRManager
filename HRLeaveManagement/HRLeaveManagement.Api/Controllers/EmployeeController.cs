@@ -28,5 +28,11 @@ namespace HRLeaveManagement.Api.Controllers
         {
             return Ok(await _userService.GetEmployee(id));
         }
+
+        [HttpGet("leave/{id}")]
+        public async Task<ActionResult<int>> GetEmployeeLeaveDays(string id)
+        {
+            return Ok(await _userService.GetAllocatedDays(id));
+        }
     }
 }

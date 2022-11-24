@@ -1,5 +1,6 @@
 ﻿using HRLeaveManagement.Identity.Models;
 using HRLeaveManagment.Application.Models.Identity;
+using HRLeaveManagment.Application.Persistence.Contracts;
 using HRLeaveManagment.Application.Persistence.Contracts.Identity;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -13,10 +14,12 @@ namespace HRLeaveManagement.Identity.Services
     public class UserService : IUserService
     {
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public UserService(UserManager<ApplicationUser> userManager)
+        public UserService(UserManager<ApplicationUser> userManager, IUnitOfWork unitOfWork)
         {
             _userManager = userManager;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<Employee> GetEmployee(string userId)
@@ -42,5 +45,30 @@ namespace HRLeaveManagement.Identity.Services
                 Lastname = q.LastName
             }).ToList();
         }
+
+        public async Task<int> GetAllocatedDays(string userId)
+        {
+            var allocations = await _unitOfWork.LeaveAllocationRepository
+                            .GetLeaveAllocationsWithDetails(userId);
+
+            if (allocations == null) return 0;
+
+            return allocations.Sum(q => q.NumberOfDays);
+        }
+
+        //public Task<int> GetRemainingDays(string userId)
+        //{
+            
+        //}
+
+        //public async Task<int> GetTotalDays(string userId)
+        //{
+        //    var allocations = await _unitOfWork.LeaveAllocationRepository
+        //                    .GetLeaveAllocationsWithDetails(userId);
+
+        //    if (allocations == null) return 0;
+
+        //    return allocations.Sum(q => q.LeaveType.DefaultDays);
+        //}
     }
 }

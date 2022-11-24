@@ -7,4 +7,11 @@
         public string Firstname { get; set; }
         public string Lastname { get; set; }
     }
+
+    public class EmployeeDetailsVM
+    {
+        public EmployeeVM Employee { get; set; }
+        public int NumberOfDays { get; set; }
+        public bool HasRequests { get; set; }
+    }
 }

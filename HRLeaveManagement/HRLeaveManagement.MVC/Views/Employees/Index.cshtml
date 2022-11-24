@@ -1,0 +1,51 @@
+﻿@model IEnumerable<HRLeaveManagement.MVC.Models.EmployeeDetailsVM>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Employees</h1>
+
+<br/>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Days Allocated</th>
+            <th>Leave Requests</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>@item.Employee.Id</td>
+            <td>@item.Employee.Firstname</td>
+            <td>@item.Employee.Lastname</td>
+            <td>@item.Employee.Email</td>
+            <td>@item.NumberOfDays</td>
+            @if(item.HasRequests)
+            {
+                <td>
+                    <a asp-action="Index" asp-controller="LeaveRequest" asp-route-id="@item.Employee.Id" class="btn btn-primary position-relative">
+                        Requests
+                        <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
+                            <span class="visually-hidden">New alerts</span>
+                        </span>
+                    </a>
+                </td>
+            }
+            else
+            {
+                <td>
+                    <a asp-action="Index" asp-controller="LeaveRequest" asp-route-id="@item.Employee.Id"  class="btn btn-primary">
+                        Requests
+                    </a>
+                </td>
+            }
+        </tr>
+}
+    </tbody>
+</table>

@@ -17,6 +17,7 @@ namespace HRLeaveManagement.Persistence.Repositories
         private ILeaveAllocationRepository _leaveAllocationRepository;
         private ILeaveTypeRepository _leaveTypeRepository;
         private ILeaveRequestRepository _leaveRequestRepository;
+        private ITimeEntryRepository _timeEntryRepository;
 
 
         public UnitOfWork(HRLeaveManagementDbContext context, IHttpContextAccessor httpContextAccessor)
@@ -31,6 +32,8 @@ namespace HRLeaveManagement.Persistence.Repositories
             _leaveTypeRepository ??= new LeaveTypeRepository(_context);
         public ILeaveRequestRepository LeaveRequestRepository =>
             _leaveRequestRepository ??= new LeaveRequestRepository(_context);
+        public ITimeEntryRepository TimeEntryRepository =>
+            _timeEntryRepository ??= new TimeEntryRepository(_context);
 
         public void Dispose()
         {

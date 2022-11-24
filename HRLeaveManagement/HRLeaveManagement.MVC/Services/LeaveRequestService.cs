@@ -8,10 +8,11 @@ namespace HRLeaveManagement.MVC.Services
     public class LeaveRequestService : BaseHttpService, ILeaveRequestService
     {
         private readonly IMapper _mapper;
+
         public LeaveRequestService(
-            IClient client, 
+            IClient client,
             ILocalStorageService localStorageService,
-            IMapper mapper) 
+            IMapper mapper)
             : base(client, localStorageService)
         {
             _mapper = mapper;
@@ -65,10 +66,15 @@ namespace HRLeaveManagement.MVC.Services
             throw new NotImplementedException();
         }
 
-        public async Task<AdminLeaveRequestViewVM> GetAdminLeaveRequestList()
+        public async Task<AdminLeaveRequestViewVM> GetAdminLeaveRequestList(string userId)
         {
             AddBearerToken();
             var leaveRequests = await _client.LeaveRequestAllAsync(isLoggedInUser: false);
+
+            if (!string.IsNullOrEmpty(userId))
+            {
+                leaveRequests = leaveRequests.Where(r => r.RequestingEmployeeId == userId).ToList();
+            }
 
             var model = new AdminLeaveRequestViewVM
             {
@@ -101,5 +107,6 @@ namespace HRLeaveManagement.MVC.Services
 
             return model;
         }
+
     }
 }
