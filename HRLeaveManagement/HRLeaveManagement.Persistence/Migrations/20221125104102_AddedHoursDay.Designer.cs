@@ -4,6 +4,7 @@ using HRLeaveManagement.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HRLeaveManagement.Persistence.Migrations
 {
     [DbContext(typeof(HRLeaveManagementDbContext))]
-    partial class HRLeaveManagementDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221125104102_AddedHoursDay")]
+    partial class AddedHoursDay
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,10 +35,6 @@ namespace HRLeaveManagement.Persistence.Migrations
 
                     b.Property<DateTime>("Day")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("EmployeeId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Hours")
                         .HasColumnType("int");
@@ -182,7 +181,7 @@ namespace HRLeaveManagement.Persistence.Migrations
                         {
                             Id = 1,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateCreated = new DateTime(2022, 11, 28, 10, 27, 57, 311, DateTimeKind.Local).AddTicks(4085),
+                            DateCreated = new DateTime(2022, 11, 25, 10, 41, 2, 660, DateTimeKind.Local).AddTicks(1710),
                             DefaultDays = 10,
                             ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Vacation"
@@ -191,7 +190,7 @@ namespace HRLeaveManagement.Persistence.Migrations
                         {
                             Id = 2,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateCreated = new DateTime(2022, 11, 28, 10, 27, 57, 311, DateTimeKind.Local).AddTicks(4125),
+                            DateCreated = new DateTime(2022, 11, 25, 10, 41, 2, 660, DateTimeKind.Local).AddTicks(1750),
                             DefaultDays = 12,
                             ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Sick"

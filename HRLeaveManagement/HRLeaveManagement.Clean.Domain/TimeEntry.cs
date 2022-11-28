@@ -11,7 +11,7 @@ namespace HRLeaveManagement.Clean.Domain
     {
         public DateTime StartWeek { get; set; }
         public DateTime EndWeek { get; set; }
-        public int Hours { get; set; }
+        public List<HoursDay> Hours { get; set; }
         public DateTime DateCreated { get; set; }
         public bool? Approved { get; set; }
         public string? EmployeeId { get; set; }

@@ -76,7 +76,7 @@ namespace HRLeaveManagement.Identity.Services
                 UserName = request.UserName,
                 EmailConfirmed = true
             };
-
+            
             var existingEmail = await _userManager.FindByEmailAsync(request.Email);
 
             if (existingEmail == null)

@@ -12,6 +12,7 @@ namespace HRLeaveManagment.Application.Persistence.Contracts
         ILeaveRequestRepository LeaveRequestRepository { get; }
         ILeaveTypeRepository LeaveTypeRepository { get; }
         ITimeEntryRepository TimeEntryRepository { get; }
+        IHoursDayRepository HoursDayRepository { get; }
         Task Save();
     }
 }

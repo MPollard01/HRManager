@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace HRLeaveManagment.Application.Persistence.Contracts
 {
-    public interface ITimeEntryRepository : IRepository<TimeEntry>
+    public interface IHoursDayRepository : IRepository<HoursDay>
     {
-        Task<List<TimeEntry>> GetTimeEntriesWithDetails();
-        Task<List<TimeEntry>> GetEmployeeTimeEntrys(string userId);
+        Task<List<HoursDay>> GetEmployeesHours(string id);
     }
 }

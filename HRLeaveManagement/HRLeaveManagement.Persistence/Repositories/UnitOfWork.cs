@@ -18,9 +18,11 @@ namespace HRLeaveManagement.Persistence.Repositories
         private ILeaveTypeRepository _leaveTypeRepository;
         private ILeaveRequestRepository _leaveRequestRepository;
         private ITimeEntryRepository _timeEntryRepository;
+        private IHoursDayRepository _hoursDayRepository;
 
 
-        public UnitOfWork(HRLeaveManagementDbContext context, IHttpContextAccessor httpContextAccessor)
+        public UnitOfWork(HRLeaveManagementDbContext context, 
+            IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
             this._httpContextAccessor = httpContextAccessor;
@@ -34,6 +36,8 @@ namespace HRLeaveManagement.Persistence.Repositories
             _leaveRequestRepository ??= new LeaveRequestRepository(_context);
         public ITimeEntryRepository TimeEntryRepository =>
             _timeEntryRepository ??= new TimeEntryRepository(_context);
+        public IHoursDayRepository HoursDayRepository =>
+            _hoursDayRepository ??= new HoursDayRepository(_context);
 
         public void Dispose()
         {

@@ -4,6 +4,7 @@ using HRLeaveManagment.Application.DTOs;
 using HRLeaveManagment.Application.DTOs.LeaveAllocation;
 using HRLeaveManagment.Application.DTOs.LeaveRequest;
 using HRLeaveManagment.Application.DTOs.LeaveType;
+using HRLeaveManagment.Application.DTOs.TimeEntry;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +30,9 @@ namespace HRLeaveManagment.Application.Profiles
             CreateMap<LeaveAllocation, LeaveAllocationDto>().ReverseMap();
             CreateMap<LeaveAllocation, CreateLeaveAllocationDto>().ReverseMap();
             CreateMap<LeaveAllocation, UpdateLeaveAllocationDto>().ReverseMap();
+
+            CreateMap<TimeEntry, TimeEntryDto>().ReverseMap();
+            CreateMap<TimeEntry, CreateTimeEntryDto>().ReverseMap();
         }
     }
 }

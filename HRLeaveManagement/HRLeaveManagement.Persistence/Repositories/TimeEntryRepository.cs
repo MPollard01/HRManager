@@ -17,7 +17,15 @@ namespace HRLeaveManagement.Persistence.Repositories
 
         public async Task<List<TimeEntry>> GetEmployeeTimeEntrys(string userId)
         {
-            return await _context.TimeEntries.Where(q => q.EmployeeId == userId).ToListAsync();
+            return await _context.TimeEntries
+                .Where(q => q.EmployeeId == userId)
+                .Include(q => q.Hours)
+                .ToListAsync();
+        }
+
+        public async Task<List<TimeEntry>> GetTimeEntriesWithDetails()
+        {
+            return await _context.TimeEntries.Include(q => q.Hours).ToListAsync();
         }
     }
 }

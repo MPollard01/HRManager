@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HRLeaveManagement.Clean.Domain;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,7 @@ namespace HRLeaveManagment.Application.DTOs.TimeEntry
     {
         public DateTime StartWeek { get; set; }
         public DateTime EndWeek { get; set; }
-        public int Hours { get; set; }
+        public List<HoursDay> Hours { get; set; }
         public DateTime DateCreated { get; set; } = DateTime.Now;
     }
 }

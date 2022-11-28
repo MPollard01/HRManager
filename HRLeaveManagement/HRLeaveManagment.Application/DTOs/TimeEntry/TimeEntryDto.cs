@@ -1,4 +1,5 @@
-﻿using HRLeaveManagment.Application.DTOs.Common;
+﻿using HRLeaveManagement.Clean.Domain;
+using HRLeaveManagment.Application.DTOs.Common;
 using HRLeaveManagment.Application.Models.Identity;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace HRLeaveManagment.Application.DTOs.TimeEntry
     {
         public DateTime StartWeek { get; set; }
         public DateTime EndWeek { get; set; }
-        public int Hours { get; set; }
+        public List<HoursDay> Hours { get; set; }
         public DateTime DateCreated { get; set; }
         public bool? Approved { get; set; }
         public string? EmployeeId { get; set; }
