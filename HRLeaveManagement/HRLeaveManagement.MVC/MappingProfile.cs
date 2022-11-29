@@ -17,6 +17,8 @@ namespace HRLeaveManagement.MVC
             CreateMap<LeaveAllocationDto, ViewLeaveAllocationsVM>().ReverseMap();
             CreateMap<RegisterVM, RegistrationRequest>().ReverseMap();
             CreateMap<EmployeeVM, Employee>().ReverseMap();
+            CreateMap<TimeEntryDto, TimeEntryVM>().ReverseMap();
+            CreateMap<CreateTimeEntryDto, CreateTimeEntryVM>().ReverseMap();
         }
     }
 }

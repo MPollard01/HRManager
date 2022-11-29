@@ -12,6 +12,6 @@ namespace HRLeaveManagement.Clean.Domain
         public int Id { get; set; }
         public DateTime Day { get; set; }
         public int Hours { get; set; }
-        public string EmployeeId { get; set; }
+        public int TimeEntryId { get; set; }
     }
 }

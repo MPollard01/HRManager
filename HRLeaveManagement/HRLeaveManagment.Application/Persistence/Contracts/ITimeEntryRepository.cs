@@ -10,6 +10,7 @@ namespace HRLeaveManagment.Application.Persistence.Contracts
     public interface ITimeEntryRepository : IRepository<TimeEntry>
     {
         Task<List<TimeEntry>> GetTimeEntriesWithDetails();
+        Task<TimeEntry?> GetEmployeeTimeEntryByDate(string userId, DateTime date);
         Task<List<TimeEntry>> GetEmployeeTimeEntrys(string userId);
     }
 }

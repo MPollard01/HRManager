@@ -50,7 +50,7 @@ namespace HRLeaveManagment.Application.Features.TimeEntries.Handlers.Commands
 
                 foreach (var hours in timeEntry.Hours)
                 {
-                    hours.EmployeeId = userId;
+                    hours.TimeEntryId = timeEntry.Id;
                     await _unitOfWork.HoursDayRepository.Add(hours);
                 }
 

@@ -9,6 +9,6 @@ namespace HRLeaveManagment.Application.Persistence.Contracts
 {
     public interface IHoursDayRepository : IRepository<HoursDay>
     {
-        Task<List<HoursDay>> GetEmployeesHours(string id);
+        Task<List<HoursDay>> GetEmployeesHours(int id);
     }
 }
