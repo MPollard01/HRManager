@@ -13,11 +13,13 @@ namespace HRLeaveManagement.Application.UnitTests.Mocks
         public static Mock<IUnitOfWork> GetUnitOfWork()
         {
             var mockUow = new Mock<IUnitOfWork>();
-            var mockLeaveRepo = MockLeaveTypeRepository.GetLeaveTypeRepository();
+            var mockLeaveTypeRepo = MockLeaveTypeRepository.GetLeaveTypeRepository();
             var mockLeaveRequestRepo = MockLeaveRequestRepository.GetLeaveRequestRepository();
+            var mockLeaveAllocationRepo = MockLeaveAllocationRepository.GetLeaveAllocations();
 
-            mockUow.Setup(r => r.LeaveTypeRepository).Returns(mockLeaveRepo.Object);
+            mockUow.Setup(r => r.LeaveTypeRepository).Returns(mockLeaveTypeRepo.Object);
             mockUow.Setup(r => r.LeaveRequestRepository).Returns(mockLeaveRequestRepo.Object);
+            mockUow.Setup(r => r.LeaveAllocationRepository).Returns(mockLeaveAllocationRepo.Object);
 
             return mockUow;
         }

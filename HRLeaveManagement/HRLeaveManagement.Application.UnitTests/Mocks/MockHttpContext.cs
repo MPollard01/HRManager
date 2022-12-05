@@ -18,7 +18,10 @@ namespace HRLeaveManagement.Application.UnitTests.Mocks
 
             var userId = "123";
             var user = new ClaimsPrincipal(new ClaimsIdentity(
-                new Claim[] { new Claim(CustomClaimTypes.Uid, userId) }));
+                new Claim[] {
+                    new Claim(CustomClaimTypes.Uid, userId), 
+                    new Claim(ClaimTypes.Email, "mail@mail.com") 
+                }));
 
             var context = new DefaultHttpContext { User = user };
 

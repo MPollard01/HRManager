@@ -58,6 +58,7 @@ namespace HRLeaveManagement.Application.UnitTests.Mocks
 
             var mockRepo = new Mock<ILeaveRequestRepository>();
 
+            mockRepo.Setup(r => r.GetAll()).ReturnsAsync(leaveRequests);
             mockRepo.Setup(r => r.GetLeaveRequestsWithDetails(USER_ID)).ReturnsAsync(new List<LeaveRequest> { leaveRequests[1] });
             mockRepo.Setup(r => r.GetLeaveRequestsWithDetails()).ReturnsAsync(leaveRequests);
             mockRepo.Setup(r => r.Add(It.IsAny<LeaveRequest>())).ReturnsAsync((LeaveRequest leaveRequest) =>

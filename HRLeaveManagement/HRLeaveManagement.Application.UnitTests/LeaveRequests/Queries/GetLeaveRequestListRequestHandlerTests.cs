@@ -1,17 +1,14 @@
 ﻿using AutoMapper;
 using HRLeaveManagement.Application.UnitTests.Mocks;
-using HRLeaveManagment.Application.Constants;
 using HRLeaveManagment.Application.DTOs.LeaveRequest;
 using HRLeaveManagment.Application.Features.LeaveRequests.Handlers.Queries;
 using HRLeaveManagment.Application.Features.LeaveRequests.Requests.Queries;
-using HRLeaveManagment.Application.Models.Identity;
 using HRLeaveManagment.Application.Persistence.Contracts;
 using HRLeaveManagment.Application.Persistence.Contracts.Identity;
 using HRLeaveManagment.Application.Profiles;
 using Microsoft.AspNetCore.Http;
 using Moq;
 using Shouldly;
-using System.Security.Claims;
 
 namespace HRLeaveManagement.Application.UnitTests.LeaveRequests.Queries
 {

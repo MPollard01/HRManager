@@ -28,8 +28,4 @@
     <ProjectReference Include="..\HRLeaveManagment.Application\HRLeaveManagment.Application.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="LeaveRequests\Commands\" />
-  </ItemGroup>
-
 </Project>
