@@ -32,7 +32,7 @@ namespace HRLeaveManagement.Persistence.Repositories
         {
             return await _context.TimeEntries
                 .Where(q => q.EmployeeId == userId)
-                .Where(q => q.EndWeek.Equals(date))
+                .Where(q => q.StartWeek == date)
                 .Include(q => q.Hours)
                 .FirstOrDefaultAsync();
         }

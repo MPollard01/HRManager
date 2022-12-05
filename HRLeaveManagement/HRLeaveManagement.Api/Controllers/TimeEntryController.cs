@@ -33,9 +33,12 @@ namespace HRLeaveManagement.Api.Controllers
         }
 
         [HttpGet("byDate")]
-        public async Task<ActionResult<TimeEntryDto>> GetByDate(string date)
+        public async Task<ActionResult<TimeEntryDto>> GetByDate(string? date)
         {
-            var timeEntry = await _mediator.Send(new GetTimeEntryDateRequest { Date = DateTime.Parse(date) });
+            var dateString = date ?? DateTime.Today.AddDays(-((int)DateTime.Today.DayOfWeek) + 1).ToString("dd-MM-yy");
+            var entryDate = DateTime.ParseExact(dateString, "dd-MM-yy", null);
+            var timeEntry = await _mediator.Send(new GetTimeEntryDateRequest { Date = entryDate });
+
             return Ok(timeEntry);
         }
 

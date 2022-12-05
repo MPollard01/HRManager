@@ -35,8 +35,20 @@ namespace HRLeaveManagment.Application.Features.TimeEntries.Handlers.Queries
             var userId = _httpContextAccessor.HttpContext.User.FindFirst(
                     q => q.Type == CustomClaimTypes.Uid)?.Value;
 
-            var timeEntry = _mapper.Map<TimeEntryDto>(await _timeEntryRepository.GetEmployeeTimeEntryByDate(userId, request.Date));
-            timeEntry.Employee = await _userService.GetEmployee(timeEntry.EmployeeId);
+            var entry = await _timeEntryRepository.GetEmployeeTimeEntryByDate(userId, request.Date);
+
+            TimeEntryDto timeEntry;
+            if(entry != null)
+            {
+                timeEntry = _mapper.Map<TimeEntryDto>(entry);
+            }
+            else
+            {
+                timeEntry = new TimeEntryDto();
+            }
+
+            timeEntry.Employee = await _userService.GetEmployee(userId);
+
             return timeEntry;
         }
     }

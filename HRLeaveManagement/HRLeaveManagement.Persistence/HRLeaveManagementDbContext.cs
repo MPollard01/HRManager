@@ -15,6 +15,7 @@ namespace HRLeaveManagement.Persistence
         public DbSet<LeaveAllocation> LeaveAllocations { get; set; }
         public DbSet<TimeEntry> TimeEntries { get; set; }
         public DbSet<HoursDay> HoursDay { get; set; }
+        public DbSet<TemplateTime> TimeTemplates { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

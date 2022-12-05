@@ -15,7 +15,7 @@ namespace HRLeaveManagement.MVC.Services
             _mapper = mapper;
         }
 
-        public async Task<Response<int>> CreateTimeEntry(CreateTimeEntryVM timeEntry)
+        public async Task<Response<int>> CreateTimeEntry(TimeEntryVM timeEntry)
         {
             try
             {
@@ -60,22 +60,33 @@ namespace HRLeaveManagement.MVC.Services
         public async Task<TimeEntryVM> GetTimeEntryByDate(DateTime date)
         {
             AddBearerToken();
-            var timeEntry = await _client.TimeEntryAllAsync(true);
-            var t = timeEntry.FirstOrDefault(e => e.StartWeek == date);
+            //var t = await _client.TimeEntryAllAsync(true);
+            //var timeEntry = t.FirstOrDefault(e => e.StartWeek == date);
 
-            if(t == null)
+            var timeEntry = await _client.ByDateAsync(date.ToString("dd-MM-yy"));
+
+            if (timeEntry.Hours == null)
             {
                 var entry = new TimeEntryVM
                 {
                     StartWeek = date,
                     EndWeek = date.AddDays(6),
-                    Hours = new List<HoursDayVM>()
+                    Hours = new List<HoursDay>()
+                    {
+                        new HoursDay(),
+                        new HoursDay(),
+                        new HoursDay(),
+                        new HoursDay(),
+                        new HoursDay(),
+                        new HoursDay(),
+                        new HoursDay()
+                    }
                 };
                 
                 return entry;
             }
 
-            return _mapper.Map<TimeEntryVM>(t);
+            return _mapper.Map<TimeEntryVM>(timeEntry);
         }
     }
 }
