@@ -16,10 +16,12 @@ namespace HRLeaveManagement.Application.UnitTests.Mocks
             var mockLeaveTypeRepo = MockLeaveTypeRepository.GetLeaveTypeRepository();
             var mockLeaveRequestRepo = MockLeaveRequestRepository.GetLeaveRequestRepository();
             var mockLeaveAllocationRepo = MockLeaveAllocationRepository.GetLeaveAllocations();
+            var mockTemplateTimeRepo = MockTemplateTimeRepository.GetTemplates();
 
             mockUow.Setup(r => r.LeaveTypeRepository).Returns(mockLeaveTypeRepo.Object);
             mockUow.Setup(r => r.LeaveRequestRepository).Returns(mockLeaveRequestRepo.Object);
             mockUow.Setup(r => r.LeaveAllocationRepository).Returns(mockLeaveAllocationRepo.Object);
+            mockUow.Setup(r => r.TemplateTimeRepository).Returns(mockTemplateTimeRepo.Object);
 
             return mockUow;
         }

@@ -8,6 +8,7 @@ namespace HRLeaveManagement.MVC.Contracts
         Task<List<TimeEntryVM>> GetTimeEntries();
         Task<TimeEntryVM> GetTimeEntry(int id);
         Task<TimeEntryVM> GetTimeEntryByDate(DateTime date);
+        Task<TimeEntryVM> GetCopyTimeEntryByDate(DateTime date);
         Task<Response<int>> CreateTimeEntry(TimeEntryVM timeEntry);
     }
 }

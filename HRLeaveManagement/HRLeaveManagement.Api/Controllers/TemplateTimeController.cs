@@ -36,6 +36,7 @@ namespace HRLeaveManagement.Api.Controllers
         }
 
         [HttpPut]
+        [ProducesResponseType(204)]
         public async Task<ActionResult> Put([FromBody] TemplateTimeDto templateTime)
         {
             var command = new UpdateTemplateTimeCommand { TemplateTimeDto = templateTime };

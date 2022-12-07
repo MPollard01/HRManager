@@ -38,6 +38,9 @@ namespace HRLeaveManagment.Application.Features.TemplateTimes.Handlers.Commands
 
             _mapper.Map(request.TemplateTimeDto, template);
 
+            template.Total = template.Hours1 + template.Hours2 + template.Hours3 +
+                    template.Hours4 + template.Hours5 + template.Hours6 + template.Hours7;
+
             await _unitOfWork.TemplateTimeRepository.Update(template);
             await _unitOfWork.Save();
 

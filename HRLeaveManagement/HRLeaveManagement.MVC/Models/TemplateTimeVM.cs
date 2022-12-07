@@ -4,7 +4,7 @@ namespace HRLeaveManagement.MVC.Models
 {
     public class TemplateTimeVM : CreateTemplateTimeVM
     {
-        //public int Id { get; set; }
+        public int Id { get; set; }
         [ValidateNever]
         public string EmployeeId { get; set; }
     }

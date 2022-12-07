@@ -60,9 +60,6 @@ namespace HRLeaveManagement.MVC.Services
         public async Task<TimeEntryVM> GetTimeEntryByDate(DateTime date)
         {
             AddBearerToken();
-            //var t = await _client.TimeEntryAllAsync(true);
-            //var timeEntry = t.FirstOrDefault(e => e.StartWeek == date);
-
             var timeEntry = await _client.ByDateAsync(date.ToString("dd-MM-yy"));
 
             if (timeEntry.Hours == null)
@@ -87,6 +84,17 @@ namespace HRLeaveManagement.MVC.Services
             }
 
             return _mapper.Map<TimeEntryVM>(timeEntry);
+        }
+
+        public async Task<TimeEntryVM> GetCopyTimeEntryByDate(DateTime date)
+        {
+            var timeEntry = await GetTimeEntryByDate(date);
+            var previous = await GetTimeEntryByDate(date.AddDays(-7));
+
+            for(int i = 0; i < timeEntry.Hours.Count; i++)
+                timeEntry.Hours[i].Hours = previous.Hours[i].Hours;
+
+            return timeEntry;
         }
     }
 }

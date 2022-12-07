@@ -11,8 +11,15 @@
         <h3 class="text-dark">Time Entry</h3>
     </div>
     <div>   
-        <a class="btn btn-outline-primary">Copy Template Schedule</a>
-        <a class="btn btn-outline-primary" asp-action="Copy">Copy From Previous Week</a>
+        <button id="copyTemplateBtn" class="btn btn-outline-primary">Copy Template Schedule</button>
+        @if(Model.TimeEntry.Id >= 0)
+        {
+            <a class="btn btn-outline-primary" asp-action="Copy" asp-route-date="@startOfWeek.ToString("dd-MM-yy")" >Copy From Previous Week</a>
+        }
+        else
+        {
+            <button class="btn btn-outline-primary" asp-action="Copy" disabled>Copy From Previous Week</button>
+        }
         <input class="btn btn-outline-primary" type="submit" form="timeForm" value="Subimt"/>
     </div>
 </header>
@@ -48,7 +55,7 @@
         </thead>
         <tbody>
              <tr>
-                 @if(Model.TimeEntry.Hours.Any(h => h.Hours > 0))
+                 @if(Model.TimeEntry.Id > 0)
                  {
                     <td>@Model.TimeEntry.Hours[0].Hours</td>
                     <td>@Model.TimeEntry.Hours[1].Hours</td>
@@ -158,6 +165,8 @@
                     <input asp-for="TemplateTime.Hours7" type="number" class="form-control" />
                     <span asp-validation-for="TemplateTime.Hours7" class="text-danger"></span>
                 </td>
+                <input asp-for="TemplateTime.EmployeeId" value="@Model.TemplateTime.EmployeeId" hidden/>
+                <input asp-for="TemplateTime.Id" value="@Model.TemplateTime.Id" hidden/>
                 </form>
                 <td>@Model.TemplateTime.Total</td>
             </tr>
@@ -173,6 +182,12 @@
                 startDate: '01/01/2022',
                 endDate: '01/01/2023'
             });
+        });
+
+        $("#copyTemplateBtn").click(function() {
+            for(let i = 3; i < 10; i++) {
+                $("#timeForm")[0][i].value = $('#templateForm')[0][i].value;
+            }
         });
     </script>
 }

@@ -4,6 +4,7 @@ using HRLeaveManagement.MVC.Models;
 using HRLeaveManagement.MVC.Services.Base;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace HRLeaveManagement.MVC.Controllers
 {
@@ -34,11 +35,11 @@ namespace HRLeaveManagement.MVC.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(TimeEntryVM timeEntry)
+        public async Task<ActionResult> Create(TimeEntryWithTemplateVM timeEntry)
         {
             if (ModelState.IsValid)
             {
-                var response = await _timeEntryService.CreateTimeEntry(timeEntry);
+                var response = await _timeEntryService.CreateTimeEntry(timeEntry.TimeEntry);
                 if (response.Success)
                 {
                     return RedirectToAction(nameof(Index));
@@ -46,34 +47,42 @@ namespace HRLeaveManagement.MVC.Controllers
                 ModelState.AddModelError("", response.ValidationErrors);
             }
 
-            var model = await _timeEntryService.GetTimeEntryByDate(timeEntry.StartWeek);
+            var entry = await _timeEntryService.GetTimeEntryByDate(timeEntry.TimeEntry.StartWeek);
+            var template = await _templateTimeService.GetTemplateTime();
+            var model = new TimeEntryWithTemplateVM { TemplateTime = template, TimeEntry = entry };
             return View(model);
         }
 
         [HttpPost]
-        public async Task<ActionResult> SaveTemplate(TemplateTimeVM template)
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> SaveTemplate(TimeEntryWithTemplateVM template)
         {
             if (ModelState.IsValid)
             {
                 Response<int> response;
-                if(template.EmployeeId == null)
-                {
-                    response = await _templateTimeService.CreateTemplate(template);
-                }
+                if(template.TemplateTime.EmployeeId.IsNullOrEmpty())
+                    response = await _templateTimeService.CreateTemplate(template.TemplateTime);
                 else
-                {
-                    response = await _templateTimeService.UpdateTemplate(template);
-                }
+                    response = await _templateTimeService.UpdateTemplate(template.TemplateTime);
 
                 if (response.Success)
-                {
                     return RedirectToAction(nameof(Index));
-                }
+                
                 ModelState.AddModelError("", response.ValidationErrors);
             }
 
             var model = await _templateTimeService.GetTemplateTime();
             return View(model);
+        }
+
+        public async Task<ActionResult> Copy(string date)
+        {
+            var entryDate = DateTime.ParseExact(date, "dd-MM-yy", null);
+            var entry = await _timeEntryService.GetCopyTimeEntryByDate(entryDate);
+            var template = await _templateTimeService.GetTemplateTime();
+            var model = new TimeEntryWithTemplateVM { TemplateTime = template, TimeEntry = entry };
+
+            return View(nameof(Index), model);
         }
     }
 }

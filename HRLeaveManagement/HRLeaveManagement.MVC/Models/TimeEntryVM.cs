@@ -1,12 +1,13 @@
 ﻿
 
 using HRLeaveManagement.MVC.Services.Base;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace HRLeaveManagement.MVC.Models
 {
     public class TimeEntryVM : CreateTimeEntryVM
     {
-        //public int Id { get; set; }
+        public int Id { get; set; }
         //public bool? Approved { get; set; }
         //public EmployeeVM Employee { get; set; }
     }
@@ -21,7 +22,9 @@ namespace HRLeaveManagement.MVC.Models
 
     public class TimeEntryWithTemplateVM
     {
+        [ValidateNever]
         public TimeEntryVM TimeEntry { get; set; }
+        [ValidateNever]
         public TemplateTimeVM TemplateTime { get; set; }
     }
 }

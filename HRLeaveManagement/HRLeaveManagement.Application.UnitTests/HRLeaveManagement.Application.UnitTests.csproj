@@ -25,6 +25,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\HRLeaveManagement.Api\HRLeaveManagement.Api.csproj" />
+    <ProjectReference Include="..\HRLeaveManagement.MVC\HRLeaveManagement.MVC.csproj" />
     <ProjectReference Include="..\HRLeaveManagment.Application\HRLeaveManagment.Application.csproj" />
   </ItemGroup>
 
