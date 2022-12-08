@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using HRLeaveManagement.MVC.Contracts;
+using HRLeaveManagement.MVC.Helpers;
 using HRLeaveManagement.MVC.Models;
 using HRLeaveManagement.MVC.Services.Base;
 
@@ -66,7 +67,7 @@ namespace HRLeaveManagement.MVC.Services
             throw new NotImplementedException();
         }
 
-        public async Task<AdminLeaveRequestViewVM> GetAdminLeaveRequestList(string userId)
+        public async Task<AdminLeaveRequestViewVM> GetAdminLeaveRequestList(string userId, int? pageNumber)
         {
             AddBearerToken();
             var leaveRequests = await _client.LeaveRequestAllAsync(isLoggedInUser: false);
@@ -76,13 +77,15 @@ namespace HRLeaveManagement.MVC.Services
                 leaveRequests = leaveRequests.Where(r => r.RequestingEmployeeId == userId).ToList();
             }
 
+            var requestsVM = _mapper.Map<List<LeaveRequestVM>>(leaveRequests);
+
             var model = new AdminLeaveRequestViewVM
             {
                 TotalRequests = leaveRequests.Count,
                 ApprovedRequests = leaveRequests.Count(q => q.Approved == true),
                 PendingRequests = leaveRequests.Count(q => q.Approved == null),
                 RejectedRequests = leaveRequests.Count(q => q.Approved == false),
-                LeaveRequests = _mapper.Map<List<LeaveRequestVM>>(leaveRequests)
+                LeaveRequests = PaginatedList<LeaveRequestVM>.Create(requestsVM, pageNumber ?? 1, 10)
             };
             return model;
         }

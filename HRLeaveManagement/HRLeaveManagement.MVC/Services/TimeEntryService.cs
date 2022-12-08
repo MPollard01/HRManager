@@ -96,5 +96,36 @@ namespace HRLeaveManagement.MVC.Services
 
             return timeEntry;
         }
+
+        public async Task ApproveTimeEntry(int id, bool approved)
+        {
+            AddBearerToken();
+            try
+            {
+                var request = new ChangeTimeEntryApprovalDto { Approved = approved, Id = id };
+                await _client.ChangetimeapprovalAsync(id, request);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<AdminTimeEntryViewVM> GetAdminTimeEntries()
+        {
+            AddBearerToken();
+            var entries = await _client.TimeEntryAllAsync(isLoggedInUser: false);
+
+            var model = new AdminTimeEntryViewVM
+            {
+                TotalRequests = entries.Count,
+                ApprovedRequests = entries.Count(q => q.Approved == true),
+                PendingRequests = entries.Count(q => q.Approved == null),
+                RejectedRequests = entries.Count(q => q.Approved == false),
+                Entries = _mapper.Map<List<AdminTimeEntryVM>>(entries)
+            };
+            return model;
+        }
     }
 }

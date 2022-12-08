@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using HRLeaveManagement.MVC.Contracts;
 using HRLeaveManagement.MVC.Models;
+using HRLeaveManagement.MVC.Services;
 using HRLeaveManagement.MVC.Services.Base;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -83,6 +84,20 @@ namespace HRLeaveManagement.MVC.Controllers
             var model = new TimeEntryWithTemplateVM { TemplateTime = template, TimeEntry = entry };
 
             return View(nameof(Index), model);
+        }
+
+        [Authorize(Roles = "Administrator")]
+        public async Task<ActionResult> Employees()
+        {
+            var model = await _timeEntryService.GetAdminTimeEntries();
+            return View(model);
+        }
+
+        [Authorize(Roles = "Administrator")]
+        public async Task<ActionResult> Details(int id)
+        {
+            var model = await _timeEntryService.GetTimeEntry(id);
+            return View(model);
         }
     }
 }

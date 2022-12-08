@@ -1,13 +1,9 @@
-﻿@model AdminLeaveRequestViewVM
-
-@{
-    ViewData["Title"] = "Index";
-}
+﻿@model AdminTimeEntryViewVM
 
 <header class="d-flex gap-5 align-items-center justify-content-start bg-light p-3 shadow-sm">
     <div class="d-flex gap-2">
-        <span class="bg-success p-2 rounded"><i class="bi bi-x-diamond-fill text-light"></i></span>
-        <h3 class="text-dark">Leave Request Log</h3>
+        <span class="bg-primary p-2 rounded"><i class="bi bi-clock-history text-light"></i></span>
+        <h3 class="text-dark">Time Entries</h3>
     </div>
     <div class="d-flex gap-4">
         <div class="info-box-content">
@@ -32,39 +28,35 @@
 <br />
 <br />
 
-<table id="tblData" class="table table-hover border rounded">
+<table id="tblData" class="table table-hover border rounded-bottom">
     <thead>
         <tr>
             <th>
                 Employee Name
             </th>
             <th>
-                Start Date
+                Week Starting
             </th>
             <th>
-                End Date
-            </th>
-            <th>
-                Leave Type
+                Week Ending
             </th>
             <th>
                 Date Requested
             </th>
-
+            <th>
+                Total Hours            
+            </th>
             <th>
                 Approval Status
             </th>
-
-            <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.LeaveRequests)
+        @foreach (var item in Model.Entries)
         {
             var tblBg = "";
 
-            if (item.Cancelled) tblBg = "table-secondary";
-            else if (item.Approved == true) tblBg = "table-success";
+            if (item.Approved == true) tblBg = "table-success";
             else if (item.Approved == false) tblBg = "table-danger";
             else tblBg = "table-warning";
 
@@ -73,23 +65,19 @@
                     @Html.DisplayFor(modelItem => item.Employee.Firstname) @Html.DisplayFor(modelItem => item.Employee.Lastname)
                 </td>
                 <td>
-                    @item.StartDate.ToShortDateString()
+                    @item.StartWeek.ToShortDateString()
                 </td>
                 <td>
-                    @item.EndDate.ToShortDateString()
+                    @item.EndWeek.ToShortDateString()
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.LeaveType.Name)
+                    @item.DateCreated.ToShortDateString()
                 </td>
                 <td>
-                    @item.DateRequested.ToShortDateString()
+                    @Html.DisplayFor(modelItem => item.TotalHours)
                 </td>
                 <td>
-                    @if (item.Cancelled)
-                    {
-                        <span class="badge bg-secondary">Cancelled</span>
-                    }
-                    else if (item.Approved == true)
+                    @if (item.Approved == true)
                     {
                         <span class="badge bg-success">Approved</span>
                     }
@@ -102,37 +90,7 @@
                         <span class="badge bg-warning">Pending Approval</span>
                     }
                 </td>
-                <td>
-                    @if (!item.Cancelled)
-                    {
-                        <a class="btn btn-info btn-sm" asp-action="Details" asp-route-id="@item.Id">
-                            <i class="fa fa-file"></i>Review
-                        </a>
-                    }
-                </td>
             </tr>
         }
     </tbody>
 </table>
-
-<br/>
-<br/>
-
-@{
-    var prevDisabled = !Model.LeaveRequests.HasPreviousPage ? "disabled" : "";
-    var nextDisabled = !Model.LeaveRequests.HasNextPage ? "disabled" : "";
-
-    int next = Model.LeaveRequests.PageIndex + 1;
-    int prev = Model.LeaveRequests.PageIndex - 1;
-}
-
-<nav aria-label="Page navigation example">
-    <ul class="pagination">
-        <li class="page-item @prevDisabled"><a class="page-link" asp-action="Index" asp-route-pageNumber="@prev">Previous</a></li>
-        @for(int i = 1; i <= Model.LeaveRequests.TotalPages; i++)
-        {
-            <li class="page-item"><a class="page-link" asp-action="Index" asp-route-pageNumber="@i">@i</a></li>
-        }
-        <li class="page-item @nextDisabled"><a class="page-link" asp-action="Index" asp-route-pageNumber="@next">Next</a></li>
-    </ul>
-</nav>

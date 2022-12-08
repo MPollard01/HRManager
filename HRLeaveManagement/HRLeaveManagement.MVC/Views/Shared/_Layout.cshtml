@@ -33,9 +33,13 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index"><i class="bi bi-house-door"></i> Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Employees" asp-action="Index"><i class="bi bi-person"></i> Users</a>
-                        </li>
+                        @if (User.IsInRole("Administrator"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Employees" asp-action="Index"><i class="bi bi-person"></i> Users</a>
+                            </li>
+                        }
+                        
                         <li class="mb-1">
                             <a class="nav-link btn btn-toggle d-inline-flex align-items-center rounded border-0" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="true"><i class="bi bi-x-diamond pe-1"></i> Leave</a>
                             <div class="collapse" id="dashboard-collapse" style="">
@@ -61,9 +65,18 @@
                                 </ul>
                             </div>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="TimeEntry" asp-action="Index"><i class="bi bi-clock"></i> Time Entry</a>
-                        </li>
+                        @if (User.IsInRole("Administrator"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="TimeEntry" asp-action="Employees"><i class="bi bi-clock"></i> Time Entry</a>
+                            </li>
+                        }
+                        @if (User.IsInRole("Employee"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="TimeEntry" asp-action="Index"><i class="bi bi-clock"></i> Time Entry</a>
+                            </li>
+                        }
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index"><i class="bi bi-card-heading"></i> Pay Role</a>
                         </li>

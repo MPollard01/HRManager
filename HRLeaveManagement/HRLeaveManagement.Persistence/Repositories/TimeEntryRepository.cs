@@ -36,5 +36,11 @@ namespace HRLeaveManagement.Persistence.Repositories
                 .Include(q => q.Hours)
                 .FirstOrDefaultAsync();
         }
+
+        public async Task ChangeTimeEntryApproval(TimeEntry timeEntry, bool? approvalStatus)
+        {
+            timeEntry.Approved = approvalStatus;
+            _context.Entry(timeEntry).State = EntityState.Modified;
+        }
     }
 }

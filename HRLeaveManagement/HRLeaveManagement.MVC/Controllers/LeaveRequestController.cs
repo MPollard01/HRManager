@@ -59,9 +59,9 @@ namespace HRLeaveManagement.MVC.Controllers
 
         [Authorize(Roles = "Administrator")]
         // GET: LeaveRequest
-        public async Task<ActionResult> Index(string searchString)
+        public async Task<ActionResult> Index(string searchString, int? pageNumber)
         {   
-            var model = await _leaveRequestService.GetAdminLeaveRequestList(searchString);
+            var model = await _leaveRequestService.GetAdminLeaveRequestList(searchString, pageNumber);
             return View(model);
         }
 

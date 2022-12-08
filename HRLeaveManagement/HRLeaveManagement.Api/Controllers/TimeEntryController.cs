@@ -49,5 +49,13 @@ namespace HRLeaveManagement.Api.Controllers
             var response = await _mediator.Send(command);
             return Ok(response);
         }
+
+        [HttpPut("changetimeapproval/{id}")]
+        public async Task<ActionResult> ChangeApproval(int id, [FromBody] ChangeTimeEntryApprovalDto approval)
+        {
+            var command = new UpdateTimeEntryCommand { Id = id, ChangeTimeEntryApprovalDto = approval };
+            await _mediator.Send(command);
+            return NoContent();
+        }
     }
 }

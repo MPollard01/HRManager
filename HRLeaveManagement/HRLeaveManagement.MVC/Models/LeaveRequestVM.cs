@@ -1,5 +1,4 @@
-﻿using HRLeaveManagement.Clean.Domain;
-using HRLeaveManagment.Application.Models.Identity;
+﻿using HRLeaveManagement.MVC.Helpers;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
@@ -57,7 +56,7 @@ namespace HRLeaveManagement.MVC.Models
         public int PendingRequests { get; set; }
         [Display(Name = "Rejected Requests")]
         public int RejectedRequests { get; set; }
-        public List<LeaveRequestVM> LeaveRequests { get; set; }
+        public PaginatedList<LeaveRequestVM> LeaveRequests { get; set; }
     }
 
 

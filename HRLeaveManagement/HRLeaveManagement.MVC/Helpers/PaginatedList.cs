@@ -1,6 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace HRLeaveManagement.MVC
+﻿
+namespace HRLeaveManagement.MVC.Helpers
 {
     public class PaginatedList<T> : List<T>
     {
