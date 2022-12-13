@@ -31,12 +31,12 @@
                     <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">HR Manager</a>
                     <ul class="navbar-nav mt-4">
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index"><i class="bi bi-house-door"></i> Home</a>
+                            <a class="nav-link" asp-controller="Dashboard" asp-action="Index"><i class="bi bi-house-door"></i> Dashboard</a>
                         </li>
                         @if (User.IsInRole("Administrator"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Employees" asp-action="Index"><i class="bi bi-person"></i> Users</a>
+                                <a class="nav-link" asp-controller="Employees" asp-action="Index"><i class="bi bi-person"></i> Users</a>
                             </li>
                         }
                         
@@ -78,7 +78,7 @@
                             </li>
                         }
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index"><i class="bi bi-card-heading"></i> Pay Role</a>
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index"><i class="bi bi-currency-pound"></i> Payroll</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index"><i class="bi bi-gear"></i> Settings</a>
@@ -136,6 +136,7 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

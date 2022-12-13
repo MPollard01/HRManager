@@ -1,7 +1,9 @@
 ﻿using HRLeaveManagement.Identity.Models;
+using HRLeaveManagment.Application.Constants;
 using HRLeaveManagment.Application.Models.Identity;
 using HRLeaveManagment.Application.Persistence.Contracts;
 using HRLeaveManagment.Application.Persistence.Contracts.Identity;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -15,11 +17,14 @@ namespace HRLeaveManagement.Identity.Services
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public UserService(UserManager<ApplicationUser> userManager, IUnitOfWork unitOfWork)
+        public UserService(UserManager<ApplicationUser> userManager, 
+            IUnitOfWork unitOfWork, IHttpContextAccessor httpContext)
         {
             _userManager = userManager;
             _unitOfWork = unitOfWork;
+            _httpContextAccessor = httpContext;
         }
 
         public async Task<Employee> GetEmployee(string userId)
@@ -56,9 +61,26 @@ namespace HRLeaveManagement.Identity.Services
             return allocations.Sum(q => q.NumberOfDays);
         }
 
+        public async Task<Employee> GetEmployeeSelf()
+        {
+            var userId = _httpContextAccessor.HttpContext.User.FindFirst(
+                    q => q.Type == CustomClaimTypes.Uid)?.Value;
+
+            if (userId == null) return new Employee();
+
+            var employee = await _userManager.FindByIdAsync(userId);
+            return new Employee
+            {
+                Email = employee.Email,
+                Id = employee.Id,
+                Firstname = employee.FirstName,
+                Lastname = employee.LastName
+            };
+        }
+
         //public Task<int> GetRemainingDays(string userId)
         //{
-            
+
         //}
 
         //public async Task<int> GetTotalDays(string userId)

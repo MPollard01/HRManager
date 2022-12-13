@@ -4,7 +4,6 @@ using HRLeaveManagement.MVC.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc;
-using System.Data;
 
 namespace HRLeaveManagement.MVC.Controllers
 {

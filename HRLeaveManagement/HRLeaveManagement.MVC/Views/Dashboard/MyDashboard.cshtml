@@ -1,0 +1,140 @@
+﻿@model EmployeeDashboardVM
+
+@{
+    ViewData["Title"] = "My Dashboard";
+}
+
+<section class="container">
+    <div class="row">
+        <div class="d-flex justify-content-center gap-5">
+            <div class="bg-primary col-lg-3 col-md-4">
+                <div class="d-flex justify-content-between p-3">
+                    <div>
+                        <h2 class="text-light">@Model.Employee.Firstname @Model.Employee.Lastname</h2>
+                        <h3 class="text-light mt-2">My Profile</h3>
+                    </div>
+                    <span><i class="bi bi-person-fill text-blue" style="font-size: 4em"></i></span>
+                </div>
+                <div class="bg-blue p-2 px-3">
+                    <a asp-controller="Employees" asp-action="Index" class="text-light nav-link">Edit Profile <i class="bi bi-arrow-right-circle-fill"></i></a>
+                </div>
+            </div>
+            <div class="bg-success col-lg-3 col-md-4">
+                <div class="d-flex justify-content-between p-3">
+                    <div>
+                        <h2 class="text-light">@Model.RequestCount</h2>
+                        <h3 class="text-light mt-2">My Requests</h3>
+                    </div>
+                    <span><i class="bi bi-x-diamond-fill text-green" style="font-size: 4em"></i></span>
+                </div>
+                <div class="bg-green p-2 px-3">
+                    <a asp-controller="LeaveRequest" asp-action="Index" class="text-light nav-link">More Info <i class="bi bi-arrow-right-circle-fill"></i></a>
+                </div>
+            </div>
+            <div class="bg-warning col-lg-3 col-md-4">
+                <div class="d-flex justify-content-between p-3">
+                    <div>
+                        <h2 class="text-light">@Model.TimeEntryApprovalCount</h2>
+                        <h3 class="text-light mt-2">Approvals</h3>
+                    </div>
+                    <span><i class="bi bi-clock-history text-orange" style="font-size: 4em"></i></span>
+                </div>
+                <div class="bg-orange p-2 px-3">
+                    <a asp-controller="TimeEntry" asp-action="Index" class="text-light nav-link">More Info <i class="bi bi-arrow-right-circle-fill"></i></a>
+                </div>
+            </div>
+            <div class="bg-info col-lg-3 col-md-4">
+                <div class="d-flex justify-content-between p-3">
+                    <div>
+                        <h2 class="text-light"></h2>
+                        <h3 class="text-light mt-2">Payroll</h3>
+                    </div>
+                    <span><i class="bi bi-currency-pound text-primary" style="font-size: 4em"></i></span>
+                </div>
+                <div class="bg-primary p-2 px-3">
+                    <a asp-controller="TimeEntry" asp-action="Index" class="text-light nav-link">More Info <i class="bi bi-arrow-right-circle-fill"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<br />
+<br />
+<br />
+<section class="container">
+    <div class="row">
+        <div class="col-7 border rounded p-3 shadow-sm">
+            <div id="chart"></div>
+        </div>
+        <div class="col-5">
+            <div class="card">
+                <div class="card-header d-flex gap-4">
+                    <h5 class="text-dark">My Time Off</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>From</th>
+                                <th>To</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach(var req in Model.Requests)
+                            {
+                                var status = "";
+                                if (req.Approved == null) status = "Pending";
+                                else if (req.Approved == true) status = "Approved";
+                                else status = "Rejected";
+
+                                <tr>
+                                    <td>@req.LeaveType.Name</td>
+                                    <td>@req.StartDate.ToShortDateString()</td>
+                                    <td>@req.EndDate.ToShortDateString()</td>
+                                    <td>@status</td>
+                                </tr>
+                            }     
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        var options = {
+            chart: {
+                type: 'bar'
+            },
+            title: {
+                text: 'Monthly Performance (Hours Worked)'
+            },
+            series: [{
+                name: 'Hours',
+                data: [@Model.MonthlyHours[0], 
+                       @Model.MonthlyHours[1], 
+                       @Model.MonthlyHours[2],
+                       @Model.MonthlyHours[3],
+                       @Model.MonthlyHours[4],
+                       @Model.MonthlyHours[5],
+                       @Model.MonthlyHours[6],
+                       @Model.MonthlyHours[7],
+                       @Model.MonthlyHours[8],
+                       @Model.MonthlyHours[9],
+                       @Model.MonthlyHours[10],
+                       @Model.MonthlyHours[11]]
+            }],
+            xaxis: {
+                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+            }
+        }
+
+        var chart = new ApexCharts(document.querySelector("#chart"), options);
+
+        chart.render();
+    </script>
+}

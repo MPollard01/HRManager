@@ -7,7 +7,7 @@ namespace HRLeaveManagement.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Administrator")]
+    [Authorize]
     public class EmployeeController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -18,18 +18,28 @@ namespace HRLeaveManagement.Api.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Administrator")]
         public async Task<ActionResult<List<Employee>>> Get()
         {
             return Ok(await _userService.GetEmployees());
         }
 
         [HttpGet("{id}")]
+        [Authorize(Roles = "Administrator")]
         public async Task<ActionResult<Employee>> Get(string id)
         {
             return Ok(await _userService.GetEmployee(id));
         }
 
+        [HttpGet("self")]
+        [Authorize(Roles = "Employee")]
+        public async Task<ActionResult<Employee>> GetSelf()
+        {
+            return Ok(await _userService.GetEmployeeSelf());
+        }
+
         [HttpGet("leave/{id}")]
+        [Authorize(Roles = "Administrator")]
         public async Task<ActionResult<int>> GetEmployeeLeaveDays(string id)
         {
             return Ok(await _userService.GetAllocatedDays(id));

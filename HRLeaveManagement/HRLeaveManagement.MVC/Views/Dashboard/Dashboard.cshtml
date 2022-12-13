@@ -1,0 +1,123 @@
+﻿@model DashboardVM
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<section class="container">
+    <div class="row">
+        <div class="d-flex justify-content-center gap-5"> 
+            <div class="bg-primary col-lg-3 col-md-4">
+                <div class="d-flex justify-content-between p-3">
+                    <div>
+                        <h2 class="text-light">@Model.EmployeeCount</h2>
+                        <h3 class="text-light mt-2">Employees</h3>
+                    </div>        
+                    <span><i class="bi bi-people-fill text-blue" style="font-size: 4em"></i></span>
+                </div>
+                <div class="bg-blue p-2 px-3">
+                    <a asp-controller="Employees" asp-action="Index" class="text-light nav-link">More Info <i class="bi bi-arrow-right-circle-fill"></i></a>
+                </div>
+            </div>
+            <div class="bg-success col-lg-3 col-md-4">
+                <div class="d-flex justify-content-between p-3">
+                    <div>
+                        <h2 class="text-light">@Model.RequestCount</h2>
+                        <h3 class="text-light mt-2">Requests</h3>
+                    </div>
+                    <span><i class="bi bi-x-diamond-fill text-green" style="font-size: 4em"></i></span>
+                </div>
+                <div class="bg-green p-2 px-3">
+                    <a asp-controller="LeaveRequest" asp-action="Index" class="text-light nav-link">More Info <i class="bi bi-arrow-right-circle-fill"></i></a>
+                </div>
+            </div>
+            <div class="bg-warning col-lg-3 col-md-4">
+                <div class="d-flex justify-content-between p-3">
+                    <div>
+                        <h2 class="text-light">@Model.TimeEntryApprovalCount</h2>
+                        <h3 class="text-light mt-2">Approvals</h3>
+                    </div>
+                    <span><i class="bi bi-clock-history text-orange" style="font-size: 4em"></i></span>
+                </div>
+                <div class="bg-orange p-2 px-3">
+                    <a asp-controller="TimeEntry" asp-action="Employees" class="text-light nav-link">More Info <i class="bi bi-arrow-right-circle-fill"></i></a>
+                </div>
+            </div>
+            <div class="bg-info col-lg-3 col-md-4">
+                <div class="d-flex justify-content-between p-3">
+                    <div>
+                        <h2 class="text-light"></h2>
+                        <h3 class="text-light mt-2">Payroll</h3>
+                    </div>
+                    <span><i class="bi bi-currency-pound text-primary" style="font-size: 4em"></i></span>
+                </div>
+                <div class="bg-primary p-2 px-3">
+                    <a asp-controller="TimeEntry" asp-action="Employees" class="text-light nav-link">More Info <i class="bi bi-arrow-right-circle-fill"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<br/>
+<br/>
+<br/>
+<section class="container">
+    <div class="row gap-5">
+        <div class="col-7 border rounded p-3 shadow-sm">
+            <div id="chart"></div>
+        </div>
+        <div class="col-4">
+            <div class="card">
+                <div class="card-header d-flex gap-4">
+                    <h5 class="text-dark">Who's Off</h5>
+                    <span>@DateTime.Today.ToShortDateString()</span>
+                </div>
+                <div class="card-body">
+                    @foreach(var req in Model.Requests)
+                    {
+                        <div class="border p-3 col-6">
+                            <h6>@req.Employee.Firstname @req.Employee.Lastname</h6>
+                            <div>@req.LeaveType.Name</div>
+                            <span>Ends @req.EndDate.ToLongDateString()</span>
+                        </div>
+                    }      
+                </div>
+            </div>
+        </div>   
+    </div> 
+</section>
+
+@section Scripts {
+    <script>
+        var options = {
+            chart: {
+                type: 'bar'
+            },
+            title: {
+                text: 'Monthly Trend of Absence'
+            },
+            series: [{
+                name: 'Absences',
+                data: [@Model.DaysAbscent[0], 
+                       @Model.DaysAbscent[1], 
+                       @Model.DaysAbscent[2], 
+                       @Model.DaysAbscent[3],
+                       @Model.DaysAbscent[4],
+                       @Model.DaysAbscent[5],
+                       @Model.DaysAbscent[6],
+                       @Model.DaysAbscent[7],
+                       @Model.DaysAbscent[8],
+                       @Model.DaysAbscent[9],
+                       @Model.DaysAbscent[10],
+                       @Model.DaysAbscent[11]]
+            }],
+            xaxis: {
+                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+            }
+        }
+
+        var chart = new ApexCharts(document.querySelector("#chart"), options);
+
+        chart.render();
+    </script>
+}

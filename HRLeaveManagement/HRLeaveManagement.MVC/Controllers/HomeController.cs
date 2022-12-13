@@ -1,4 +1,5 @@
 ﻿using HRLeaveManagement.MVC.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -15,7 +16,10 @@ namespace HRLeaveManagement.MVC.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Login", "Users");
+
+            return RedirectToAction("Index", "Dashboard");
         }
 
         public IActionResult Privacy()

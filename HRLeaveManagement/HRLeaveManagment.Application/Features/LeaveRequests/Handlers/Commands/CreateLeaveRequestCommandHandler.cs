@@ -73,6 +73,7 @@ namespace HRLeaveManagment.Application.Features.LeaveRequests.Handlers.Commands
             {
                 var leaveRequest = _mapper.Map<LeaveRequest>(request.LeaveRequestDto);
                 leaveRequest.RequestingEmployeeId = userId;
+                leaveRequest.DateRequested = DateTime.Now;
                 leaveRequest = await _unitOfWork.LeaveRequestRepository.Add(leaveRequest);
                 await _unitOfWork.Save();
 

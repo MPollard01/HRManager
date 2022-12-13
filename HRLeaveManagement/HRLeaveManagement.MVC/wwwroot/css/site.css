@@ -22,3 +22,27 @@ body {
     width: calc(100% - 200px);
     background-color: #4FB2EA;
 }
+
+.text-green {
+    color: #198754;
+}
+
+.text-blue {
+    color: #0d6efd;
+}
+
+.text-orange {
+    color: #fd7e14;
+}
+
+.bg-green {
+    background-color: #198754;
+}
+
+.bg-blue {
+    background-color: #0d6efd;
+}
+
+.bg-orange {
+    background-color: #fd7e14;
+}

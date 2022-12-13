@@ -25,6 +25,7 @@ builder.Services.AddScoped<ILeaveRequestService, LeaveRequestService>();
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<ITimeEntryService, TimeEntryService>();
 builder.Services.AddScoped<ITemplateTimeService, TemplateTimeService>();
+builder.Services.AddScoped<IDashboardService, DashboardService>();
 builder.Services.AddSingleton<ILocalStorageService, LocalStorageService>();
 
 builder.Services.AddControllersWithViews();
