@@ -12,10 +12,10 @@ namespace HRLeaveManagement.Clean.Domain
         public string Address2 { get; set; }
         public string Town { get; set; }
         public string PostCode { get; set; }
-        public int WorkPhoneNumber { get; set; }
-        public int HomePhoneNumber { get; set; }
-        public int MobileNumber { get; set; }
-        public int WorkMobileNumber { get; set; }
+        public long WorkPhoneNumber { get; set; }
+        public long HomePhoneNumber { get; set; }
+        public long MobileNumber { get; set; }
+        public long WorkMobileNumber { get; set; }
         public string WorkEmail { get; set; }
         public string PersonalEmail { get; set; }
         public string NINumber { get; set; }
