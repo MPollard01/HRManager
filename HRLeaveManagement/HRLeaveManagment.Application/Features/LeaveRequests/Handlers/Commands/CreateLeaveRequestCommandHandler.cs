@@ -81,7 +81,6 @@ namespace HRLeaveManagment.Application.Features.LeaveRequests.Handlers.Commands
                 response.Message = "Request Created Successfully";
                 response.Id = leaveRequest.Id;
 
-
                 try
                 {
                     var emailAddress = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Email).Value;

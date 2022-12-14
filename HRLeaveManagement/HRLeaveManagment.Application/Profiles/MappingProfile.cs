@@ -1,16 +1,12 @@
 ﻿using AutoMapper;
 using HRLeaveManagement.Clean.Domain;
 using HRLeaveManagment.Application.DTOs;
+using HRLeaveManagment.Application.DTOs.EmployeeDetails;
 using HRLeaveManagment.Application.DTOs.LeaveAllocation;
 using HRLeaveManagment.Application.DTOs.LeaveRequest;
 using HRLeaveManagment.Application.DTOs.LeaveType;
 using HRLeaveManagment.Application.DTOs.TemplateTime;
 using HRLeaveManagment.Application.DTOs.TimeEntry;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HRLeaveManagment.Application.Profiles
 {
@@ -37,6 +33,11 @@ namespace HRLeaveManagment.Application.Profiles
 
             CreateMap<TemplateTime, TemplateTimeDto>().ReverseMap();
             CreateMap<TemplateTime, CreateTemplateTimeDto>().ReverseMap();
+
+            CreateMap<EmployeeDetail, EmployeeDetailsDto>().ReverseMap();
+            CreateMap<EmployeeDetail, PayrollEmployeeDetailsDto>().ReverseMap();
+            CreateMap<EmployeeDetail, CreateEmployeeDetailsDto>().ReverseMap();
+            CreateMap<EmployeeDetail, UpdateEmployeeDetailsDto>().ReverseMap();
         }
     }
 }

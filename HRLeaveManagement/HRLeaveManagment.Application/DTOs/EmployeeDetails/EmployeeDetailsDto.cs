@@ -1,8 +1,8 @@
-﻿using HRLeaveManagement.Clean.Domain.Common;
+﻿using HRLeaveManagment.Application.DTOs.Common;
 
-namespace HRLeaveManagement.Clean.Domain
+namespace HRLeaveManagment.Application.DTOs.EmployeeDetails
 {
-    public class EmployeeDetails : BaseDomainEntity
+    public class EmployeeDetailsDto : BaseDto, IEmployeeDetailsDto
     {
         public string EmployeeId { get; set; }
         public string FirstName { get; set; }

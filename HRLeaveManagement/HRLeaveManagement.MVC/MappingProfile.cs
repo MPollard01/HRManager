@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using HRLeaveManagement.MVC.Models;
 using HRLeaveManagement.MVC.Services.Base;
+using HRLeaveManagment.Application.DTOs.EmployeeDetails;
 
 namespace HRLeaveManagement.MVC
 {
@@ -30,6 +31,12 @@ namespace HRLeaveManagement.MVC
             CreateMap<TemplateTimeDto, TemplateTimeVM>().ReverseMap();
             CreateMap<CreateTemplateTimeDto, CreateTemplateTimeVM>().ReverseMap();
             CreateMap<TemplateTimeVM, CreateTemplateTimeVM>().ReverseMap();
+
+            CreateMap<EmployeeDetailsDto, EmployeeDetailVM>().ReverseMap();
+            CreateMap<CreateEmployeeDetailsDto, CreateEmployeeDetailVM>().ReverseMap();
+            CreateMap<UpdateEmployeeDetailsDto, EmployeeDetailVM>().ReverseMap();
+            CreateMap<PayrollEmployeeDetailsDto, PayrollEmployeeVM>().ReverseMap();
+
         }
     }
 }

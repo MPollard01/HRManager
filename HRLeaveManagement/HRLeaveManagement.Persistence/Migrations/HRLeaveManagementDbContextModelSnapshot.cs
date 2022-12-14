@@ -121,7 +121,7 @@ namespace HRLeaveManagement.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("EmployeeDetails");
+                    b.ToTable("EmployeeDetails", (string)null);
                 });
 
             modelBuilder.Entity("HRLeaveManagement.Clean.Domain.HoursDay", b =>
@@ -145,7 +145,7 @@ namespace HRLeaveManagement.Persistence.Migrations
 
                     b.HasIndex("TimeEntryId");
 
-                    b.ToTable("HoursDay");
+                    b.ToTable("HoursDay", (string)null);
                 });
 
             modelBuilder.Entity("HRLeaveManagement.Clean.Domain.LeaveAllocation", b =>
@@ -184,7 +184,7 @@ namespace HRLeaveManagement.Persistence.Migrations
 
                     b.HasIndex("LeaveTypeId");
 
-                    b.ToTable("LeaveAllocations");
+                    b.ToTable("LeaveAllocations", (string)null);
                 });
 
             modelBuilder.Entity("HRLeaveManagement.Clean.Domain.LeaveRequest", b =>
@@ -238,7 +238,7 @@ namespace HRLeaveManagement.Persistence.Migrations
 
                     b.HasIndex("LeaveTypeId");
 
-                    b.ToTable("LeaveRequests");
+                    b.ToTable("LeaveRequests", (string)null);
                 });
 
             modelBuilder.Entity("HRLeaveManagement.Clean.Domain.LeaveType", b =>
@@ -273,7 +273,7 @@ namespace HRLeaveManagement.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("LeaveTypes");
+                    b.ToTable("LeaveTypes", (string)null);
 
                     b.HasData(
                         new
@@ -346,7 +346,7 @@ namespace HRLeaveManagement.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TimeTemplates");
+                    b.ToTable("TimeTemplates", (string)null);
                 });
 
             modelBuilder.Entity("HRLeaveManagement.Clean.Domain.TimeEntry", b =>
@@ -389,7 +389,7 @@ namespace HRLeaveManagement.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TimeEntries");
+                    b.ToTable("TimeEntries", (string)null);
                 });
 
             modelBuilder.Entity("HRLeaveManagement.Clean.Domain.HoursDay", b =>

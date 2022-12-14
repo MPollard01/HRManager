@@ -78,6 +78,11 @@ namespace HRLeaveManagement.Identity.Services
             };
         }
 
+        public async Task<bool> EmployeeExists(string userId)
+        {
+            return await _userManager.FindByIdAsync(userId) != null;
+        }
+
         //public Task<int> GetRemainingDays(string userId)
         //{
 
