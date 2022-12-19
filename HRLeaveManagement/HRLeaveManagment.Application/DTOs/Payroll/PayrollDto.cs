@@ -10,6 +10,6 @@ namespace HRLeaveManagment.Application.DTOs.Payroll
         public DateTime PayPeriodEnd { get; set; }
         public decimal NetPay { get; set; }
         public string EmployeeId { get; set; }
-        public Employee Employee{ get; set; }
+        public Employee Employee { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿@model PayrollVM
+﻿@model PayrollAdminViewVM
 
 @{
     ViewData["Title"] = "Payroll";
@@ -10,9 +10,87 @@
         <h3 class="text-dark">Payroll</h3>
     </div>
     <div>
-        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#formModal">
-            Create
+        <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#formModal">
+            <i class="bi bi-plus-circle"></i> New
         </button>
     </div>
 </header>
 <br />
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Employee Name</th>
+                <th>Employee Surname</th>
+                <th>Period Number</th>
+                <th>Pay Run</th>
+                <th>Pay Period End</th>
+                <th>Net Pay</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var payroll in Model.Payrolls)
+            {
+                <tr>
+                    <td>@payroll.Employee.Firstname</td>
+                    <td>@payroll.Employee.Lastname</td>
+                    <td>@payroll.PeriodNumber</td>
+                    <td>@payroll.PayRun</td>
+                    <td>@payroll.PayPeriodEnd</td>
+                    <td>@payroll.NetPay</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="formModal" tabindex="-1" aria-labelledby="formModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width: 800px">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-black" id="formModalLabel">Edit Profile</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="form" asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <fieldset>
+                        <legend>Payroll</legend>
+                        <div class="row">
+                            <div class="form-group mb-3 col-6">
+                                <label asp-for="CreatePayroll.EmployeeId" class="control-label"></label>
+                                <select asp-for="CreatePayroll.EmployeeId" asp-items="Model.CreatePayroll.Employees" class="form-select">
+                                    <option>Select Employee</option>
+                                </select>
+                                <span asp-validation-for="CreatePayroll.EmployeeId" class="text-danger"></span>
+                            </div>
+                            <div class="form-group mb-3 col-6">
+                                <label asp-for="CreatePayroll.PeriodNumber" class="control-label"></label>
+                                <input asp-for="CreatePayroll.PeriodNumber" class="form-control" />
+                                <span asp-validation-for="CreatePayroll.PeriodNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-6">
+                                <label asp-for="CreatePayroll.PayPeriodEnd" class="control-label"></label>
+                                <input asp-for="CreatePayroll.PayPeriodEnd" class="form-control" />
+                                <span asp-validation-for="CreatePayroll.PayPeriodEnd" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-6">
+                                <label asp-for="CreatePayroll.PayRun" class="control-label"></label>
+                                <input asp-for="CreatePayroll.PayRun" class="form-control" />
+                                <span asp-validation-for="CreatePayroll.PayRun" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <input form="form" type="submit" class="btn btn-info" value="Submit" />
+            </div>
+        </div>
+    </div>
+</div>
+

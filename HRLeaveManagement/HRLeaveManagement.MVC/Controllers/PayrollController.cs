@@ -37,12 +37,6 @@ namespace HRLeaveManagement.MVC.Controllers
             return View(model);
         }
 
-        [Authorize("Administrator")]
-        public ActionResult Create()
-        {
-            return View();
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize("Administrator")]

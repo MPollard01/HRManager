@@ -2,6 +2,7 @@
 using HRLeaveManagement.MVC.Contracts;
 using HRLeaveManagement.MVC.Models;
 using HRLeaveManagement.MVC.Services.Base;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace HRLeaveManagement.MVC.Services
 {
@@ -51,11 +52,19 @@ namespace HRLeaveManagement.MVC.Services
             return _mapper.Map<PayrollVM>(payrolls);
         }
 
-        public async Task<List<PayrollVM>> GetPayrollAdminList()
+        public async Task<PayrollAdminViewVM> GetPayrollAdminList()
         {
             AddBearerToken();
             var payrolls = await _client.PayrollAllAsync(false);
-            return _mapper.Map<List<PayrollVM>>(payrolls);
+            var payrollVMs = _mapper.Map<List<PayrollVM>>(payrolls);
+            var employees = await _client.EmployeeAllAsync();
+            var employeeList = new SelectList(employees, "Id", "LastName");
+
+            return new PayrollAdminViewVM 
+            { 
+                Payrolls = payrollVMs,
+                CreatePayroll = new CreatePayrollVM { Employees = employeeList } 
+            };
         }
 
         public async Task<List<PayrollVM>> GetPayrollList()

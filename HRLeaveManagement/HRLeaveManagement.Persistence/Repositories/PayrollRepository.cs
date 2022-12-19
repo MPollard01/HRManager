@@ -12,7 +12,7 @@ namespace HRLeaveManagement.Persistence.Repositories
 
         public async Task<List<Payroll>> GetPayrollsByEmployeeId(string employeeId)
         {
-            return await _context.Payroll.Where(p => p.Equals(employeeId)).ToListAsync();
+            return await _context.Payroll.Where(p => p.EmployeeId == employeeId).ToListAsync();
         }
     }
 }

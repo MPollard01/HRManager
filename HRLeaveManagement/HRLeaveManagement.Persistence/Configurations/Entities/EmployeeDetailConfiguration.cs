@@ -33,7 +33,7 @@ namespace HRLeaveManagement.Persistence.Configurations.Entities
                     WorkMobileNumber = 4898309423,
                     HomePhoneNumber = 01493902383,
                     WorkPhoneNumber = 89402939481,
-                    PayPerHour = 12
+                    PayPerHour = 12M
                 }
             );
         }

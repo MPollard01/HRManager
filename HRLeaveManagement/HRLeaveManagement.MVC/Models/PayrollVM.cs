@@ -1,4 +1,5 @@
 ﻿using HRLeaveManagement.MVC.Services.Base;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace HRLeaveManagement.MVC.Models
 {
@@ -20,6 +21,7 @@ namespace HRLeaveManagement.MVC.Models
         public DateTime PayPeriodEnd { get; set; }
         public DateTime DateCreated { get; set; }
         public decimal NetPay { get; set; }
+        public SelectList Employees { get; set; }
         public string EmployeeId { get; set; }
     }
 
@@ -27,5 +29,11 @@ namespace HRLeaveManagement.MVC.Models
     {
         public List<PayrollVM> Payrolls { get; set; }
         public PayrollEmployeeVM PayrollEmployee { get; set; }
+    }
+
+    public class PayrollAdminViewVM
+    {
+        public List<PayrollVM> Payrolls { get; set; }
+        public CreatePayrollVM CreatePayroll { get; set; }
     }
 }
