@@ -42,5 +42,14 @@ namespace HRLeaveManagement.Persistence.Repositories
             timeEntry.Approved = approvalStatus;
             _context.Entry(timeEntry).State = EntityState.Modified;
         }
+
+        public async Task<int> GetEmployeeTotalHoursInMonth(string userId, DateTime date)
+        {
+            return await _context.TimeEntries
+                .Where(q => q.EmployeeId == userId)
+                .Where(q => q.EndWeek <= date &&
+                q.StartWeek >= new DateTime(date.Year, date.Month, 1))
+                .SumAsync(e => e.TotalHours);
+        }
     }
 }

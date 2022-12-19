@@ -4,6 +4,297 @@
     ViewData["Title"] = "Profile";
 }
 
-<section class="container">
+<header class="d-flex align-items-center justify-content-between bg-white p-3 shadow-sm">
+    <div class="d-flex gap-2">
+        <span class="bg-primary p-2 rounded"><i class="bi bi-person-fill text-light"></i></span>
+        <h3 class="text-dark">Profile</h3>
+    </div>
+    <div>
+        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#formModal">
+            Edit Profile
+        </button>
+    </div>
+</header>
+<br/>
 
+<partial name="_MessagePartial"/>
+
+<section class="shadow bg-white rounded py-3">
+    <div class="row gap-4 justify-content-center">
+        <div class="col-5">
+            <div class="card">
+                <h5 class="card-header">Personal</h5>
+                <div class="card-body row">
+                    <div class="col-6">
+                        <div class="p-2">
+                            <span class="text-secondary">Full Name</span>
+                            <p class="card-text fw-bold">@Model.FirstName @Model.LastName</p>
+                        </div>
+                        <div class="p-2">
+                            <span class="text-secondary">Date Of Birth</span>
+                            <p class="card-text fw-bold">@Model.DOB.ToShortDateString()</p>
+                        </div>
+                        <div class="p-2">
+                            <span class="text-secondary">Work Email</span>
+                            <p class="card-text fw-bold">@Model.WorkEmail</p>
+                        </div>                                     
+                    </div>
+                    <div class="col-6">
+                        <div class="p-2">
+                            <span class="text-secondary">Personal Email</span>
+                            <p class="card-text fw-bold">@Model.PersonalEmail</p>
+                        </div>
+                        <div class="p-2">
+                            <span class="text-secondary">National Insurance</span>
+                            <p class="card-text fw-bold">@Model.NINumber</p>
+                        </div>
+                        <div class="p-2">
+                            <span class="text-secondary">Tax Code</span>
+                            <p class="card-text fw-bold">@Model.TaxCode</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-5">
+            <div class="card">
+                <h5 class="card-header">Account Details</h5>
+                <div class="card-body row">
+                    <div class="col-6">
+                        <div class="p-2">
+                            <span class="text-secondary">Account Name</span>
+                            <p class="card-text fw-bold">@Model.AccountName</p>
+                        </div>
+                        <div class="p-2">
+                            <span class="text-secondary">Account Number</span>
+                            <p class="card-text fw-bold">@Model.AccountNumber</p>
+                        </div>
+                        <div class="p-2">
+                            <span class="text-secondary">Sort Code</span>
+                            <p class="card-text fw-bold">@Model.SortCode</p>
+                        </div>
+                        
+                    </div>
+                    <div class="col-6">
+                        <div class="p-2">
+                            <span class="text-secondary">Bank Name</span>
+                            <p class="card-text fw-bold">@Model.BankName</p>
+                        </div>
+                        <div class="p-2">
+                            <span class="text-secondary">Bank Address</span>
+                            <p class="card-text fw-bold">@Model.BankAddress</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row gap-4 mt-4 justify-content-center">
+        <div class="col-5">
+            <div class="card">
+                <h5 class="card-header">Address</h5>
+                <div class="card-body row">
+                    <div class="col-6">
+                        <div class="p-2">
+                            <span class="text-secondary">Address Line 1</span>
+                            <p class="card-text fw-bold">@Model.Address1</p>
+                        </div>
+                        <div class="p-2">
+                            <span class="text-secondary">Address Line 2</span>
+                            <p class="card-text fw-bold">@Model.Address2</p>
+                        </div>            
+                    </div>
+                    <div class="col-6">
+                        <div class="p-2">
+                            <span class="text-secondary">Town</span>
+                            <p class="card-text fw-bold">@Model.Town</p>
+                        </div>
+                        <div class="p-2">
+                            <span class="text-secondary">Post Code</span>
+                            <p class="card-text fw-bold">@Model.PostCode</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-5">
+            <div class="card">
+                <h5 class="card-header">Contacts</h5>
+                <div class="card-body row">
+                    <div class="col-6">
+                        <div class="p-2">
+                            <span class="text-secondary">Mobile Number</span>
+                            <p class="card-text fw-bold">@Model.MobileNumber</p>
+                        </div>
+                        <div class="p-2">
+                            <span class="text-secondary">Work Mobile Number</span>
+                            <p class="card-text fw-bold">@Model.WorkMobileNumber</p>
+                        </div>                   
+                    </div>
+                    <div class="col-6">
+                        <div class="p-2">
+                            <span class="text-secondary">Home Phone Number</span>
+                            <p class="card-text fw-bold">@Model.HomePhoneNumber</p>
+                        </div>
+                        <div class="p-2">
+                            <span class="text-secondary">Work Phone Number</span>
+                            <p class="card-text fw-bold">@Model.WorkPhoneNumber</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
+
+<!-- Modal -->
+<div class="modal fade" id="formModal" tabindex="-1" aria-labelledby="formModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width: 800px">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-black" id="formModalLabel">Edit Profile</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="form" asp-action="Edit" asp-route-id="@Model.Id">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <fieldset>
+                        <legend>Personal</legend>
+                        <div class="row">
+                            <div class="form-group mb-3 col-6">
+                                <span class="text-secondary">Full Name</span>
+                                <p class="card-text fw-bold">@Model.FirstName @Model.LastName</p>
+                                <input asp-for="FirstName" class="form-control" hidden/>
+                                <input asp-for="LastName" class="form-control" hidden/>
+                            </div>
+                            <div class="form-group mb-3 col-6">
+                                <span class="text-secondary">Date Of Birth</span>
+                                <p class="card-text fw-bold">@Model.DOB.ToShortDateString()</p>
+                                <input asp-for="DOB" class="form-control" hidden/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group mb-3 col-6">
+                                <span class="text-secondary">Work Email</span>
+                                <p class="card-text fw-bold">@Model.WorkEmail</p>
+                                <input asp-for="WorkEmail" class="form-control" hidden/>
+                            </div>
+                            <div class="form-group mb-3 col-6">
+                                <label asp-for="PersonalEmail" class="control-label"></label>
+                                <input asp-for="PersonalEmail" class="form-control" />
+                                <span asp-validation-for="PersonalEmail" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-6">
+                                <label asp-for="NINumber" class="control-label"></label>
+                                <input asp-for="NINumber" class="form-control" />
+                                <span asp-validation-for="NINumber" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-6">
+                                <label asp-for="TaxCode" class="control-label"></label>
+                                <input asp-for="TaxCode" class="form-control" />
+                                <span asp-validation-for="TaxCode" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <hr />
+                    <fieldset class="mt-3">
+                        <legend>Contacts</legend>
+                        <div class="row">
+                            <div class="form-group mb-3 col-6">
+                                <label asp-for="MobileNumber" class="control-label"></label>
+                                <input asp-for="MobileNumber" class="form-control" />
+                                <span asp-validation-for="MobileNumber" class="text-danger"></span>
+                            </div>
+                            <div class="form-group mb-3 col-6">
+                                <label asp-for="WorkMobileNumber" class="control-label"></label>
+                                <input asp-for="WorkMobileNumber" class="form-control" />
+                                <span asp-validation-for="WorkMobileNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group mb-3 col-6">
+                                <label asp-for="HomePhoneNumber" class="control-label"></label>
+                                <input asp-for="HomePhoneNumber" class="form-control" />
+                                <span asp-validation-for="HomePhoneNumber" class="text-danger"></span>
+                            </div>
+                            <div class="form-group mb-3 col-6">
+                                <label asp-for="WorkPhoneNumber" class="control-label"></label>
+                                <input asp-for="WorkPhoneNumber" class="form-control" />
+                                <span asp-validation-for="WorkPhoneNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <hr />
+                    <fieldset class="mt-3">
+                        <legend>Address</legend>
+                        <div class="row">
+                            <div class="form-group mb-3 col-6">
+                                <label asp-for="Address1" class="control-label"></label>
+                                <input asp-for="Address1" class="form-control" />
+                                <span asp-validation-for="Address1" class="text-danger"></span>
+                            </div>
+                            <div class="form-group mb-3 col-6">
+                                <label asp-for="Address2" class="control-label"></label>
+                                <input asp-for="Address2" class="form-control" />
+                                <span asp-validation-for="Address2" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group mb-3 col-6">
+                                <label asp-for="Town" class="control-label"></label>
+                                <input asp-for="Town" class="form-control" />
+                                <span asp-validation-for="Town" class="text-danger"></span>
+                            </div>
+                            <div class="form-group mb-3 col-6">
+                                <label asp-for="PostCode" class="control-label"></label>
+                                <input asp-for="PostCode" class="form-control" />
+                                <span asp-validation-for="PostCode" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <hr />
+                    <fieldset class="mt-3">
+                        <legend>Account</legend>
+                        <div class="row">
+                            <div class="form-group mb-3 col-6">
+                                <label asp-for="AccountName" class="control-label"></label>
+                                <input asp-for="AccountName" class="form-control" />
+                                <span asp-validation-for="AccountName" class="text-danger"></span>
+                            </div>
+                            <div class="form-group mb-3 col-6">
+                                <label asp-for="AccountNumber" class="control-label"></label>
+                                <input asp-for="AccountNumber" class="form-control" />
+                                <span asp-validation-for="AccountNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group mb-3 col-6">
+                                <label asp-for="SortCode" class="control-label"></label>
+                                <input asp-for="SortCode" class="form-control" />
+                                <span asp-validation-for="SortCode" class="text-danger"></span>
+                            </div>
+                            <div class="form-group mb-3 col-6">
+                                <label asp-for="BankName" class="control-label"></label>
+                                <input asp-for="BankName" class="form-control" />
+                                <span asp-validation-for="BankName" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group mb-3 col-6">
+                                <label asp-for="BankAddress" class="control-label"></label>
+                                <input asp-for="BankAddress" class="form-control" />
+                                <span asp-validation-for="BankAddress" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <input form="form" type="submit" class="btn btn-info" value="Save Changes"/>
+            </div>
+        </div>
+    </div>
+</div>

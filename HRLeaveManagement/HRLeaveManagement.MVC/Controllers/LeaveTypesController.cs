@@ -51,6 +51,7 @@ namespace HRLeaveManagement.MVC.Controllers
                 var response = await _leaveTypeService.CreateLeaveType(leaveType);
                 if (response.Success)
                 {
+                    TempData["SuccessMessage"] = response.Message;
                     return RedirectToAction(nameof(Index));
                 }
                     
@@ -81,6 +82,7 @@ namespace HRLeaveManagement.MVC.Controllers
                 var response = await _leaveTypeService.UpdateLeaveType(id, leaveType);
                 if (response.Success)
                 {
+                    TempData["SuccessMessage"] = response.Message;
                     return RedirectToAction(nameof(Index));
                 }
 

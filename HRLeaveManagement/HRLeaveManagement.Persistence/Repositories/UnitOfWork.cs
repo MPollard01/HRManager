@@ -21,6 +21,7 @@ namespace HRLeaveManagement.Persistence.Repositories
         private IHoursDayRepository _hoursDayRepository;
         private ITemplateTimeRepository _templateTimeRepository;
         private IEmployeeDetailsRepository _employeeDetailsRepository;
+        private IPayrollRepository _payrollRepository;
 
 
         public UnitOfWork(HRLeaveManagementDbContext context, 
@@ -44,6 +45,8 @@ namespace HRLeaveManagement.Persistence.Repositories
             _templateTimeRepository ??= new TemplateTimeRepository(_context);
         public IEmployeeDetailsRepository EmployeeDetailsRepository =>
             _employeeDetailsRepository ??= new EmployeeDetailsRepository(_context);
+        public IPayrollRepository PayrollRepository =>
+            _payrollRepository ??= new PayrollRepository(_context);
 
         public void Dispose()
         {

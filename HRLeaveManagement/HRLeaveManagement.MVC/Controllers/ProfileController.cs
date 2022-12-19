@@ -23,13 +23,14 @@ namespace HRLeaveManagement.MVC.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(EmployeeDetailVM model)
+        public async Task<ActionResult> Edit(int id, EmployeeDetailVM model)
         {
             try
             {
-                var response = await _employeeDetailService.UpdateEmployeeDetail(model);
+                var response = await _employeeDetailService.UpdateEmployeeDetail(id, model);
                 if (response.Success)
                 {
+                    TempData["SuccessMessage"] = "Profile Updated Successfully";
                     return RedirectToAction(nameof(Index));
                 }
 
@@ -40,7 +41,7 @@ namespace HRLeaveManagement.MVC.Controllers
                 ModelState.AddModelError("", e.Message);
             }
 
-            return View(model);
+            return View(nameof(Index), model);
         }
     }
 }

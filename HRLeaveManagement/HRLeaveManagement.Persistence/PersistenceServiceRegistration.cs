@@ -28,6 +28,7 @@ namespace HRLeaveManagement.Persistence
             services.AddScoped<IHoursDayRepository, HoursDayRepository>();
             services.AddScoped<ITemplateTimeRepository, TemplateTimeRepository>();
             services.AddScoped<IEmployeeDetailsRepository, EmployeeDetailsRepository>();
+            services.AddScoped<IPayrollRepository, PayrollRepository>();
 
             return services;
         }

@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using HRLeaveManagement.MVC.Models;
 using HRLeaveManagement.MVC.Services.Base;
-using HRLeaveManagment.Application.DTOs.EmployeeDetails;
 
 namespace HRLeaveManagement.MVC
 {
@@ -37,6 +36,8 @@ namespace HRLeaveManagement.MVC
             CreateMap<UpdateEmployeeDetailsDto, EmployeeDetailVM>().ReverseMap();
             CreateMap<PayrollEmployeeDetailsDto, PayrollEmployeeVM>().ReverseMap();
 
+            CreateMap<PayrollDto, PayrollVM>().ReverseMap();
+            CreateMap<CreatePayrollDto, CreatePayrollVM>().ReverseMap();
         }
     }
 }

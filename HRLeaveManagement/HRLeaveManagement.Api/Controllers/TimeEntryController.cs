@@ -43,6 +43,8 @@ namespace HRLeaveManagement.Api.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
         public async Task<ActionResult<BaseCommandResponse>> Post([FromBody] CreateTimeEntryDto timeEntry)
         {
             var command = new CreateTimeEntryCommand { TimeEntryDto = timeEntry };

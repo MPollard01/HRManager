@@ -11,6 +11,7 @@ namespace HRLeaveManagment.Application.Persistence.Contracts
     {
         Task<List<TimeEntry>> GetTimeEntriesWithDetails();
         Task<TimeEntry?> GetEmployeeTimeEntryByDate(string userId, DateTime date);
+        Task<int> GetEmployeeTotalHoursInMonth(string userId, DateTime date);
         Task<List<TimeEntry>> GetEmployeeTimeEntrys(string userId);
         Task ChangeTimeEntryApproval(TimeEntry timeEntry, bool? approvalStatus);
     }

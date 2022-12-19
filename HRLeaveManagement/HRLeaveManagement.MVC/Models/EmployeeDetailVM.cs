@@ -1,4 +1,6 @@
-﻿namespace HRLeaveManagement.MVC.Models
+﻿using System.ComponentModel;
+
+namespace HRLeaveManagement.MVC.Models
 {
     public class EmployeeDetailVM
     {
@@ -7,22 +9,54 @@
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateTime DOB { get; set; }
+
+        [DisplayName("Address Line 1")]
         public string Address1 { get; set; }
+
+        [DisplayName("Address Line 2")]
         public string Address2 { get; set; }
         public string Town { get; set; }
+
+        [DisplayName("Post Code")]
         public string PostCode { get; set; }
-        public int WorkPhoneNumber { get; set; }
-        public int HomePhoneNumber { get; set; }
-        public int MobileNumber { get; set; }
-        public int WorkMobileNumber { get; set; }
+
+        [DisplayName("Work Phone Number")]
+        public long WorkPhoneNumber { get; set; }
+
+        [DisplayName("Home Phone Number")]
+        public long HomePhoneNumber { get; set; }
+
+        [DisplayName("Mobile Number")]
+        public long MobileNumber { get; set; }
+
+        [DisplayName("Work Mobile Number")]
+        public long WorkMobileNumber { get; set; }
+
+        [DisplayName("Work Email")]
         public string WorkEmail { get; set; }
+
+        [DisplayName("Personal Email")]
         public string PersonalEmail { get; set; }
+
+        [DisplayName("National Insurance Number")]
         public string NINumber { get; set; }
+
+        [DisplayName("Tax Code")]
         public string TaxCode { get; set; }
+
+        [DisplayName("Bank Name")]
         public string BankName { get; set; }
+
+        [DisplayName("Account Name")]
         public string AccountName { get; set; }
+
+        [DisplayName("Account Number")]
         public int AccountNumber { get; set; }
+
+        [DisplayName("Sort Code")]
         public int SortCode { get; set; }
+
+        [DisplayName("Bank Address")]
         public string BankAddress { get; set; }
     }
 

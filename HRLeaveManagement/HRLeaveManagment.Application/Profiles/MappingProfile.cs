@@ -5,6 +5,7 @@ using HRLeaveManagment.Application.DTOs.EmployeeDetails;
 using HRLeaveManagment.Application.DTOs.LeaveAllocation;
 using HRLeaveManagment.Application.DTOs.LeaveRequest;
 using HRLeaveManagment.Application.DTOs.LeaveType;
+using HRLeaveManagment.Application.DTOs.Payroll;
 using HRLeaveManagment.Application.DTOs.TemplateTime;
 using HRLeaveManagment.Application.DTOs.TimeEntry;
 
@@ -38,6 +39,9 @@ namespace HRLeaveManagment.Application.Profiles
             CreateMap<EmployeeDetail, PayrollEmployeeDetailsDto>().ReverseMap();
             CreateMap<EmployeeDetail, CreateEmployeeDetailsDto>().ReverseMap();
             CreateMap<EmployeeDetail, UpdateEmployeeDetailsDto>().ReverseMap();
+
+            CreateMap<Payroll, PayrollDto>().ReverseMap();
+            CreateMap<Payroll, CreatePayrollDto>().ReverseMap();
         }
     }
 }

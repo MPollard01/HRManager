@@ -30,6 +30,7 @@ namespace HRLeaveManagement.MVC.Services
                 {
                     response.Data = apiResponse.Id;
                     response.Success = true;
+                    response.Message = apiResponse.Message;
                 }
                 else
                 {
@@ -59,7 +60,7 @@ namespace HRLeaveManagement.MVC.Services
                 var templateTime = _mapper.Map<TemplateTimeDto>(template);
                 AddBearerToken();
                 await _client.TemplateTimePUTAsync(templateTime);
-                return new Response<int> { Success = true };
+                return new Response<int> { Success = true, Message = "Template Updated Successfully" };
             }
             catch (ApiException ex)
             {

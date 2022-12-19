@@ -22,7 +22,7 @@ namespace HRLeaveManagement.Persistence.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("HRLeaveManagement.Clean.Domain.EmployeeDetails", b =>
+            modelBuilder.Entity("HRLeaveManagement.Clean.Domain.EmployeeDetail", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -70,15 +70,15 @@ namespace HRLeaveManagement.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("HomePhoneNumber")
-                        .HasColumnType("int");
+                    b.Property<long>("HomePhoneNumber")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("MobileNumber")
-                        .HasColumnType("int");
+                    b.Property<long>("MobileNumber")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(max)");
@@ -89,6 +89,9 @@ namespace HRLeaveManagement.Persistence.Migrations
                     b.Property<string>("NINumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("PayPerHour")
+                        .HasColumnType("float");
 
                     b.Property<string>("PersonalEmail")
                         .IsRequired()
@@ -113,15 +116,45 @@ namespace HRLeaveManagement.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("WorkMobileNumber")
-                        .HasColumnType("int");
+                    b.Property<long>("WorkMobileNumber")
+                        .HasColumnType("bigint");
 
-                    b.Property<int>("WorkPhoneNumber")
-                        .HasColumnType("int");
+                    b.Property<long>("WorkPhoneNumber")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
-                    b.ToTable("EmployeeDetails", (string)null);
+                    b.ToTable("EmployeeDetails");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AccountName = "S U User",
+                            AccountNumber = 4789023,
+                            Address1 = "123 User Street",
+                            Address2 = "Dee Way",
+                            BankAddress = "123 Bank Road",
+                            BankName = "User Bank",
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DOB = new DateTime(1998, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EmployeeId = "9e224968-33e4-4652-b7b7-8574d048cdb9",
+                            FirstName = "System",
+                            HomePhoneNumber = 1493902383L,
+                            LastName = "User",
+                            MobileNumber = 7948392731L,
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            NINumber = "JL372998A",
+                            PayPerHour = 12.0,
+                            PersonalEmail = "user@mail.com",
+                            PostCode = "DK99USR",
+                            SortCode = 93123,
+                            TaxCode = "T89AL",
+                            Town = "User Town",
+                            WorkEmail = "user@localhost.com",
+                            WorkMobileNumber = 4898309423L,
+                            WorkPhoneNumber = 89402939481L
+                        });
                 });
 
             modelBuilder.Entity("HRLeaveManagement.Clean.Domain.HoursDay", b =>
@@ -145,7 +178,7 @@ namespace HRLeaveManagement.Persistence.Migrations
 
                     b.HasIndex("TimeEntryId");
 
-                    b.ToTable("HoursDay", (string)null);
+                    b.ToTable("HoursDay");
                 });
 
             modelBuilder.Entity("HRLeaveManagement.Clean.Domain.LeaveAllocation", b =>
@@ -184,7 +217,7 @@ namespace HRLeaveManagement.Persistence.Migrations
 
                     b.HasIndex("LeaveTypeId");
 
-                    b.ToTable("LeaveAllocations", (string)null);
+                    b.ToTable("LeaveAllocations");
                 });
 
             modelBuilder.Entity("HRLeaveManagement.Clean.Domain.LeaveRequest", b =>
@@ -238,7 +271,7 @@ namespace HRLeaveManagement.Persistence.Migrations
 
                     b.HasIndex("LeaveTypeId");
 
-                    b.ToTable("LeaveRequests", (string)null);
+                    b.ToTable("LeaveRequests");
                 });
 
             modelBuilder.Entity("HRLeaveManagement.Clean.Domain.LeaveType", b =>
@@ -273,14 +306,14 @@ namespace HRLeaveManagement.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("LeaveTypes", (string)null);
+                    b.ToTable("LeaveTypes");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateCreated = new DateTime(2022, 12, 13, 17, 43, 50, 171, DateTimeKind.Local).AddTicks(3578),
+                            DateCreated = new DateTime(2022, 12, 16, 16, 52, 55, 168, DateTimeKind.Local).AddTicks(894),
                             DefaultDays = 10,
                             ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Vacation"
@@ -289,11 +322,56 @@ namespace HRLeaveManagement.Persistence.Migrations
                         {
                             Id = 2,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateCreated = new DateTime(2022, 12, 13, 17, 43, 50, 171, DateTimeKind.Local).AddTicks(3619),
+                            DateCreated = new DateTime(2022, 12, 16, 16, 52, 55, 168, DateTimeKind.Local).AddTicks(971),
                             DefaultDays = 12,
                             ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Sick"
                         });
+                });
+
+            modelBuilder.Entity("HRLeaveManagement.Clean.Domain.Payroll", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("EmployeeId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("NetPay")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("PayPeriodEnd")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PayRun")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PeriodNumber")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Payroll");
                 });
 
             modelBuilder.Entity("HRLeaveManagement.Clean.Domain.TemplateTime", b =>
@@ -346,7 +424,7 @@ namespace HRLeaveManagement.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TimeTemplates", (string)null);
+                    b.ToTable("TimeTemplates");
                 });
 
             modelBuilder.Entity("HRLeaveManagement.Clean.Domain.TimeEntry", b =>
@@ -389,7 +467,7 @@ namespace HRLeaveManagement.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TimeEntries", (string)null);
+                    b.ToTable("TimeEntries");
                 });
 
             modelBuilder.Entity("HRLeaveManagement.Clean.Domain.HoursDay", b =>

@@ -64,6 +64,12 @@ namespace HRLeaveManagement.MVC.Controllers
             return View(model);
         }
 
+        public async Task<ActionResult> MyLeave()
+        {
+            var model = await _leaveRequestService.GetUserLeaveRequests();
+            return View(model);
+        }
+
         public async Task<ActionResult> Details(int id)
         {
             var model = await _leaveRequestService.GetLeaveRequest(id);

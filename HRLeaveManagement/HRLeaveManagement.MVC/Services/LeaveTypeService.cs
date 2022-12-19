@@ -30,6 +30,7 @@ namespace HRLeaveManagement.MVC.Services
                 {
                     response.Data = apiResponse.Id;
                     response.Success = true;
+                    response.Message = apiResponse.Message;
                 }
                 else
                 {
@@ -86,7 +87,7 @@ namespace HRLeaveManagement.MVC.Services
                 var leaveTypeDto = _mapper.Map<LeaveTypeDto>(leaveType);
                 AddBearerToken();
                 await _client.LeaveTypesPUTAsync(leaveTypeDto);
-                return new Response<int> { Success = true };
+                return new Response<int> { Success = true, Message = "Update Successfull" };
             }
             catch (ApiException ex)
             {

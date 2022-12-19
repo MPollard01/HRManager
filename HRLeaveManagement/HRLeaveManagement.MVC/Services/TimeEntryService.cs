@@ -28,6 +28,7 @@ namespace HRLeaveManagement.MVC.Services
                 {
                     response.Data = apiResponse.Id;
                     response.Success = true;
+                    response.Message = apiResponse.Message;
                 }
                 else
                 {

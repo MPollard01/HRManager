@@ -10,20 +10,20 @@
             <div class="bg-primary col-lg-3 col-md-4">
                 <div class="d-flex justify-content-between p-3">
                     <div>
-                        <h2 class="text-light">@Model.Employee.Firstname @Model.Employee.Lastname</h2>
-                        <h3 class="text-light mt-2">My Profile</h3>
+                        <h2 class="text-white">@Model.Employee.Firstname @Model.Employee.Lastname</h2>
+                        <h3 class="text-white mt-2">My Profile</h3>
                     </div>
                     <span><i class="bi bi-person-fill text-blue" style="font-size: 4em"></i></span>
                 </div>
                 <div class="bg-blue p-2 px-3">
-                    <a asp-controller="Employees" asp-action="Index" class="text-light nav-link">Edit Profile <i class="bi bi-arrow-right-circle-fill"></i></a>
+                    <a asp-controller="Profile" asp-action="Index" class="text-light nav-link">Edit Profile <i class="bi bi-arrow-right-circle-fill"></i></a>
                 </div>
             </div>
             <div class="bg-success col-lg-3 col-md-4">
                 <div class="d-flex justify-content-between p-3">
                     <div>
-                        <h2 class="text-light">@Model.RequestCount</h2>
-                        <h3 class="text-light mt-2">My Requests</h3>
+                        <h2 class="text-white">@Model.RequestCount</h2>
+                        <h3 class="text-white mt-2">My Requests</h3>
                     </div>
                     <span><i class="bi bi-x-diamond-fill text-green" style="font-size: 4em"></i></span>
                 </div>
@@ -34,8 +34,8 @@
             <div class="bg-warning col-lg-3 col-md-4">
                 <div class="d-flex justify-content-between p-3">
                     <div>
-                        <h2 class="text-light">@Model.TimeEntryApprovalCount</h2>
-                        <h3 class="text-light mt-2">Approvals</h3>
+                        <h2 class="text-white">@Model.TimeEntryApprovalCount</h2>
+                        <h3 class="text-white mt-2">Approvals</h3>
                     </div>
                     <span><i class="bi bi-clock-history text-orange" style="font-size: 4em"></i></span>
                 </div>
@@ -46,8 +46,8 @@
             <div class="bg-info col-lg-3 col-md-4">
                 <div class="d-flex justify-content-between p-3">
                     <div>
-                        <h2 class="text-light"></h2>
-                        <h3 class="text-light mt-2">Payroll</h3>
+                        <h2 class="text-white"></h2>
+                        <h3 class="text-white mt-2">Payroll</h3>
                     </div>
                     <span><i class="bi bi-currency-pound text-primary" style="font-size: 4em"></i></span>
                 </div>
@@ -63,7 +63,7 @@
 <br />
 <section class="container">
     <div class="row">
-        <div class="col-7 border rounded p-3 shadow-sm">
+        <div class="col-7 bg-white border rounded p-3 shadow-sm">
             <div id="chart"></div>
         </div>
         <div class="col-5">

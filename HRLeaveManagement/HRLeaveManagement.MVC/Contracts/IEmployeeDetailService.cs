@@ -8,6 +8,6 @@ namespace HRLeaveManagement.MVC.Contracts
         Task<EmployeeDetailVM> GetEmployeeDetails();
         Task<PayrollEmployeeVM> GetPayrollEmployeeDetails();
         Task<Response<int>> CreateEmployeeDetail(CreateEmployeeDetailVM employeeDetail);
-        Task<Response<int>>UpdateEmployeeDetail(EmployeeDetailVM employeeDetail);
+        Task<Response<int>>UpdateEmployeeDetail(int id, EmployeeDetailVM employeeDetail);
     }
 }

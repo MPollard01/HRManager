@@ -25,5 +25,6 @@ namespace HRLeaveManagement.Clean.Domain
         public int AccountNumber { get; set; }
         public int SortCode { get; set; }
         public string BankAddress { get; set; }
+        public decimal PayPerHour { get; set; }
     }
 }

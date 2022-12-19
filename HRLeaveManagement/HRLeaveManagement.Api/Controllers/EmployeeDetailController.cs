@@ -43,6 +43,7 @@ namespace HRLeaveManagement.Api.Controllers
         }
 
         [HttpPut]
+        [ProducesResponseType(204)]
         public async Task<ActionResult> Put([FromBody] UpdateEmployeeDetailsDto dto)
         {
             var command = new UpdateEmployeeDetailsCommand { EmployeeDetailsDto = dto };

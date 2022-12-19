@@ -1,9 +1,76 @@
-﻿@model PayrollEmployeeVM
+﻿@model PayrollEmployeeViewVM
 
 @{
     ViewData["Title"] = "Payroll";
 }
 
+<header class="d-flex align-items-center justify-content-between bg-white p-3 shadow-sm">
+    <div class="d-flex gap-2">
+        <span class="bg-info p-2 rounded"><i class="bi bi-currency-pound text-light"></i></span>
+        <h3 class="text-dark">Payroll</h3>
+    </div>
+</header>
+<br />
 <section class="container">
-
+    <div class="accordion" id="accordionExample">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    Account Details
+                </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>National Insurance No.</th>
+                                <th>Tax Code</th>
+                                <th>Bank Name</th>
+                                <th>Bank Address</th>
+                                <th>Account Name</th>
+                                <th>Account Number</th>
+                                <th>Sort Code</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>@Model.PayrollEmployee.NINumber</td>
+                                <td>@Model.PayrollEmployee.TaxCode</td>
+                                <td>@Model.PayrollEmployee.BankName</td>
+                                <td>@Model.PayrollEmployee.BankAddress</td>
+                                <td>@Model.PayrollEmployee.AccountName</td>
+                                <td>@Model.PayrollEmployee.AccountNumber</td>
+                                <td>@Model.PayrollEmployee.SortCode</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Period Number</th>
+                    <th>Pay Run</th>
+                    <th>Pay Period End</th>
+                    <th>Net Pay</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var payroll in Model.Payrolls)
+                {
+                    <tr>
+                        <td>@payroll.PeriodNumber</td>
+                        <td>@payroll.PayRun</td>
+                        <td>@payroll.PayPeriodEnd</td>
+                        <td>@payroll.NetPay</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </section>

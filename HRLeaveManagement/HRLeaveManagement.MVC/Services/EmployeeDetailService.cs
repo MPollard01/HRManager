@@ -57,7 +57,7 @@ namespace HRLeaveManagement.MVC.Services
             return _mapper.Map<PayrollEmployeeVM>(employeeDetails);
         }
 
-        public async Task<Response<int>> UpdateEmployeeDetail(EmployeeDetailVM employeeDetail)
+        public async Task<Response<int>> UpdateEmployeeDetail(int id, EmployeeDetailVM employeeDetail)
         {
             try
             {

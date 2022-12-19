@@ -1,0 +1,119 @@
+﻿@model EmployeeLeaveRequestViewVM
+
+@{
+    ViewData["Title"] = "My Leave";
+}
+
+<header class="d-flex gap-5 align-items-center justify-content-between bg-white p-3 shadow-sm">
+    <div class="d-flex gap-2">
+        <span class="bg-success p-2 rounded"><i class="bi bi-x-diamond-fill text-light"></i></span>
+        <h3 class="text-dark">My Leave</h3>
+    </div>
+    <a asp-action="Create" class="btn btn-outline-primary">Create</a>
+</header>
+
+<br />
+<br />
+
+<div class="row">
+    <div class="col-8">
+        <table id="tblData" class="table table-hover border rounded bg-white">
+            <thead>
+                <tr>
+                    <th>
+                        Start Date
+                    </th>
+                    <th>
+                        End Date
+                    </th>
+                    <th>
+                        Leave Type
+                    </th>
+                    <th>
+                        Date Requested
+                    </th>
+                    <th>
+                        Approval Status
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.LeaveRequests)
+                {
+                    var tblBg = "";
+
+                    if (item.Cancelled) tblBg = "table-secondary";
+                    else if (item.Approved == true) tblBg = "table-success";
+                    else if (item.Approved == false) tblBg = "table-danger";
+                    else tblBg = "table-warning";
+
+                    <tr class="@tblBg">
+                        <td>
+                            @item.StartDate.ToShortDateString()
+                        </td>
+                        <td>
+                            @item.EndDate.ToShortDateString()
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LeaveType.Name)
+                        </td>
+                        <td>
+                            @item.DateRequested.ToShortDateString()
+                        </td>
+                        <td>
+                            @if (item.Cancelled)
+                            {
+                                <span class="badge bg-secondary">Cancelled</span>
+                            }
+                            else if (item.Approved == true)
+                            {
+                                <span class="badge bg-success">Approved</span>
+                            }
+                            else if (item.Approved == false)
+                            {
+                                <span class="badge bg-danger">Rejected</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-warning">Pending Approval</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-4">
+        <table id="tblData" class="table table-hover bg-white table-striped border rounded">
+            <thead>
+                <tr>
+                    <th>
+                        Days Remaining
+                    </th>
+                    <th>
+                        Leave Type
+                    </th>
+                    <th>
+                        Period
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.LeaveAllocations)
+                {
+                    <tr>
+                        <td>
+                            @item.NumberOfDays
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LeaveType.Name)
+                        </td>
+                        <td>
+                            @item.Period
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

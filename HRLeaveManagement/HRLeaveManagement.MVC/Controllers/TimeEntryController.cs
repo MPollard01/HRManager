@@ -36,22 +36,23 @@ namespace HRLeaveManagement.MVC.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(TimeEntryWithTemplateVM timeEntry)
+        public async Task<ActionResult> Create(TimeEntryWithTemplateVM time)
         {
             if (ModelState.IsValid)
             {
-                var response = await _timeEntryService.CreateTimeEntry(timeEntry.TimeEntry);
+                var response = await _timeEntryService.CreateTimeEntry(time.TimeEntry);
                 if (response.Success)
                 {
+                    TempData["SuccessMessage"] = response.Message;
                     return RedirectToAction(nameof(Index));
                 }
                 ModelState.AddModelError("", response.ValidationErrors);
             }
 
-            var entry = await _timeEntryService.GetTimeEntryByDate(timeEntry.TimeEntry.StartWeek);
+            var entry = await _timeEntryService.GetTimeEntryByDate(time.TimeEntry.StartWeek);
             var template = await _templateTimeService.GetTemplateTime();
             var model = new TimeEntryWithTemplateVM { TemplateTime = template, TimeEntry = entry };
-            return View(model);
+            return View(nameof(Index), model);
         }
 
         [HttpPost]
@@ -67,7 +68,10 @@ namespace HRLeaveManagement.MVC.Controllers
                     response = await _templateTimeService.UpdateTemplate(template.TemplateTime);
 
                 if (response.Success)
+                {
+                    TempData["SuccessMessage"] = response.Message;
                     return RedirectToAction(nameof(Index));
+                }
                 
                 ModelState.AddModelError("", response.ValidationErrors);
             }
