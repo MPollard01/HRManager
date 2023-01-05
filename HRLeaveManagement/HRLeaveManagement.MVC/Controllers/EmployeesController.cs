@@ -1,7 +1,6 @@
 ﻿using HRLeaveManagement.MVC.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Data;
 
 namespace HRLeaveManagement.MVC.Controllers
 {
@@ -15,9 +14,13 @@ namespace HRLeaveManagement.MVC.Controllers
             _employeeService = employeeService;
         }
 
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(string searchString, string sortOrder, int? pageNumber)
         {
-            var employees = await _employeeService.GetEmployeeDetails();
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = sortOrder == "Name" ? "name_desc" : "Name";
+            ViewData["CurrentFilter"] = searchString;
+
+            var employees = await _employeeService.GetEmployeeDetails(searchString, sortOrder, pageNumber);
             return View(employees);
         }
     }

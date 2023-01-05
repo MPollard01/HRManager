@@ -2,12 +2,27 @@
 
 @{
     ViewData["Title"] = "Payroll";
+
+    var dateSortIcon = ViewData["DateSortParm"] == "Date" ? "bi-sort-up" : "bi-sort-down";
+    var nameSortIcon = ViewData["NameSortParm"] == "Name" ? "bi-sort-alpha-down" : "bi-sort-alpha-up";
+    var payIcon = ViewData["PaySortParm"] == "Pay" ? "bi-sort-numeric-up" : "bi-sort-numeric-down";
+    var dateSortHighlight = ViewData["CurrentSort"]?.ToString() == "Date" || ViewData["CurrentSort"]?.ToString() == "date_desc" ? "" : "sort-icon";
+    var nameSortHighlight = ViewData["CurrentSort"]?.ToString() == "Name" || ViewData["CurrentSort"]?.ToString() == "name_desc" ? "" : "sort-icon";
+    var paySortHighlight = ViewData["CurrentSort"]?.ToString() == "Pay" || ViewData["CurrentSort"]?.ToString() == "pay_desc" ? "" : "sort-icon";
 }
 
 <header class="d-flex align-items-center justify-content-between bg-white p-3 shadow-sm">
     <div class="d-flex gap-2">
         <span class="bg-info p-2 rounded"><i class="bi bi-currency-pound text-light"></i></span>
         <h3 class="text-dark">Payroll</h3>
+    </div>
+    <div class="w-50">    
+        <form role="search">
+            <div class="input-group">
+                <input class="form-control" name="searchString" value="@ViewData["CurrentFilter"]" type="search" placeholder="Search" aria-label="Search" aria-describedby="addon" style="border-radius: 15px 0 0 15px">
+                <button class="btn btn-light input-group-text" id="addon" type="submit" style="border-radius: 0 15px 15px 0"><i class="bi bi-search"></i></button>
+            </div>
+        </form>
     </div>
     <div>
         <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#formModal">
@@ -17,15 +32,15 @@
 </header>
 <br />
 <div>
-    <table class="table">
+    <table class="table table-hover border rounded table-striped">
         <thead>
             <tr>
                 <th>Employee Name</th>
-                <th>Employee Surname</th>
+                <th><a class="page-link" asp-action="Employees" asp-route-sortOrder="@ViewData["NameSortParm"]">Employee Surname <i class="bi @nameSortIcon @nameSortHighlight"></i></a></th>
                 <th>Period Number</th>
                 <th>Pay Run</th>
-                <th>Pay Period End</th>
-                <th>Net Pay</th>
+                <th><a class="page-link" asp-action="Employees" asp-route-sortOrder="@ViewData["DateSortParm"]">Pay Period End <i class="bi @dateSortIcon @dateSortHighlight"></i></a></th>
+                <th><a class="page-link" asp-action="Employees" asp-route-sortOrder="@ViewData["PaySortParm"]">Net Pay <i class="bi @payIcon @paySortHighlight"></i></a></th>
             </tr>
         </thead>
         <tbody>
@@ -36,61 +51,68 @@
                     <td>@payroll.Employee.Lastname</td>
                     <td>@payroll.PeriodNumber</td>
                     <td>@payroll.PayRun</td>
-                    <td>@payroll.PayPeriodEnd</td>
-                    <td>@payroll.NetPay</td>
+                    <td>@payroll.PayPeriodEnd.ToShortDateString()</td>
+                    <td>@payroll.NetPay.ToString("C")</td>
                 </tr>
             }
         </tbody>
     </table>
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="formModal" tabindex="-1" aria-labelledby="formModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content" style="width: 800px">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5 text-black" id="formModalLabel">Edit Profile</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="form" asp-action="Create">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <fieldset>
-                        <legend>Payroll</legend>
-                        <div class="row">
-                            <div class="form-group mb-3 col-6">
-                                <label asp-for="CreatePayroll.EmployeeId" class="control-label"></label>
-                                <select asp-for="CreatePayroll.EmployeeId" asp-items="Model.CreatePayroll.Employees" class="form-select">
-                                    <option>Select Employee</option>
-                                </select>
-                                <span asp-validation-for="CreatePayroll.EmployeeId" class="text-danger"></span>
-                            </div>
-                            <div class="form-group mb-3 col-6">
-                                <label asp-for="CreatePayroll.PeriodNumber" class="control-label"></label>
-                                <input asp-for="CreatePayroll.PeriodNumber" class="form-control" />
-                                <span asp-validation-for="CreatePayroll.PeriodNumber" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-6">
-                                <label asp-for="CreatePayroll.PayPeriodEnd" class="control-label"></label>
-                                <input asp-for="CreatePayroll.PayPeriodEnd" class="form-control" />
-                                <span asp-validation-for="CreatePayroll.PayPeriodEnd" class="text-danger"></span>
-                            </div>
-                            <div class="form-group col-6">
-                                <label asp-for="CreatePayroll.PayRun" class="control-label"></label>
-                                <input asp-for="CreatePayroll.PayRun" class="form-control" />
-                                <span asp-validation-for="CreatePayroll.PayRun" class="text-danger"></span>
-                            </div>
-                        </div>
-                    </fieldset>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <input form="form" type="submit" class="btn btn-info" value="Submit" />
-            </div>
-        </div>
-    </div>
-</div>
+<br />
+<br />
 
+@{
+    var prevDisabled = !Model.Payrolls.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.Payrolls.HasNextPage ? "disabled" : "";
+
+    int next = Model.Payrolls.PageIndex + 1;
+    int prev = Model.Payrolls.PageIndex - 1;
+}
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+        <li class="page-item @prevDisabled"><a class="page-link" asp-action="Employees" asp-route-pageNumber="@prev" asp-route-sortOrder="@ViewData["CurrentSort"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Previous</a></li>
+        @for (int i = 1; i <= Model.Payrolls.TotalPages; i++)
+        {
+            <li class="page-item"><a class="page-link" asp-action="Employees" asp-route-pageNumber="@i" asp-route-sortOrder="@ViewData["CurrentSort"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">@i</a></li>
+        }
+        <li class="page-item @nextDisabled"><a class="page-link" asp-action="Employees" asp-route-pageNumber="@next" asp-route-sortOrder="@ViewData["CurrentSort"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Next</a></li>
+    </ul>
+</nav>
+
+<!-- Modal -->
+<partial name="_CreatePayrollPartial" model="Model.CreatePayroll"/>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $("#yearSelect").change(function () {
+                const firstYear = +this.value.substring(0,4);
+                const secondYear = +this.value.substring(5);
+
+                const dates = [
+                    `${new Date(firstYear, 4, 0).getDate()}/04/${firstYear}`,
+                    `${new Date(firstYear, 5, 0).getDate()}/05/${firstYear}`,
+                    `${new Date(firstYear, 6, 0).getDate()}/06/${firstYear}`,
+                    `${new Date(firstYear, 7, 0).getDate()}/07/${firstYear}`,
+                    `${new Date(firstYear, 8, 0).getDate()}/08/${firstYear}`,
+                    `${new Date(firstYear, 9, 0).getDate()}/09/${firstYear}`,
+                    `${new Date(firstYear, 10, 0).getDate()}/10/${firstYear}`,
+                    `${new Date(firstYear, 11, 0).getDate()}/11/${firstYear}`,
+                    `${new Date(firstYear, 12, 0).getDate()}/12/${firstYear}`,
+                    `${new Date(secondYear, 1, 0).getDate()}/01/${secondYear}`,
+                    `${new Date(secondYear, 2, 0).getDate()}/02/${secondYear}`,
+                    `${new Date(secondYear, 3, 0).getDate()}/03/${secondYear}`
+                ];
+
+                $("#periodSelect").empty();
+
+                $.each(dates, function (key, value) {
+                    $("#periodSelect").append($("<option></option>")
+                        .attr("value", value).text(value));
+                });
+            });
+        });
+    </script>
+}

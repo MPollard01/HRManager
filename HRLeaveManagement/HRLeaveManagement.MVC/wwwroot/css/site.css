@@ -46,3 +46,11 @@ body {
 .bg-orange {
     background-color: #fd7e14;
 }
+
+.sort-icon {
+    color: lightgrey;
+}
+
+.sort-icon:hover {
+    color: black;
+}

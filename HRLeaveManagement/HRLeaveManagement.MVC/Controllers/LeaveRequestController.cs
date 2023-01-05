@@ -64,21 +64,21 @@ namespace HRLeaveManagement.MVC.Controllers
             return View(model);
         }
 
-        public async Task<ActionResult> MyLeave()
+        public async Task<ActionResult> MyLeave(string searchString, string sortOrder, int? pageNumber)
         {
-            var model = await _leaveRequestService.GetUserLeaveRequests();
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = sortOrder == "Name" ? "name_desc" : "Name";
+            ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
+            ViewData["TypeSortParm"] = sortOrder == "Type" ? "type_desc" : "Type";
+            ViewData["CurrentFilter"] = searchString;
+
+            var model = await _leaveRequestService.GetUserLeaveRequests(searchString, sortOrder, pageNumber);
             return View(model);
         }
 
         public async Task<ActionResult> Details(int id)
         {
             var model = await _leaveRequestService.GetLeaveRequest(id);
-            return View(model);
-        }
-
-        public async Task<ActionResult> Employee(string id)
-        {
-            var model = await _leaveRequestService.GetUserLeaveRequests();
             return View(model);
         }
 

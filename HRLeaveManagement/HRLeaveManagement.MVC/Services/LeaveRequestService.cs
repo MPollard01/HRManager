@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using HRLeaveManagement.Clean.Domain;
 using HRLeaveManagement.MVC.Contracts;
 using HRLeaveManagement.MVC.Helpers;
 using HRLeaveManagement.MVC.Models;
@@ -97,15 +98,48 @@ namespace HRLeaveManagement.MVC.Services
             return _mapper.Map<LeaveRequestVM>(leaveRequest);
         }
 
-        public async Task<EmployeeLeaveRequestViewVM> GetUserLeaveRequests()
+        public async Task<EmployeeLeaveRequestViewVM> GetUserLeaveRequests(string searchString, string sortOrder, int? pageNumber)
         {
             AddBearerToken();
             var leaveRequests = await _client.LeaveRequestAllAsync(isLoggedInUser: true);
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                leaveRequests = leaveRequests
+                    .Where(e => e.LeaveType.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+
+            switch (sortOrder)
+            {
+                case "Date":
+                    leaveRequests = leaveRequests.OrderBy(e => e.StartDate).ToList();
+                    break;
+                case "date_desc":
+                    leaveRequests = leaveRequests.OrderByDescending(e => e.StartDate).ToList();
+                    break;
+                case "Type":
+                    leaveRequests = leaveRequests.OrderBy(e => e.LeaveType.Name).ToList();
+                    break;
+                case "type_desc":
+                    leaveRequests = leaveRequests.OrderByDescending(e => e.LeaveType.Name).ToList();
+                    break;
+                case "Requested":
+                    leaveRequests = leaveRequests.OrderBy(e => e.DateRequested).ToList();
+                    break;
+                case "requested_desc":
+                    leaveRequests = leaveRequests.OrderByDescending(e => e.DateRequested).ToList();
+                    break;
+                default:
+                    break;
+            }
+
+            var leaveRequestsVM = _mapper.Map<List<LeaveRequestVM>>(leaveRequests);
+
             var allocations = await _client.LeaveAllocationAllAsync(isLoggedInUser: true);
             var model = new EmployeeLeaveRequestViewVM
             {
                 LeaveAllocations = _mapper.Map<List<LeaveAllocationVM>>(allocations),
-                LeaveRequests = _mapper.Map<List<LeaveRequestVM>>(leaveRequests)
+                LeaveRequests = PaginatedList<LeaveRequestVM>.Create(leaveRequestsVM, pageNumber ?? 1, 10)
             };
 
             return model;

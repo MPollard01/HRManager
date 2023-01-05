@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using HRLeaveManagement.MVC.Contracts;
 using HRLeaveManagement.MVC.Models;
-using HRLeaveManagement.MVC.Services;
 using HRLeaveManagement.MVC.Services.Base;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -91,9 +90,16 @@ namespace HRLeaveManagement.MVC.Controllers
         }
 
         [Authorize(Roles = "Administrator")]
-        public async Task<ActionResult> Employees()
+        public async Task<ActionResult> Employees(string searchString, string sortOrder, int? pageNumber)
         {
-            var model = await _timeEntryService.GetAdminTimeEntries();
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = sortOrder == "Name" ? "name_desc" : "Name";
+            ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
+            ViewData["RequestedSortParm"] = sortOrder == "Requested" ? "requested_desc" : "Requested";
+            ViewData["HoursSortParm"] = sortOrder == "Hours" ? "hours_desc" : "Hours";
+            ViewData["CurrentFilter"] = searchString;
+
+            var model = await _timeEntryService.GetAdminTimeEntries(searchString, sortOrder, pageNumber);
             return View(model);
         }
 
@@ -102,6 +108,22 @@ namespace HRLeaveManagement.MVC.Controllers
         {
             var model = await _timeEntryService.GetTimeEntry(id);
             return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
+        public async Task<ActionResult> ApproveEntry(int id, bool approved)
+        {
+            try
+            {
+                await _timeEntryService.ApproveTimeEntry(id, approved);
+                return RedirectToAction(nameof(Employees));
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction(nameof(Employees));
+            }
         }
     }
 }

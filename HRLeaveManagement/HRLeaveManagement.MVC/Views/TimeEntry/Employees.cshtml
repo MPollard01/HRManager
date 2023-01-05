@@ -28,27 +28,59 @@
 <br />
 <br />
 
+@{
+    var dateSortIcon = ViewData["DateSortParm"] == "Date" ? "bi-sort-up" : "bi-sort-down";
+    var nameSortIcon = ViewData["NameSortParm"] == "Name" ? "bi-sort-alpha-down" : "bi-sort-alpha-up";
+    var requestedIcon = ViewData["RequestedSortParm"] == "Requested" ? "bi-sort-up" : "bi-sort-down";
+    var hoursIcon = ViewData["HoursSortParm"] == "Hours" ? "bi-sort-numeric-up" : "bi-sort-numeric-down";
+    var dateSortHighlight = ViewData["CurrentSort"]?.ToString() == "Date" || ViewData["CurrentSort"]?.ToString() == "date_desc" ? "" : "sort-icon";
+    var nameSortHighlight = ViewData["CurrentSort"]?.ToString() == "Name" || ViewData["CurrentSort"]?.ToString() == "name_desc" ? "" : "sort-icon";
+    var requestedSortHighlight = ViewData["CurrentSort"]?.ToString() == "Requested" || ViewData["CurrentSort"]?.ToString() == "requested_desc" ? "" : "sort-icon";
+    var hoursSortHighlight = ViewData["CurrentSort"]?.ToString() == "Hours" || ViewData["CurrentSort"]?.ToString() == "hours_desc" ? "" : "sort-icon";
+}
+
 <table id="tblData" class="table table-hover border rounded-bottom">
+    <div class="border border-bottom-0 p-3 bg-primary d-flex align-items-center justify-content-between">
+        <div class="col-6">
+            <form role="search">
+                <div class="input-group">
+                    <input class="form-control" name="searchString" value="@ViewData["CurrentFilter"]" type="search" placeholder="Search" aria-label="Search" aria-describedby="addon" style="border-radius: 15px 0 0 15px">
+                    <button class="btn btn-light input-group-text" id="addon" type="submit" style="border-radius: 0 15px 15px 0"><i class="bi bi-search"></i></button>
+                </div>
+            </form>
+        </div>
+        @*<div class="col-2">
+            <form asp-action="Employees" asp-route-sortOrder="Date">
+            <select name="sortOrder" onchange="this.form.submit()" class="form-select">
+                <option>No Filter</option>
+                <option value="Name">Name</option>
+                <option value="Date">Date</option>
+            </select>
+            </form>
+        </div>*@
+    </div>
     <thead>
         <tr>
             <th>
-                Employee Name
+                <a class="page-link" asp-action="Employees" asp-route-sortOrder="@ViewData["NameSortParm"]">Employee Name <i class="bi @nameSortIcon @nameSortHighlight"></i></a>
             </th>
             <th>
-                Week Starting
+                <a class="page-link" asp-action="Employees" asp-route-sortOrder="@ViewData["DateSortParm"]">Week Starting <i class="bi @dateSortIcon @dateSortHighlight"></i></a>
             </th>
             <th>
                 Week Ending
             </th>
             <th>
-                Date Requested
+                <a class="page-link" asp-action="Employees" asp-route-sortOrder="@ViewData["RequestedSortParm"]">Date Requested <i class="bi @requestedIcon @requestedSortHighlight"></i></a>
             </th>
             <th>
-                Total Hours            
+                <a class="page-link" asp-action="Employees" asp-route-sortOrder="@ViewData["HoursSortParm"]">Total Hours <i class="bi @hoursIcon @hoursSortHighlight"></i></a>
             </th>
             <th>
                 Approval Status
             </th>
+
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -90,7 +122,36 @@
                         <span class="badge bg-warning">Pending Approval</span>
                     }
                 </td>
+                <td>
+                    
+                        <a class="btn btn-info btn-sm" asp-action="Details" asp-route-id="@item.Id">
+                            <i class="fa fa-file"></i>Review
+                        </a>
+                    
+                </td>
             </tr>
         }
     </tbody>
 </table>
+
+<br />
+<br />
+
+@{
+    var prevDisabled = !Model.Entries.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.Entries.HasNextPage ? "disabled" : "";
+
+    int next = Model.Entries.PageIndex + 1;
+    int prev = Model.Entries.PageIndex - 1;
+}
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+        <li class="page-item @prevDisabled"><a class="page-link" asp-action="Employees" asp-route-pageNumber="@prev" asp-route-sortOrder="@ViewData["CurrentSort"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Previous</a></li>
+        @for (int i = 1; i <= Model.Entries.TotalPages; i++)
+        {
+            <li class="page-item"><a class="page-link" asp-action="Employees" asp-route-pageNumber="@i" asp-route-sortOrder="@ViewData["CurrentSort"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">@i</a></li>
+        }
+        <li class="page-item @nextDisabled"><a class="page-link" asp-action="Employees" asp-route-pageNumber="@next" asp-route-sortOrder="@ViewData["CurrentSort"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Next</a></li>
+    </ul>
+</nav>

@@ -2,6 +2,11 @@
 
 @{
     ViewData["Title"] = "Payroll";
+
+    var dateSortIcon = ViewData["DateSortParm"] == "Date" ? "bi-sort-up" : "bi-sort-down";
+    var payIcon = ViewData["PaySortParm"] == "Pay" ? "bi-sort-numeric-up" : "bi-sort-numeric-down";
+    var dateSortHighlight = ViewData["CurrentSort"]?.ToString() == "Date" || ViewData["CurrentSort"]?.ToString() == "date_desc" ? "" : "sort-icon";
+    var paySortHighlight = ViewData["CurrentSort"]?.ToString() == "Pay" || ViewData["CurrentSort"]?.ToString() == "pay_desc" ? "" : "sort-icon";
 }
 
 <header class="d-flex align-items-center justify-content-between bg-white p-3 shadow-sm">
@@ -51,13 +56,13 @@
     </div>
     <br />
     <div>
-        <table class="table">
-            <thead>
+        <table class="table table-hover border rounded table-striped">
+            <thead class="bg-white">
                 <tr>
                     <th>Period Number</th>
                     <th>Pay Run</th>
-                    <th>Pay Period End</th>
-                    <th>Net Pay</th>
+                    <th><a class="page-link" asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]">Pay Period End <i class="bi @dateSortIcon @dateSortHighlight"></i></a></th>
+                    <th><a class="page-link" asp-action="Index" asp-route-sortOrder="@ViewData["PaySortParm"]">Net Pay <i class="bi @payIcon @paySortHighlight"></i></a></th>
                 </tr>
             </thead>
             <tbody>
@@ -66,11 +71,33 @@
                     <tr>
                         <td>@payroll.PeriodNumber</td>
                         <td>@payroll.PayRun</td>
-                        <td>@payroll.PayPeriodEnd</td>
-                        <td>@payroll.NetPay</td>
+                        <td>@payroll.PayPeriodEnd.ToShortDateString()</td>
+                        <td>@payroll.NetPay.ToString("C")</td>
                     </tr>
                 }
             </tbody>
         </table>
     </div>
+
+    <br />
+    <br />
+
+    @{
+        var prevDisabled = !Model.Payrolls.HasPreviousPage ? "disabled" : "";
+        var nextDisabled = !Model.Payrolls.HasNextPage ? "disabled" : "";
+
+        int next = Model.Payrolls.PageIndex + 1;
+        int prev = Model.Payrolls.PageIndex - 1;
+    }
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item @prevDisabled"><a class="page-link" asp-action="Index" asp-route-pageNumber="@prev" asp-route-sortOrder="@ViewData["CurrentSort"]">Previous</a></li>
+            @for (int i = 1; i <= Model.Payrolls.TotalPages; i++)
+            {
+                <li class="page-item"><a class="page-link" asp-action="Index" asp-route-pageNumber="@i" asp-route-sortOrder="@ViewData["CurrentSort"]">@i</a></li>
+            }
+            <li class="page-item @nextDisabled"><a class="page-link" asp-action="Index" asp-route-pageNumber="@next" asp-route-sortOrder="@ViewData["CurrentSort"]">Next</a></li>
+        </ul>
+    </nav>
 </section>

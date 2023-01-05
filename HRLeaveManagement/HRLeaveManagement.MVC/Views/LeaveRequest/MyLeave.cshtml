@@ -2,12 +2,27 @@
 
 @{
     ViewData["Title"] = "My Leave";
+
+    var dateSortIcon = ViewData["DateSortParm"] == "Date" ? "bi-sort-up" : "bi-sort-down";
+    var typeSortIcon = ViewData["TypeSortParm"] == "Type" ? "bi-sort-alpha-down" : "bi-sort-alpha-up";
+    var requestedIcon = ViewData["RequestedSortParm"] == "Requested" ? "bi-sort-up" : "bi-sort-down";
+    var dateSortHighlight = ViewData["CurrentSort"]?.ToString() == "Date" || ViewData["CurrentSort"]?.ToString() == "date_desc" ? "" : "sort-icon";
+    var typeSortHighlight = ViewData["CurrentSort"]?.ToString() == "Type" || ViewData["CurrentSort"]?.ToString() == "type_desc" ? "" : "sort-icon";
+    var requestedSortHighlight = ViewData["CurrentSort"]?.ToString() == "Requested" || ViewData["CurrentSort"]?.ToString() == "requested_desc" ? "" : "sort-icon";
 }
 
 <header class="d-flex gap-5 align-items-center justify-content-between bg-white p-3 shadow-sm">
     <div class="d-flex gap-2">
         <span class="bg-success p-2 rounded"><i class="bi bi-x-diamond-fill text-light"></i></span>
         <h3 class="text-dark">My Leave</h3>
+    </div>
+    <div class="w-50">
+        <form role="search">
+            <div class="input-group">
+                <input class="form-control" name="searchString" value="@ViewData["CurrentFilter"]" type="search" placeholder="Search" aria-label="Search" aria-describedby="addon" style="border-radius: 15px 0 0 15px">
+                <button class="btn btn-light input-group-text" id="addon" type="submit" style="border-radius: 0 15px 15px 0"><i class="bi bi-search"></i></button>
+            </div>
+        </form>
     </div>
     <a asp-action="Create" class="btn btn-outline-primary">Create</a>
 </header>
@@ -21,16 +36,16 @@
             <thead>
                 <tr>
                     <th>
-                        Start Date
+                        <a class="page-link" asp-action="MyLeave" asp-route-sortOrder="@ViewData["DateSortParm"]">Start Date <i class="bi @dateSortIcon @dateSortHighlight"></i></a>
                     </th>
                     <th>
                         End Date
                     </th>
                     <th>
-                        Leave Type
+                        <a class="page-link" asp-action="MyLeave" asp-route-sortOrder="@ViewData["TypeSortParm"]">Leave Type <i class="bi @typeSortIcon @typeSortHighlight"></i></a>
                     </th>
                     <th>
-                        Date Requested
+                        <a class="page-link" asp-action="MyLeave" asp-route-sortOrder="@ViewData["RequestedSortParm"]">Date Requested <i class="bi @requestedIcon @requestedSortHighlight"></i></a>
                     </th>
                     <th>
                         Approval Status
@@ -117,3 +132,25 @@
         </table>
     </div>
 </div>
+
+<br />
+<br />
+
+@{
+    var prevDisabled = !Model.LeaveRequests.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.LeaveRequests.HasNextPage ? "disabled" : "";
+
+    int next = Model.LeaveRequests.PageIndex + 1;
+    int prev = Model.LeaveRequests.PageIndex - 1;
+}
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+        <li class="page-item @prevDisabled"><a class="page-link" asp-action="Employees" asp-route-pageNumber="@prev" asp-route-sortOrder="@ViewData["CurrentSort"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Previous</a></li>
+        @for (int i = 1; i <= Model.LeaveRequests.TotalPages; i++)
+        {
+            <li class="page-item"><a class="page-link" asp-action="Employees" asp-route-pageNumber="@i" asp-route-sortOrder="@ViewData["CurrentSort"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">@i</a></li>
+        }
+        <li class="page-item @nextDisabled"><a class="page-link" asp-action="Employees" asp-route-pageNumber="@next" asp-route-sortOrder="@ViewData["CurrentSort"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Next</a></li>
+    </ul>
+</nav>

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using HRLeaveManagement.MVC.Contracts;
+using HRLeaveManagement.MVC.Helpers;
 using HRLeaveManagement.MVC.Models;
 using HRLeaveManagement.MVC.Services.Base;
 
@@ -51,11 +52,11 @@ namespace HRLeaveManagement.MVC.Services
             return _mapper.Map<List<TimeEntryVM>>(timeEntries);
         }
 
-        public async Task<TimeEntryVM> GetTimeEntry(int id)
+        public async Task<AdminTimeEntryVM> GetTimeEntry(int id)
         {
             AddBearerToken();
             var timeEntries = await _client.TimeEntryGETAsync(id);
-            return _mapper.Map<TimeEntryVM>(timeEntries);
+            return _mapper.Map<AdminTimeEntryVM>(timeEntries);
         }
 
         public async Task<TimeEntryVM> GetTimeEntryByDate(DateTime date)
@@ -113,10 +114,48 @@ namespace HRLeaveManagement.MVC.Services
             }
         }
 
-        public async Task<AdminTimeEntryViewVM> GetAdminTimeEntries()
+        public async Task<AdminTimeEntryViewVM> GetAdminTimeEntries(string searchString, string sortOrder, int? pageNumber)
         {
             AddBearerToken();
             var entries = await _client.TimeEntryAllAsync(isLoggedInUser: false);
+            
+            if(!string.IsNullOrEmpty(searchString))
+            {
+                entries = entries.Where(e => e.Employee.Lastname.Contains(searchString, StringComparison.OrdinalIgnoreCase)
+                                        || e.Employee.Firstname.Contains(searchString, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+
+            switch (sortOrder)
+            {
+                case "Name":
+                    entries = entries.OrderBy(e => e.Employee.Lastname).ToList();
+                    break;
+                case "name_desc":
+                    entries = entries.OrderByDescending(e => e.Employee.Lastname).ToList();
+                    break;
+                case "Date":
+                    entries = entries.OrderBy(e => e.StartWeek).ToList();
+                    break;
+                case "date_desc":
+                    entries = entries.OrderByDescending(e => e.StartWeek).ToList();
+                    break;
+                case "Requested":
+                    entries = entries.OrderBy(e => e.DateCreated).ToList();
+                    break;
+                case "requested_desc":
+                    entries = entries.OrderByDescending(e => e.DateCreated).ToList();
+                    break;
+                case "Hours":
+                    entries = entries.OrderBy(e => e.TotalHours).ToList();
+                    break;
+                case "hours_desc":
+                    entries = entries.OrderByDescending(e => e.TotalHours).ToList();
+                    break;
+                default:
+                    break;
+            }
+
+            var entriesVM = _mapper.Map<List<AdminTimeEntryVM>>(entries);
 
             var model = new AdminTimeEntryViewVM
             {
@@ -124,7 +163,7 @@ namespace HRLeaveManagement.MVC.Services
                 ApprovedRequests = entries.Count(q => q.Approved == true),
                 PendingRequests = entries.Count(q => q.Approved == null),
                 RejectedRequests = entries.Count(q => q.Approved == false),
-                Entries = _mapper.Map<List<AdminTimeEntryVM>>(entries)
+                Entries = PaginatedList<AdminTimeEntryVM>.Create(entriesVM, pageNumber ?? 1, 5)
             };
             return model;
         }

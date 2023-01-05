@@ -1,0 +1,83 @@
+﻿@model AdminTimeEntryVM
+
+@{
+    ViewData["Title"] = "Details";
+    string className;
+    string headingText;
+    if (Model.Approved == null)
+    {
+        className = "warning";
+        headingText = "Pending Approval";
+    }
+    else if (Model.Approved == true)
+    {
+        className = "success";
+        headingText = "Approved";
+    }
+    else
+    {
+        className = "danger";
+        headingText = "Rejected";
+    }
+}
+
+<div class="alert alert-@className" role="alert">
+    <h4 class="alert-heading">@headingText</h4>
+    <p>
+        <strong>Employee name:</strong>  @Model.Employee.Firstname @Model.Employee.Lastname <br />
+    </p>
+    <hr />
+    <p>
+        Date Requested - @Model.DateCreated.ToShortDateString()
+    </p>
+</div>
+
+
+<div>
+
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.StartWeek)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.StartWeek.ToShortDateString()
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.EndWeek)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.EndWeek.ToShortDateString()
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TotalHours)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TotalHours)
+        </dd>
+    </dl>
+</div>
+<div>
+    @if (Model.Approved == null)
+    {
+        <form class="mb-2" method="post" asp-action="ApproveEntry">
+            <input name="id" type="hidden" value="@Model.Id" />
+            <input name="approved" type="hidden" value="true" />
+            <button class="btn btn-success">
+                Approve
+            </button>
+        </form>
+        <form class="mb-2" method="post" asp-action="ApproveEntry" asp-route-id="@Model.Id">
+            <input name="id" type="hidden" value="@Model.Id" />
+            <input name="approved" type="hidden" value="false" />
+            <button class="btn btn-danger">
+                Reject
+            </button>
+        </form>
+
+    }
+
+    <a class="btn btn-outline-secondary" asp-action="Employees">
+        Back to List
+    </a>
+</div>

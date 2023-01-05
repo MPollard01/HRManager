@@ -1,5 +1,6 @@
 ﻿
 
+using HRLeaveManagement.MVC.Helpers;
 using HRLeaveManagement.MVC.Services.Base;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel.DataAnnotations;
@@ -44,6 +45,6 @@ namespace HRLeaveManagement.MVC.Models
         public int PendingRequests { get; set; }
         [Display(Name = "Rejected Requests")]
         public int RejectedRequests { get; set; }
-        public List<AdminTimeEntryVM> Entries { get; set; }
+        public PaginatedList<AdminTimeEntryVM> Entries { get; set; }
     }
 }

@@ -12,6 +12,7 @@
     {
         public EmployeeVM Employee { get; set; }
         public int NumberOfDays { get; set; }
-        public bool HasRequests { get; set; }
+        public int HasRequests { get; set; }
+        public int TimeEntries { get; set; }
     }
 }
