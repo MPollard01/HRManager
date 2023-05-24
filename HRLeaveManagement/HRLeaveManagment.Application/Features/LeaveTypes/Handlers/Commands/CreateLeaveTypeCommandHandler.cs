@@ -35,6 +35,7 @@ namespace HRLeaveManagment.Application.Features.LeaveTypes.Handlers.Commands
             {
                 var leaveType = _mapper.Map<LeaveType>(request.LeaveTypeDto);
                 leaveType = await _uow.LeaveTypeRepository.Add(leaveType);
+                await _uow.Save();
 
                 response.Success = true;
                 response.Message = "Creation Successfull";

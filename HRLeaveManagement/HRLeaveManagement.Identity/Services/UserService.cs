@@ -82,20 +82,5 @@ namespace HRLeaveManagement.Identity.Services
         {
             return await _userManager.FindByIdAsync(userId) != null;
         }
-
-        //public Task<int> GetRemainingDays(string userId)
-        //{
-
-        //}
-
-        //public async Task<int> GetTotalDays(string userId)
-        //{
-        //    var allocations = await _unitOfWork.LeaveAllocationRepository
-        //                    .GetLeaveAllocationsWithDetails(userId);
-
-        //    if (allocations == null) return 0;
-
-        //    return allocations.Sum(q => q.LeaveType.DefaultDays);
-        //}
     }
 }

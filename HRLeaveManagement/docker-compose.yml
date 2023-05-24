@@ -1,0 +1,15 @@
+version: '3.4'
+
+services:
+  hrleavemanagement.mvc:
+    image: ${DOCKER_REGISTRY-}hrleavemanagementmvc
+    build:
+      context: .
+      dockerfile: HRLeaveManagement.MVC/Dockerfile
+
+  hrleavemanagement.api:
+    image: ${DOCKER_REGISTRY-}hrleavemanagementapi
+    build:
+      context: .
+      dockerfile: HRLeaveManagement.Api/Dockerfile
+
