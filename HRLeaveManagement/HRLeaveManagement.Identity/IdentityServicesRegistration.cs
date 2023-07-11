@@ -4,15 +4,10 @@ using HRLeaveManagment.Application.Models.Identity;
 using HRLeaveManagment.Application.Persistence.Contracts.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace HRLeaveManagement.Identity
 {
@@ -21,10 +16,6 @@ namespace HRLeaveManagement.Identity
         public static IServiceCollection ConfigureIdentityServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
-
-            services.AddDbContext<LeaveManagementIdentityDbContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("LeaveManagementIdentityConnectionString"),
-                b => b.MigrationsAssembly(typeof(LeaveManagementIdentityDbContext).Assembly.FullName)));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<LeaveManagementIdentityDbContext>().AddDefaultTokenProviders();

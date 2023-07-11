@@ -47,7 +47,8 @@ namespace HRLeaveManagment.Application.Features.TimeEntries.Handlers.Commands
             {
                 var timeEntry = _mapper.Map<TimeEntry>(request.TimeEntryDto);
                 timeEntry.EmployeeId = userId;
-                timeEntry.DateCreated = DateTime.Now;
+                timeEntry.DateCreated = DateTime.UtcNow;
+                timeEntry.CreatedDate = DateTime.UtcNow;
                 timeEntry.TotalHours = timeEntry.Hours.Sum(h => h.Hours);
 
                 foreach (var hours in timeEntry.Hours)

@@ -36,6 +36,7 @@ namespace HRLeaveManagment.Application.Features.LeaveTypes.Handlers.Commands
                 throw new NotFoundException(nameof(leaveType), request.LeaveTypeDto.Id);
 
             _mapper.Map(request.LeaveTypeDto, leaveType);
+            leaveType.ModifiedDate = DateTime.UtcNow;
 
             await _unitOfWork.LeaveTypeRepository.Update(leaveType);
             await _unitOfWork.Save();

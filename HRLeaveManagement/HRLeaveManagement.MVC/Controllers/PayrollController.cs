@@ -3,7 +3,6 @@ using HRLeaveManagement.MVC.Helpers;
 using HRLeaveManagement.MVC.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient;
 
 namespace HRLeaveManagement.MVC.Controllers
 {
@@ -27,6 +26,7 @@ namespace HRLeaveManagement.MVC.Controllers
             ViewData["PaySortParm"] = sortOrder == "Pay" ? "pay_desc" : "Pay";
 
             var payrollEmployeeVM = await _employeeDetailService.GetPayrollEmployeeDetails();
+
             var payroll = await _payrollService.GetPayrollList(sortOrder);
             var model = new PayrollEmployeeViewVM 
             { 

@@ -1,5 +1,4 @@
 ﻿using HRLeaveManagement.MVC.Contracts;
-using HRLeaveManagment.Application.Constants;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,9 +23,15 @@ namespace HRLeaveManagement.MVC.Controllers
             }
             else
             {
-                var model = await _dashboardService.GetEmployeeDashboardDetails();
-                return View("MyDashboard", model);
+                //var model = await _dashboardService.GetEmployeeDashboardDetails();
+                return View("MyDashboard");
             }
+        }
+
+        public async Task<ActionResult> EmployeeDashboardPartialView()
+        {
+            var model = await _dashboardService.GetEmployeeDashboardDetails();
+            return PartialView("_EmployeeDashboardPartial", model);
         }
     }
 }

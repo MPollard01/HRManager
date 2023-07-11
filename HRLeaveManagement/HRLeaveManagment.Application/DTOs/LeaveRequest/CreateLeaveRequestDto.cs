@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using HRLeaveManagment.Application.DTOs.Common;
 
 namespace HRLeaveManagment.Application.DTOs.LeaveRequest
 {
-    public class CreateLeaveRequestDto : ILeaveRequestDto
+    public class CreateLeaveRequestDto : CreateBaseDto, ILeaveRequestDto
     {
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }

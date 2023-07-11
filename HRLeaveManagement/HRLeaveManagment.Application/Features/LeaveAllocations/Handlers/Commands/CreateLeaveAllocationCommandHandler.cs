@@ -1,17 +1,10 @@
-﻿using AutoMapper;
-using HRLeaveManagement.Clean.Domain;
+﻿using HRLeaveManagement.Clean.Domain;
 using HRLeaveManagment.Application.DTOs.LeaveAllocation.Validators;
-using HRLeaveManagment.Application.Exceptions;
 using HRLeaveManagment.Application.Features.LeaveAllocations.Requests.Commands;
 using HRLeaveManagment.Application.Persistence.Contracts;
 using HRLeaveManagment.Application.Persistence.Contracts.Identity;
 using HRLeaveManagment.Application.Responses;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HRLeaveManagment.Application.Features.LeaveAllocations.Handlers.Commands
 {
@@ -20,16 +13,13 @@ namespace HRLeaveManagment.Application.Features.LeaveAllocations.Handlers.Comman
         private readonly ILeaveAllocationRepository _leaveAllocationRepository;
         private readonly ILeaveTypeRepository _leaveTypeRepository;
         private readonly IUserService _userService;
-        private readonly IMapper _mapper;
 
         public CreateLeaveAllocationCommandHandler(
             ILeaveAllocationRepository leaveAllocationRepository, 
             ILeaveTypeRepository leaveTypeRepository,
-            IUserService userService,
-            IMapper mapper)
+            IUserService userService)
         {
             _leaveAllocationRepository = leaveAllocationRepository;
-            _mapper = mapper;
             _leaveTypeRepository = leaveTypeRepository;
             _userService = userService;
         }
@@ -50,7 +40,7 @@ namespace HRLeaveManagment.Application.Features.LeaveAllocations.Handlers.Comman
             {
                 var leaveType = await _leaveTypeRepository.Get(request.LeaveAllocationDto.LeaveTypeId);
                 var employees = await _userService.GetEmployees();
-                var period = DateTime.Now.Year;
+                var period = DateTime.UtcNow.Year;
                 var allocations = new List<LeaveAllocation>();
                 foreach (var emp in employees)
                 {
@@ -61,7 +51,9 @@ namespace HRLeaveManagment.Application.Features.LeaveAllocations.Handlers.Comman
                         EmployeeId = emp.Id,
                         LeaveTypeId = leaveType.Id,
                         NumberOfDays = leaveType.DefaultDays,
-                        Period = period
+                        Period = period,
+                        CreatedDate = DateTime.UtcNow,
+                        ModifiedDate = DateTime.UtcNow,
                     });
                 }
 

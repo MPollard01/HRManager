@@ -2,6 +2,8 @@
 
 @{
     ViewData["Title"] = "Profile";
+
+    var date = new DateTime();
 }
 
 <header class="d-flex align-items-center justify-content-between bg-white p-3 shadow-sm">
@@ -19,7 +21,7 @@
 
 <partial name="_MessagePartial"/>
 
-<section class="shadow bg-white rounded py-3">
+<section class="shadow bg-white rounded py-3" id="profile">
     <div class="row gap-4 justify-content-center">
         <div class="col-5">
             <div class="card">
@@ -32,25 +34,25 @@
                         </div>
                         <div class="p-2">
                             <span class="text-secondary">Date Of Birth</span>
-                            <p class="card-text fw-bold">@Model.DOB.ToShortDateString()</p>
+                            <p class="card-text fw-bold">@if (!Model.DOB.Equals(date)) { @Model.DOB.ToShortDateString(); }</p>
                         </div>
                         <div class="p-2">
                             <span class="text-secondary">Work Email</span>
-                            <p class="card-text fw-bold">@Model.WorkEmail</p>
+                            <p class="card-text fw-bold">@Model?.WorkEmail</p>
                         </div>                                     
                     </div>
                     <div class="col-6">
                         <div class="p-2">
                             <span class="text-secondary">Personal Email</span>
-                            <p class="card-text fw-bold">@Model.PersonalEmail</p>
+                            <p class="card-text fw-bold">@Model?.PersonalEmail</p>
                         </div>
                         <div class="p-2">
                             <span class="text-secondary">National Insurance</span>
-                            <p class="card-text fw-bold">@Model.NINumber</p>
+                            <p class="card-text fw-bold">@Model?.NINumber</p>
                         </div>
                         <div class="p-2">
                             <span class="text-secondary">Tax Code</span>
-                            <p class="card-text fw-bold">@Model.TaxCode</p>
+                            <p class="card-text fw-bold">@Model?.TaxCode</p>
                         </div>
                     </div>
                 </div>
@@ -63,26 +65,26 @@
                     <div class="col-6">
                         <div class="p-2">
                             <span class="text-secondary">Account Name</span>
-                            <p class="card-text fw-bold">@Model.AccountName</p>
+                            <p class="card-text fw-bold">@Model?.AccountName</p>
                         </div>
                         <div class="p-2">
                             <span class="text-secondary">Account Number</span>
-                            <p class="card-text fw-bold">@Model.AccountNumber</p>
-                        </div>
+                            <p class="card-text fw-bold">@if(Model?.AccountNumber > 0) { @Model.AccountNumber; }</p>
+                                    </div>
                         <div class="p-2">
                             <span class="text-secondary">Sort Code</span>
-                            <p class="card-text fw-bold">@Model.SortCode</p>
+                            <p class="card-text fw-bold">@if(Model?.SortCode > 0) { @Model.SortCode; }</p>
                         </div>
                         
                     </div>
                     <div class="col-6">
                         <div class="p-2">
                             <span class="text-secondary">Bank Name</span>
-                            <p class="card-text fw-bold">@Model.BankName</p>
+                            <p class="card-text fw-bold">@Model?.BankName</p>
                         </div>
                         <div class="p-2">
                             <span class="text-secondary">Bank Address</span>
-                            <p class="card-text fw-bold">@Model.BankAddress</p>
+                            <p class="card-text fw-bold">@Model?.BankAddress</p>
                         </div>
                     </div>
                 </div>
@@ -97,21 +99,21 @@
                     <div class="col-6">
                         <div class="p-2">
                             <span class="text-secondary">Address Line 1</span>
-                            <p class="card-text fw-bold">@Model.Address1</p>
+                            <p class="card-text fw-bold">@Model?.Address1</p>
                         </div>
                         <div class="p-2">
                             <span class="text-secondary">Address Line 2</span>
-                            <p class="card-text fw-bold">@Model.Address2</p>
+                            <p class="card-text fw-bold">@Model?.Address2</p>
                         </div>            
                     </div>
                     <div class="col-6">
                         <div class="p-2">
                             <span class="text-secondary">Town</span>
-                            <p class="card-text fw-bold">@Model.Town</p>
+                            <p class="card-text fw-bold">@Model?.Town</p>
                         </div>
                         <div class="p-2">
                             <span class="text-secondary">Post Code</span>
-                            <p class="card-text fw-bold">@Model.PostCode</p>
+                            <p class="card-text fw-bold">@Model?.PostCode</p>
                         </div>
                     </div>
                 </div>
@@ -124,21 +126,21 @@
                     <div class="col-6">
                         <div class="p-2">
                             <span class="text-secondary">Mobile Number</span>
-                            <p class="card-text fw-bold">@Model.MobileNumber</p>
+                            <p class="card-text fw-bold">@if(Model?.MobileNumber > 0) { @Model.MobileNumber; }</p>
                         </div>
                         <div class="p-2">
                             <span class="text-secondary">Work Mobile Number</span>
-                            <p class="card-text fw-bold">@Model.WorkMobileNumber</p>
+                            <p class="card-text fw-bold">@if(Model?.WorkMobileNumber > 0) { @Model.WorkMobileNumber; }</p>
                         </div>                   
                     </div>
                     <div class="col-6">
                         <div class="p-2">
                             <span class="text-secondary">Home Phone Number</span>
-                            <p class="card-text fw-bold">@Model.HomePhoneNumber</p>
+                            <p class="card-text fw-bold">@if(Model?.HomePhoneNumber > 0) { @Model.HomePhoneNumber; }</p>
                         </div>
                         <div class="p-2">
                             <span class="text-secondary">Work Phone Number</span>
-                            <p class="card-text fw-bold">@Model.WorkPhoneNumber</p>
+                            <p class="card-text fw-bold">@if(Model?.WorkPhoneNumber > 0) { @Model.WorkPhoneNumber; }</p>
                         </div>
                     </div>
                 </div>
@@ -156,28 +158,36 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="form" asp-action="Edit" asp-route-id="@Model.Id">
+                <form id="form" asp-action="Edit" asp-route-id="@Model?.Id">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <fieldset>
                         <legend>Personal</legend>
                         <div class="row">
                             <div class="form-group mb-3 col-6">
                                 <span class="text-secondary">Full Name</span>
-                                <p class="card-text fw-bold">@Model.FirstName @Model.LastName</p>
+                                <p class="card-text fw-bold">@Model?.FirstName @Model?.LastName</p>
                                 <input asp-for="FirstName" class="form-control" hidden/>
                                 <input asp-for="LastName" class="form-control" hidden/>
                             </div>
                             <div class="form-group mb-3 col-6">
-                                <span class="text-secondary">Date Of Birth</span>
-                                <p class="card-text fw-bold">@Model.DOB.ToShortDateString()</p>
-                                <input asp-for="DOB" class="form-control" hidden/>
+                                <span class="text-secondary">Work Email</span>
+                                <p class="card-text fw-bold">@Model?.WorkEmail</p>
+                                <input asp-for="WorkEmail" class="form-control" hidden/>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row">                          
                             <div class="form-group mb-3 col-6">
-                                <span class="text-secondary">Work Email</span>
-                                <p class="card-text fw-bold">@Model.WorkEmail</p>
-                                <input asp-for="WorkEmail" class="form-control" hidden/>
+                                <label asp-for="DOB" class="control-label"></label>
+                                @if(Model.DOB == date)
+                                {
+                                    <input asp-for="DOB" class="form-control" type="date"/>
+                                }
+                                else
+                                {
+                                    <p class="card-text fw-bold">@Model.DOB.ToShortDateString()</p>
+                                    <input asp-for="DOB" class="form-control" hidden />
+                                }
+                                <span asp-validation-for="DOB" class="text-danger"></span>
                             </div>
                             <div class="form-group mb-3 col-6">
                                 <label asp-for="PersonalEmail" class="control-label"></label>
@@ -293,8 +303,61 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <input form="form" type="submit" class="btn btn-info" value="Save Changes"/>
+                <button form="form" type="submit" class="btn btn-info" id="save">Save Changes</button>
             </div>
         </div>
     </div>
 </div>
+
+
+@section Scripts {
+    @*<script>
+        $("#save").click(function(e) {
+            e.preventDefault();
+
+            const data = new FormData(document.getElementById('form'))
+
+            $.ajax({
+                type: "POST",
+                url: "/Profile/Edit/@Model.Id",
+                processData: false,
+                contentType: false,
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader("RequestVerificationToken", 
+                    $('input:hidden[name="__RequestVerificationToken"]').val())
+
+                    $("#save").addClass("disabled")
+                    $("#save").prepend('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>')
+                },
+                data: data,
+                success: function(response) {
+                    $("#profile").html(response)
+                    $("#formModal").modal("hide")
+                    $(".text-danger").empty()
+                    const toast = new bootstrap.Toast($('#successToast'))
+                    toast.show()
+
+                    $("#save").removeClass("disabled")
+                    $("#save .spinner-border").remove()
+                },
+                failure: function(response) {
+                    console.log(response.responseText)
+                },
+                error: function(response) {
+                    if(response.status == 400)
+                        $("#form").html(response.responseText)
+                    
+                    if(response.status == 401)
+                        top.location.href = '/users/login'
+
+                    $("#save").removeClass("disabled")
+                    $("#save .spinner-border").remove()
+                }
+            })
+        })
+    </script>*@
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

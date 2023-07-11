@@ -2,7 +2,7 @@
 
 namespace HRLeaveManagment.Application.DTOs.EmployeeDetails
 {
-    public class UpdateEmployeeDetailsDto : BaseDto
+    public class UpdateEmployeeDetailsDto : UpdateBaseDto
     {
         public string Address1 { get; set; }
         public string Address2 { get; set; }

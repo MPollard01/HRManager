@@ -1,17 +1,15 @@
-﻿using HRLeaveManagement.Identity.Models;
+﻿using HRLeaveManagement.Clean.Domain;
+using HRLeaveManagement.Identity.Models;
 using HRLeaveManagment.Application.Constants;
 using HRLeaveManagment.Application.Models.Identity;
+using HRLeaveManagment.Application.Persistence.Contracts;
 using HRLeaveManagment.Application.Persistence.Contracts.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace HRLeaveManagement.Identity.Services
 {
@@ -20,14 +18,16 @@ namespace HRLeaveManagement.Identity.Services
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly JwtSettings _jwtSettings;
+        private readonly IUnitOfWork _unitOfWork;
 
         public AuthService(UserManager<ApplicationUser> userManager,
-            IOptions<JwtSettings> jwtSettings,
+            IOptions<JwtSettings> jwtSettings, IUnitOfWork unitOfWork,
             SignInManager<ApplicationUser> signInManager)
         {
             _userManager = userManager;
             _jwtSettings = jwtSettings.Value;
             _signInManager = signInManager;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<AuthResponse> Login(AuthRequest request)
@@ -86,6 +86,20 @@ namespace HRLeaveManagement.Identity.Services
                 if (result.Succeeded)
                 {
                     await _userManager.AddToRoleAsync(user, "Employee");
+                    await _unitOfWork.LeaveAllocationRepository.AllocateAllToUser(user.Id);
+
+                    var details = new EmployeeDetail
+                    {
+                        EmployeeId = user.Id,
+                        FirstName = request.FirstName,
+                        LastName = request.LastName,
+                        WorkEmail = request.Email,
+                        PayPerHour = 10M
+                    };
+
+                    await _unitOfWork.EmployeeDetailsRepository.Add(details);
+                    await _unitOfWork.Save();
+
                     return new RegistrationResponse() { UserId = user.Id };
                 }
                 else
@@ -128,7 +142,7 @@ namespace HRLeaveManagement.Identity.Services
                 issuer: _jwtSettings.Issuer,
                 audience: _jwtSettings.Audience,
                 claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(_jwtSettings.DurationInMinutes),
+                expires: DateTime.UtcNow.AddDays(_jwtSettings.DurationInMinutes),
                 signingCredentials: signingCredentials);
             return jwtSecurityToken;
         }

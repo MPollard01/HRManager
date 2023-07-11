@@ -32,6 +32,7 @@ namespace HRLeaveManagment.Application.Features.TimeEntries.Handlers.Commands
                 {
                     // calculate pay
 
+                    timeEntry.ModifiedDate = DateTime.UtcNow;
                     await _unitOfWork.TimeEntryRepository.Update(timeEntry);
                 }
 

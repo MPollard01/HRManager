@@ -43,7 +43,6 @@ namespace HRLeaveManagment.Application.Features.Payrolls.Handlers.Commands
                 var pay = totalHours * details.PayPerHour;
 
                 payroll.NetPay = pay;
-                payroll.DateCreated = DateTime.Now;
                 payroll = await _uow.PayrollRepository.Add(payroll);
                 await _uow.Save();
 

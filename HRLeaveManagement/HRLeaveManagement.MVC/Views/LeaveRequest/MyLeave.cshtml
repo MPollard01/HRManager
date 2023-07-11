@@ -1,14 +1,8 @@
-﻿@model EmployeeLeaveRequestViewVM
+﻿@model int
 
 @{
     ViewData["Title"] = "My Leave";
 
-    var dateSortIcon = ViewData["DateSortParm"] == "Date" ? "bi-sort-up" : "bi-sort-down";
-    var typeSortIcon = ViewData["TypeSortParm"] == "Type" ? "bi-sort-alpha-down" : "bi-sort-alpha-up";
-    var requestedIcon = ViewData["RequestedSortParm"] == "Requested" ? "bi-sort-up" : "bi-sort-down";
-    var dateSortHighlight = ViewData["CurrentSort"]?.ToString() == "Date" || ViewData["CurrentSort"]?.ToString() == "date_desc" ? "" : "sort-icon";
-    var typeSortHighlight = ViewData["CurrentSort"]?.ToString() == "Type" || ViewData["CurrentSort"]?.ToString() == "type_desc" ? "" : "sort-icon";
-    var requestedSortHighlight = ViewData["CurrentSort"]?.ToString() == "Requested" || ViewData["CurrentSort"]?.ToString() == "requested_desc" ? "" : "sort-icon";
 }
 
 <header class="d-flex gap-5 align-items-center justify-content-between bg-white p-3 shadow-sm">
@@ -30,127 +24,92 @@
 <br />
 <br />
 
-<div class="row">
-    <div class="col-8">
-        <table id="tblData" class="table table-hover border rounded bg-white">
-            <thead>
-                <tr>
-                    <th>
-                        <a class="page-link" asp-action="MyLeave" asp-route-sortOrder="@ViewData["DateSortParm"]">Start Date <i class="bi @dateSortIcon @dateSortHighlight"></i></a>
-                    </th>
-                    <th>
-                        End Date
-                    </th>
-                    <th>
-                        <a class="page-link" asp-action="MyLeave" asp-route-sortOrder="@ViewData["TypeSortParm"]">Leave Type <i class="bi @typeSortIcon @typeSortHighlight"></i></a>
-                    </th>
-                    <th>
-                        <a class="page-link" asp-action="MyLeave" asp-route-sortOrder="@ViewData["RequestedSortParm"]">Date Requested <i class="bi @requestedIcon @requestedSortHighlight"></i></a>
-                    </th>
-                    <th>
-                        Approval Status
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model.LeaveRequests)
-                {
-                    var tblBg = "";
-
-                    if (item.Cancelled) tblBg = "table-secondary";
-                    else if (item.Approved == true) tblBg = "table-success";
-                    else if (item.Approved == false) tblBg = "table-danger";
-                    else tblBg = "table-warning";
-
-                    <tr class="@tblBg">
-                        <td>
-                            @item.StartDate.ToShortDateString()
-                        </td>
-                        <td>
-                            @item.EndDate.ToShortDateString()
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.LeaveType.Name)
-                        </td>
-                        <td>
-                            @item.DateRequested.ToShortDateString()
-                        </td>
-                        <td>
-                            @if (item.Cancelled)
-                            {
-                                <span class="badge bg-secondary">Cancelled</span>
-                            }
-                            else if (item.Approved == true)
-                            {
-                                <span class="badge bg-success">Approved</span>
-                            }
-                            else if (item.Approved == false)
-                            {
-                                <span class="badge bg-danger">Rejected</span>
-                            }
-                            else
-                            {
-                                <span class="badge bg-warning">Pending Approval</span>
-                            }
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-    <div class="col-4">
-        <table id="tblData" class="table table-hover bg-white table-striped border rounded">
-            <thead>
-                <tr>
-                    <th>
-                        Days Remaining
-                    </th>
-                    <th>
-                        Leave Type
-                    </th>
-                    <th>
-                        Period
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model.LeaveAllocations)
-                {
+<div id="requests">
+    <div class="row">
+        <div class="col-8">
+            <table id="tblData" class="table table-hover border rounded bg-white">
+                <thead>
                     <tr>
-                        <td>
-                            @item.NumberOfDays
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.LeaveType.Name)
-                        </td>
-                        <td>
-                            @item.Period
-                        </td>
+                        <th>
+                            <a class="page-link disabled">Start Date <i class="bi bi-sort-up"></i></a>
+                        </th>
+                        <th>
+                            End Date
+                        </th>
+                        <th>
+                            <a class="page-link disabled">Leave Type <i class="bi bi-sort-alpha-down"></i></a>
+                        </th>
+                        <th>
+                            <a class="page-link disabled">Date Requested <i class="bi bi-sort-up"></i></a>
+                        </th>
+                        <th>
+                            Approval Status
+                        </th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td class="d-flex justify-content-center">
+                            <div class="spinner-border" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </td>               
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-4">
+            <table id="tblData" class="table table-hover bg-white table-striped border rounded">
+                <thead>
+                    <tr>
+                        <th>
+                            Days Remaining
+                        </th>
+                        <th>
+                            Leave Type
+                        </th>
+                        <th>
+                            Period
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                     <tr>
+                        <td></td>
+                        <td>
+                            <div class="spinner-border" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </td>               
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
-
 <br />
 <br />
-
-@{
-    var prevDisabled = !Model.LeaveRequests.HasPreviousPage ? "disabled" : "";
-    var nextDisabled = !Model.LeaveRequests.HasNextPage ? "disabled" : "";
-
-    int next = Model.LeaveRequests.PageIndex + 1;
-    int prev = Model.LeaveRequests.PageIndex - 1;
-}
 
 <nav aria-label="Page navigation example">
     <ul class="pagination">
-        <li class="page-item @prevDisabled"><a class="page-link" asp-action="Employees" asp-route-pageNumber="@prev" asp-route-sortOrder="@ViewData["CurrentSort"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Previous</a></li>
-        @for (int i = 1; i <= Model.LeaveRequests.TotalPages; i++)
-        {
-            <li class="page-item"><a class="page-link" asp-action="Employees" asp-route-pageNumber="@i" asp-route-sortOrder="@ViewData["CurrentSort"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">@i</a></li>
-        }
-        <li class="page-item @nextDisabled"><a class="page-link" asp-action="Employees" asp-route-pageNumber="@next" asp-route-sortOrder="@ViewData["CurrentSort"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Next</a></li>
+        <li class="page-item disabled"><a class="page-link">Previous</a></li>
+
+            <li class="page-item disabled"><a class="page-link">1</a></li>
+
+        <li class="page-item disabled"><a class="page-link">Next</a></li>
     </ul>
 </nav>
+</div>
+
+@section Scripts {
+    <script>
+        const url = '@Url.Action("LeaveRequestPartialView", new { searchString = ViewData["CurrentFilter"], sortOrder = ViewData["CurrentSort"], pageNumber = Model })';
+
+        $("#requests").load(url, function (responseTxt, statusTxt, xhr) {
+            if (xhr.status == 401) {
+                top.location.href = '/users/login'
+            }
+        })
+    </script>
+}

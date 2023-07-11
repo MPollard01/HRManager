@@ -21,6 +21,27 @@ namespace HRLeaveManagement.Persistence.Repositories
             await _context.SaveChangesAsync();
         }
 
+        public async Task AllocateAllToUser(string userId)
+        {
+            var leaveTypes = await _context.LeaveTypes.ToListAsync();
+            var allocations = new List<LeaveAllocation>();
+
+            foreach (var leaveType in leaveTypes)
+            {
+                allocations.Add(new LeaveAllocation
+                {
+                    EmployeeId = userId,
+                    LeaveTypeId = leaveType.Id,
+                    NumberOfDays = leaveType.DefaultDays,
+                    Period = DateTime.UtcNow.Year,
+                    CreatedDate = DateTime.UtcNow,
+                    ModifiedDate = DateTime.UtcNow,
+                });
+            }
+
+            await AddAllocations(allocations);
+        }
+
         public async Task<bool> AllocationExists(string userId, int leaveTypeId, int period)
         {
             return await _context.LeaveAllocations.AnyAsync(q => q.EmployeeId == userId

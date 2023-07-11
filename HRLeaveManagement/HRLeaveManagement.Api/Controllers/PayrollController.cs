@@ -3,11 +3,12 @@ using HRLeaveManagment.Application.Features.Payrolls.Requests.Commands;
 using HRLeaveManagment.Application.Features.Payrolls.Requests.Queries;
 using HRLeaveManagment.Application.Responses;
 using MediatR;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HRLeaveManagement.Api.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class PayrollController : ControllerBase

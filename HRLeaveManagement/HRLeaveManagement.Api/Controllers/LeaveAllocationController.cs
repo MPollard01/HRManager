@@ -1,12 +1,15 @@
 ﻿using HRLeaveManagment.Application.DTOs.LeaveAllocation;
+using HRLeaveManagment.Application.Features.LeaveAllocations.Requests;
 using HRLeaveManagment.Application.Features.LeaveAllocations.Requests.Commands;
 using HRLeaveManagment.Application.Features.LeaveAllocations.Requests.Queries;
 using HRLeaveManagment.Application.Responses;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HRLeaveManagement.Api.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class LeaveAllocationController : ControllerBase
@@ -35,7 +38,7 @@ namespace HRLeaveManagement.Api.Controllers
             return Ok(leaveType);
         }
 
-        // POST api/<LeaveTypesController>
+        [Authorize(Roles = "Administrator")]
         [HttpPost]
         public async Task<ActionResult<BaseCommandResponse>> Post([FromBody] CreateLeaveAllocationDto leaveAllocation)
         {
@@ -44,7 +47,17 @@ namespace HRLeaveManagement.Api.Controllers
             return Ok(response);
         }
 
-        // PUT api/<LeaveTypesController>
+        [Authorize(Roles = "Administrator")]
+        [HttpPost("employee")]
+        [EndpointName("LeaveAllocationEmployeePOSTAsync")]
+        public async Task<ActionResult<BaseCommandResponse>> Post([FromBody] CreateEmployeeLeaveAllocationDto leaveAllocation)
+        {
+            var command = new CreateEmployeeLeaveAllocationCommand { LeaveAllocationDto = leaveAllocation };
+            var response = await _mediator.Send(command);
+            return Ok(response);
+        }
+
+        [Authorize(Roles = "Administrator")]
         [HttpPut]
         public async Task<ActionResult> Put([FromBody] UpdateLeaveAllocationDto leaveAllocation)
         {
@@ -53,7 +66,7 @@ namespace HRLeaveManagement.Api.Controllers
             return NoContent();
         }
 
-        // DELETE api/<LeaveTypesController>/5
+        [Authorize(Roles = "Administrator")]
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {

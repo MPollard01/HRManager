@@ -1,18 +1,14 @@
 ﻿using HRLeaveManagement.Clean.Domain;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using HRLeaveManagment.Application.DTOs.Common;
 
 namespace HRLeaveManagment.Application.DTOs.TimeEntry
 {
-    public class CreateTimeEntryDto : ITimeEntryDto
+    public class CreateTimeEntryDto : CreateBaseDto, ITimeEntryDto
     {
         public DateTime StartWeek { get; set; }
         public DateTime EndWeek { get; set; }
         public List<HoursDay> Hours { get; set; }
         public int TotalHours { get; set; }
-        public DateTime DateCreated { get; set; } = DateTime.Now;
+        public DateTime DateCreated { get; set; } = DateTime.UtcNow;
     }
 }

@@ -25,8 +25,10 @@ namespace HRLeaveManagement.MVC.Services
             this._tokenHandler = new JwtSecurityTokenHandler();
         }
 
-        public async Task<bool> Authenticate(string email, string password)
+        public async Task<Response<AuthResponse>> Authenticate(string email, string password)
         {
+            Response<AuthResponse> response = new();
+
             try
             {
                 AuthRequest authenticationRequest = new() { Email = email, Password = password };
@@ -41,28 +43,51 @@ namespace HRLeaveManagement.MVC.Services
                     var login = _httpContextAccessor.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, user);
                     _localStorage.SetStorageValue("token", authenticationResponse.Token);
 
-                    return true;
+                    response.Success = true;
+                    response.Data = authenticationResponse;
+                    response.Message = "Login successful";
                 }
-                return false;
+                else
+                {
+                    response.Success = false;
+                    response.Data = authenticationResponse;
+                    response.ValidationErrors = "Login failed";
+                }           
             }
-            catch
+            catch(Exception ex)
             {
-                return false;
+                response.Success = false;
+                response.ValidationErrors = ex.Message.Split(":")[4].Trim('"', '}');
             }
+
+            return response;
         }
 
-        public async Task<bool> Register(RegisterVM registration)
+        public async Task<Response<RegistrationResponse>> Register(RegisterVM registration)
         {
+            Response<RegistrationResponse> response = new();
 
-            RegistrationRequest registrationRequest = _mapper.Map<RegistrationRequest>(registration);
-            var response = await _client.RegisterAsync(registrationRequest);
-
-            if (!string.IsNullOrEmpty(response.UserId))
+            try
             {
-                await Authenticate(registration.Email, registration.Password);
-                return true;
+                RegistrationRequest registrationRequest = _mapper.Map<RegistrationRequest>(registration);
+                var regResponse = await _client.RegisterAsync(registrationRequest);
+
+                if (!string.IsNullOrEmpty(regResponse.UserId))
+                {
+                    await Authenticate(registration.Email, registration.Password);
+
+                    response.Data = regResponse;
+                    response.Success = true;
+                    response.Message = "Registration successful";
+                }
             }
-            return false;
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.ValidationErrors = ex.Message.Split(":")[4].Trim('"','}');
+            }
+           
+            return response;
         }
 
         public async Task Logout()

@@ -37,7 +37,11 @@
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="form-group mb-3">
-                <input type="submit" value="Register" class="btn btn-info" />
+                <input id="btnSubmit" type="submit" value="Register" class="btn btn-info" />
+                <button id="spinner" class="btn btn-primary w-100" style="display: none" type="button" disabled>
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    Loading...
+                </button>
             </div>
         </form>
     </div>
@@ -49,4 +53,18 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        $(document).ready(function () {
+            $('#btnSubmit').click(function () {
+                setTimeout(function () {
+                    if ($('.field-validation-valid').val() === '') {
+                        $('#spinner').css('display', 'block');
+                        $('#btnSubmit').css('display', 'none');
+                    }
+                }, 50);
+
+            });
+        });
+    </script>
 }

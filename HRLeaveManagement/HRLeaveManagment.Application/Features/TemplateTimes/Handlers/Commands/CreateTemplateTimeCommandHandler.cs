@@ -49,6 +49,9 @@ namespace HRLeaveManagment.Application.Features.TemplateTimes.Handlers.Commands
                 template.Total = template.Hours1 + template.Hours2 + template.Hours3 +
                     template.Hours4 + template.Hours5 + template.Hours6 + template.Hours7;
 
+                template.CreatedDate = DateTime.UtcNow;
+                template.ModifiedDate = DateTime.UtcNow;
+
                 template = await _unitOfWork.TemplateTimeRepository.Add(template);
                 await _unitOfWork.Save();
 

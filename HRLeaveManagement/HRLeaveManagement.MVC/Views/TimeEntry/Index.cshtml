@@ -1,26 +1,15 @@
-﻿@model TimeEntryWithTemplateVM
+﻿@model DateTime
 
-@{
-    var startOfWeek = Model.TimeEntry.StartWeek;
-    var endOfWeek = Model.TimeEntry.EndWeek;
-}
-
+<div id="entries">
 <header class="d-flex align-items-center justify-content-between bg-white p-3 shadow-sm">
     <div class="d-flex gap-2">
         <span class="bg-warning p-2 rounded"><i class="bi bi-calendar2-week text-light"></i></span>
         <h3 class="text-dark">Time Entry</h3>
     </div>
-    <div>   
-        <button id="copyTemplateBtn" class="btn btn-outline-primary">Copy Template Schedule</button>
-        @if(Model.TimeEntry.Id >= 0)
-        {
-            <a class="btn btn-outline-primary" asp-action="Copy" asp-route-date="@startOfWeek.ToString("dd-MM-yy")" >Copy From Previous Week</a>
-        }
-        else
-        {
-            <button class="btn btn-outline-primary" asp-action="Copy" disabled>Copy From Previous Week</button>
-        }
-        <input class="btn btn-outline-primary" type="submit" form="timeForm" value="Subimt"/>
+    <div>      
+        <button id="copyTemplateBtn" class="btn btn-outline-primary disabled">Copy Template Schedule</button>
+        <button class="btn btn-outline-primary disabled" id="copyBtn">Copy From Previous Week</button>
+        <input class="btn btn-outline-primary" value="Submit" type="submit" disabled />
     </div>
 </header>
 
@@ -31,80 +20,43 @@
 
 <div class="bg-white">
     <div class="form-group d-flex gap-2 align-items-center p-3 border border-bottom-0 rounded-top">
-        <span>Week Ending</span>
-        <a asp-action="Index" asp-route-date="@startOfWeek.AddDays(-7).ToString("dd-MM-yy")" class="btn btn-info btn-sm"><i class="bi bi-arrow-left"></i></a>
+        <span>Week Starting</span>
+        <a class="btn btn-info btn-sm disabled placeholder"><i class="bi bi-arrow-left"></i></a>
+        <form id="dateForm" >
         <div class="input-group-sm date" id="datepicker">
-            <input type="text" class="form-control" value="@endOfWeek.ToShortDateString()"/>
+                <input type="text" id="dateInput" class="form-control disabled placeholder" />
             <span class="input-group-addon">
-                <span class="glyphicon glyphicon-calendar"></span>
+                    <span class="glyphicon glyphicon-calendar"></span>
             </span>
         </div>
-        <a asp-action="Index" asp-route-date="@startOfWeek.AddDays(7).ToString("dd-MM-yy")" class="btn btn-info btn-sm"><i class="bi bi-arrow-right"></i></a>
+        </form>
+        <a class="btn btn-info btn-sm disabled placeholder"><i class="bi bi-arrow-right"></i></a>
     </div>    
     <table class="table table-striped table-hover border rounded-bottom">
         <thead>
             <tr>
-                <th>@startOfWeek.ToString("ddd/dd")</th>
-                <th>@startOfWeek.AddDays(1).ToString("ddd/dd")</th>
-                <th>@startOfWeek.AddDays(2).ToString("ddd/dd")</th>
-                <th>@startOfWeek.AddDays(3).ToString("ddd/dd")</th>
-                <th>@startOfWeek.AddDays(4).ToString("ddd/dd")</th>
-                <th>@startOfWeek.AddDays(5).ToString("ddd/dd")</th>
-                <th>@endOfWeek.ToString("ddd/dd")</th>
+                <th>@Model.ToString("ddd/dd")</th>
+                <th>@Model.AddDays(1).ToString("ddd/dd")</th>
+                <th>@Model.AddDays(2).ToString("ddd/dd")</th>
+                <th>@Model.AddDays(3).ToString("ddd/dd")</th>
+                <th>@Model.AddDays(4).ToString("ddd/dd")</th>
+                <th>@Model.AddDays(5).ToString("ddd/dd")</th>
+                <th>@Model.AddDays(6).ToString("ddd/dd")</th>
                 <th>Sum</th>
                 <th>Status</th>
             </tr>
         </thead>
         <tbody>
-             <tr>
-                 @if(Model.TimeEntry.Id > 0)
-                 {
-                    <td>@Model.TimeEntry.Hours[0].Hours</td>
-                    <td>@Model.TimeEntry.Hours[1].Hours</td>
-                    <td>@Model.TimeEntry.Hours[2].Hours</td>
-                    <td>@Model.TimeEntry.Hours[3].Hours</td>
-                    <td>@Model.TimeEntry.Hours[4].Hours</td>
-                    <td>@Model.TimeEntry.Hours[5].Hours</td>
-                    <td>@Model.TimeEntry.Hours[6].Hours</td>
-                 }
-                 else
-                 {
-                     <form id="timeForm" asp-action="Create">
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        <td>
-                        <input asp-for="TimeEntry.Hours[0].Hours" type="number" class="form-control" />
-                        <span asp-validation-for="TimeEntry.Hours[0].Hours" class="text-danger"></span>
-                        </td>
-                        <td>
-                        <input asp-for="TimeEntry.Hours[1].Hours" type="number" class="form-control" />
-                            <span asp-validation-for="TimeEntry.Hours[1].Hours" class="text-danger"></span>
-                        </td>
-                        <td>
-                        <input asp-for="TimeEntry.Hours[2].Hours" type="number" class="form-control" />
-                        <span asp-validation-for="TimeEntry.Hours[2].Hours" class="text-danger"></span>
-                        </td>
-                        <td>
-                        <input asp-for="TimeEntry.Hours[3].Hours" type="number" class="form-control" />
-                        <span asp-validation-for="TimeEntry.Hours[3].Hours" class="text-danger"></span>
-                        </td>
-                        <td>
-                        <input asp-for="TimeEntry.Hours[4].Hours" type="number" class="form-control" />
-                        <span asp-validation-for="TimeEntry.Hours[4].Hours" class="text-danger"></span>
-                        </td>
-                        <td>
-                        <input asp-for="TimeEntry.Hours[5].Hours" type="number" class="form-control" />
-                        <span asp-validation-for="TimeEntry.Hours[5].Hours" class="text-danger"></span>
-                        </td>
-                        <td>
-                        <input asp-for="TimeEntry.Hours[6].Hours" type="number" class="form-control" />
-                        <span asp-validation-for="TimeEntry.Hours[6].Hours" class="text-danger"></span>
-                        </td>
-                    <input asp-for="TimeEntry.StartWeek" value="@Model.TimeEntry.StartWeek" type="datetime" hidden />
-                    <input asp-for="TimeEntry.EndWeek" value="@Model.TimeEntry.EndWeek" type="datetime" hidden />
-                     </form>
-                 }
-                <td>@Model.TimeEntry.Hours.Sum(h => h.Hours)</td>
-                <td></td>
+             <tr class="placeholder-glow">
+                <th><span class="placeholder col-12"></span></th>
+                <th><span class="placeholder col-12"></span></th>
+                <th><span class="placeholder col-12"></span></th>
+                <th><span class="placeholder col-12"></span></th>
+                <th><span class="placeholder col-12"></span></th>
+                <th><span class="placeholder col-12"></span></th>
+                <th><span class="placeholder col-12"></span></th>
+                <th><span class="placeholder col-12"></span></th>
+                <th><span class="placeholder col-12"></span></th>
              </tr>
         </tbody>
     </table>
@@ -113,83 +65,138 @@
 <div style="margin-top: 5rem">
     <h4>Template Schedule</h4>
     <div class="form-group bg-white d-flex gap-2 align-items-center p-3 border border-bottom-0 rounded-top mt-3">
-        <span>Week Ending</span>
+        <span>Week Starting</span>
         <div class="input-group-sm date" id="datepicker">
-            <input type="text" class="form-control" value="@endOfWeek.ToShortDateString()" />
+            <input type="text" class="form-control disabled placeholder" />
             <span class="input-group-addon">
                 <span class="glyphicon glyphicon-calendar"></span>
             </span>
         </div>
-        <input class="btn btn-outline-primary btn-sm" type="submit" form="templateForm" value="Save Schedule"/>
+        <input class="btn btn-outline-primary btn-sm disabled placeholder" value="Save Schedule"/>
     </div>
     <table class="table table-striped bg-white table-hover border rounded-bottom">
         <thead>
-            <tr>
-                <th>@startOfWeek.ToString("ddd/dd")</th>
-                <th>@startOfWeek.AddDays(1).ToString("ddd/dd")</th>
-                <th>@startOfWeek.AddDays(2).ToString("ddd/dd")</th>
-                <th>@startOfWeek.AddDays(3).ToString("ddd/dd")</th>
-                <th>@startOfWeek.AddDays(4).ToString("ddd/dd")</th>
-                <th>@startOfWeek.AddDays(5).ToString("ddd/dd")</th>
-                <th>@endOfWeek.ToString("ddd/dd")</th>
+            <tr class="placeholder-glow">
+                    <th>@Model.ToString("ddd/dd")</th>
+                    <th>@Model.AddDays(1).ToString("ddd/dd")</th>
+                    <th>@Model.AddDays(2).ToString("ddd/dd")</th>
+                    <th>@Model.AddDays(3).ToString("ddd/dd")</th>
+                    <th>@Model.AddDays(4).ToString("ddd/dd")</th>
+                    <th>@Model.AddDays(5).ToString("ddd/dd")</th>
+                    <th>@Model.AddDays(6).ToString("ddd/dd")</th>
                 <th>Sum</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <form id="templateForm" asp-action="SaveTemplate">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <td>
-                    <input asp-for="TemplateTime.Hours1" type="number" class="form-control" />
-                    <span asp-validation-for="TemplateTime.Hours1" class="text-danger"></span>
-                </td>
-                <td>
-                    <input asp-for="TemplateTime.Hours2" type="number" class="form-control" />
-                    <span asp-validation-for="TemplateTime.Hours2" class="text-danger"></span>
-                </td>
-                <td>
-                    <input asp-for="TemplateTime.Hours3" type="number" class="form-control" />
-                    <span asp-validation-for="TemplateTime.Hours3" class="text-danger"></span>
-                </td>
-                <td>
-                    <input asp-for="TemplateTime.Hours4" type="number" class="form-control" />
-                    <span asp-validation-for="TemplateTime.Hours4" class="text-danger"></span>
-                </td>
-                <td>
-                    <input asp-for="TemplateTime.Hours5" type="number" class="form-control" />
-                    <span asp-validation-for="TemplateTime.Hours5" class="text-danger"></span>
-                </td>
-                <td>
-                    <input asp-for="TemplateTime.Hours6" type="number" class="form-control" />
-                    <span asp-validation-for="TemplateTime.Hours6" class="text-danger"></span>
-                </td>
-                <td>
-                    <input asp-for="TemplateTime.Hours7" type="number" class="form-control" />
-                    <span asp-validation-for="TemplateTime.Hours7" class="text-danger"></span>
-                </td>
-                <input asp-for="TemplateTime.EmployeeId" value="@Model.TemplateTime.EmployeeId" hidden/>
-                <input asp-for="TemplateTime.Id" value="@Model.TemplateTime.Id" hidden/>
-                </form>
-                <td>@Model.TemplateTime.Total</td>
+            <tr class="placeholder-glow">
+                <th><span class="placeholder col-12"></span></th>
+                <th><span class="placeholder col-12"></span></th>
+                <th><span class="placeholder col-12"></span></th>
+                <th><span class="placeholder col-12"></span></th>
+                <th><span class="placeholder col-12"></span></th>
+                <th><span class="placeholder col-12"></span></th>
+                <th><span class="placeholder col-12"></span></th>
+                <th><span class="placeholder col-12"></span></th>
             </tr>
         </tbody>
     </table>
 </div>
+</div>
 
 @section Scripts {
     <script>
-        $(document).ready(function() {
-            $('#datepicker').datepicker({
-                format: 'dd/mm/yyyy',
-                startDate: '01/01/2022',
-                endDate: '01/01/2023'
-            });
-        });
 
-        $("#copyTemplateBtn").click(function() {
-            for(let i = 3; i < 10; i++) {
-                $("#timeForm")[0][i].value = $('#templateForm')[0][i].value;
+        const url = '@Url.Action("TimeEntryPartialView", new { date = Model })';
+
+        $.ajax({
+            type: "GET",
+            url: url,
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("RequestVerificationToken",
+                    $('input:hidden[name="__RequestVerificationToken"]').val())
+            },
+            success: function (response) {
+                
+
+                $("#entries").html(response)
+
+                $('#datepicker').datepicker({
+                    format: 'dd/mm/yyyy',
+                    startDate: '01/01/2022',
+                    endDate: '01/01/2024',
+                    daysOfWeekDisabled: ['0', '2', '3', '4', '5', '6'],
+                    daysOfWeekHighlighted: '1',
+                });
+
+                $("#copyTemplateBtn").click(function () {
+                    for (let i = 3, j = 4; i < 10; i++, j++) {                     
+                        $("#timeForm")[0][i].value = $('#templateForm')[0][j].value;
+                    }
+                });
+
+                $('#dateInput').on('change', function () {
+                    const date = $(this).val()
+                    $(this).val(`${date.substring(0, 2)}-${date.substring(3, 5)}-${date.substring(8)}`)
+                    $('#dateForm').submit()
+                })
+
+                $("#copyBtn").click(function() {
+                    $.ajax({
+                        type: "GET",
+                        url: '@Url.Action("Copy", new {date = Model})',
+                        success: function (response) {
+                            for (let i = 3, j = 0; i < 10; i++, j++) {
+                                $("#timeForm")[0][i].value = response[j]
+                            }
+                        },
+                        failure: function (response) {
+                            console.log(response.responseText)
+                        },
+                        error: function (response) {
+                            if (response.status == 401)
+                                top.location.href = '/users/login'
+                        }
+                    })
+                })
+            },
+            failure: function (response) {
+                console.log(response.responseText)
+            },
+            error: function (response) {
+                if (response.status == 401)
+                    top.location.href = '/users/login'
             }
-        });
+        })
+
+        
+        
+
+        //$("#entries").load(url, function (responseTxt, statusTxt, xhr) {
+        //    if (xhr.status == 401) {
+        //        top.location.href = '/users/login'
+        //    }
+
+        //    $('#datepicker').datepicker({
+        //        format: 'dd/mm/yyyy',
+        //        startDate: '01/01/2022',
+        //        endDate: '01/01/2024',
+        //        daysOfWeekDisabled: ['0', '2', '3', '4', '5', '6'],
+        //        daysOfWeekHighlighted: '1',
+        //    });
+
+        //    $("#copyTemplateBtn").click(function () {
+        //        for (let i = 3; i < 10; i++) {
+        //            $("#timeForm")[0][i].value = $('#templateForm')[0][i].value;
+        //        }
+        //    });
+
+        //    $('#dateInput').on('change', function () {
+        //        const date = $(this).val()
+        //        $(this).val(`${date.substring(0, 2)}-${date.substring(3, 5)}-${date.substring(8)}`)
+        //        $('#dateForm').submit()
+        //    })
+
+        //});
+        
     </script>
 }

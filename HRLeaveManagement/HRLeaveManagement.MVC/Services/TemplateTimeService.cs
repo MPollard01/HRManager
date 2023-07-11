@@ -23,6 +23,8 @@ namespace HRLeaveManagement.MVC.Services
             {
                 var response = new Response<int>();
                 var createTemplate = _mapper.Map<CreateTemplateTimeDto>(template);
+                createTemplate.CreatedDate = DateTime.UtcNow;
+                createTemplate.ModifiedDate = DateTime.UtcNow;
                 AddBearerToken();
                 var apiResponse = await _client.TemplateTimePOSTAsync(createTemplate);
 

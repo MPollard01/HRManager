@@ -14,10 +14,17 @@ builder.Services.Configure<CookiePolicyOptions>(options =>
     options.MinimumSameSitePolicy = SameSiteMode.None;
 });
 
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(opt =>
+    {
+        opt.LoginPath = new PathString("/Users/Login");
+    });
+
 builder.Services.AddTransient<IAuthenticationService, AuthenticationService>();
 
-builder.Services.AddHttpClient<IClient, Client>(c => c.BaseAddress = new Uri("https://localhost:51660"));
+builder.Services.AddHttpClient<IClient, Client>(c => 
+    c.BaseAddress = new Uri(builder.Environment.IsDevelopment() ? "http://hrleavemanagement.api" : "https://hrmanager.fly.dev/api"));
+
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 builder.Services.AddScoped<ILeaveTypeService, LeaveTypeService>();
 builder.Services.AddScoped<ILeaveAllocationService, LeaveAllocationService>();
@@ -48,7 +55,7 @@ app.UseMiddleware<RequestMiddleware>();
 app.UseCookiePolicy();
 app.UseAuthentication();
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();

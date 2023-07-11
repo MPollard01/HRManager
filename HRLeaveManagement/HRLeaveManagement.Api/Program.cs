@@ -3,6 +3,7 @@ using HRLeaveManagement.Identity;
 using HRLeaveManagement.Infrastructure;
 using HRLeaveManagement.Persistence;
 using HRLeaveManagment.Application;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,39 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHttpContextAccessor();
 builder.Services.ConfigureApplictionServices();
 builder.Services.ConfigureInfrastructureServices(builder.Configuration);
+
+string? connString;
+if (builder.Environment.IsDevelopment())
+    connString = builder.Configuration.GetConnectionString("LeaveManagementConnectionString");
+else
+{
+    // Use connection string provided at runtime by FlyIO.
+    var connUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
+
+    // Parse connection URL to connection string for Npgsql
+    connUrl = connUrl.Replace("postgres://", string.Empty);
+    var pgUserPass = connUrl.Split("@")[0];
+    var pgHostPortDb = connUrl.Split("@")[1];
+    var pgHostPort = pgHostPortDb.Split("/")[0];
+    var pgDb = pgHostPortDb.Split("/")[1];
+    var pgUser = pgUserPass.Split(":")[0];
+    var pgPass = pgUserPass.Split(":")[1];
+    var pgHost = pgHostPort.Split(":")[0];
+    var pgPort = pgHostPort.Split(":")[1];
+    var host = pgHost.Replace("flycast", "internal");
+
+    //var db = pgDb.Split("?")[0];
+
+    connString = $"Server={host};Port={pgPort};User Id={pgUser};Password={pgPass};Database={pgDb};";
+}
+
+builder.Services.AddDbContext<HRLeaveManagementDbContext>(options =>
+    options.UseNpgsql(connString));
+
+builder.Services.AddDbContext<LeaveManagementIdentityDbContext>(options =>
+                options.UseNpgsql(connString,
+                b => b.MigrationsAssembly(typeof(LeaveManagementIdentityDbContext).Assembly.FullName)));
+
 builder.Services.ConfigurePersistenceServices(builder.Configuration);
 builder.Services.ConfigureIdentityServices(builder.Configuration);
 
@@ -61,27 +95,34 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddCors(o =>
 {
     o.AddPolicy("CorsPolicy",
-        policy => policy.AllowAnyOrigin()
+        policy => policy
         .AllowAnyMethod()
-        .AllowAnyHeader());
+        .AllowAnyHeader()
+        .AllowCredentials()
+        .WithOrigins(builder.Environment.IsDevelopment() ? "http://hrleavemanagement.mvc" : "https://hrmanagement.fly.dev"));
 });
 
 var app = builder.Build();
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
+
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "HRLeaveManagement.Api v1");
+        c.ConfigObject.AdditionalItems.Add("persistAuthorization", "true");
+    });
 }
 
 app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseAuthentication();
 
-app.UseSwagger();
-app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "HRLeaveManagement.Api v1"));
-
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseRouting();
 
@@ -93,6 +134,25 @@ app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllers();
 });
+
+using var scope = app.Services.CreateScope();
+var services = scope.ServiceProvider;
+
+try
+{
+    var context = services.GetRequiredService<HRLeaveManagementDbContext>();
+    await context.Database.MigrateAsync();
+    await Seed.SeedData(context);
+
+    var identityContext = services.GetRequiredService<LeaveManagementIdentityDbContext>();
+    await identityContext.Database.MigrateAsync();
+    await SeedIdentity.SeedIdentityData(identityContext);
+}
+catch (Exception ex)
+{
+    var logger = services.GetRequiredService<ILogger<Program>>();
+    logger.LogError(ex, "An error occured during migration");
+}
 
 app.Run();
 

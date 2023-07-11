@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using HRLeaveManagement.Clean.Domain;
+using HRLeaveManagment.Application.Constants;
 using HRLeaveManagment.Application.DTOs.EmployeeDetails.Validators;
 using HRLeaveManagment.Application.Features.EmployeeDetails.Requests.Commands;
 using HRLeaveManagment.Application.Persistence.Contracts;
@@ -30,7 +31,7 @@ namespace HRLeaveManagment.Application.Features.EmployeeDetails.Handlers.Command
         public async Task<BaseCommandResponse> Handle(CreateEmployeeDetailsCommand request, CancellationToken cancellationToken)
         {
             var response = new BaseCommandResponse();
-            var validator = new CreateEmployeeDetailsDtoValidator(_userService);
+            var validator = new CreateEmployeeDetailsDtoValidator();
             var validationResult = await validator.ValidateAsync(request.EmployeeDetailsDto);
 
             if (validationResult.IsValid == false)

@@ -1,0 +1,166 @@
+﻿@model EmployeeDetailVM
+
+    <div class="row gap-4 justify-content-center">
+        <div class="col-5">
+            <div class="card">
+                <h5 class="card-header">Personal</h5>
+                <div class="card-body row">
+                    <div class="col-6">
+                        <div class="p-2">
+                            <span class="text-secondary">Full Name</span>
+                            <p class="card-text fw-bold">@Model.FirstName @Model.LastName</p>
+                        </div>
+                        <div class="p-2">
+                            <span class="text-secondary">Date Of Birth</span>
+                            <p class="card-text fw-bold">@if (!Model.DOB.Equals(new DateTime()))
+                                {
+                                    @Model.DOB.ToShortDateString()
+                                    ;
+                                }</p>
+                        </div>
+                        <div class="p-2">
+                            <span class="text-secondary">Work Email</span>
+                            <p class="card-text fw-bold">@Model?.WorkEmail</p>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="p-2">
+                            <span class="text-secondary">Personal Email</span>
+                            <p class="card-text fw-bold">@Model?.PersonalEmail</p>
+                        </div>
+                        <div class="p-2">
+                            <span class="text-secondary">National Insurance</span>
+                            <p class="card-text fw-bold">@Model?.NINumber</p>
+                        </div>
+                        <div class="p-2">
+                            <span class="text-secondary">Tax Code</span>
+                            <p class="card-text fw-bold">@Model?.TaxCode</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-5">
+            <div class="card">
+                <h5 class="card-header">Account Details</h5>
+                <div class="card-body row">
+                    <div class="col-6">
+                        <div class="p-2">
+                            <span class="text-secondary">Account Name</span>
+                            <p class="card-text fw-bold">@Model?.AccountName</p>
+                        </div>
+                        <div class="p-2">
+                            <span class="text-secondary">Account Number</span>
+                            <p class="card-text fw-bold">@if (Model?.AccountNumber > 0)
+                                {
+                                    @Model.AccountNumber
+                                    ;
+                                }</p>
+                        </div>
+                        <div class="p-2">
+                            <span class="text-secondary">Sort Code</span>
+                            <p class="card-text fw-bold">@if (Model?.SortCode > 0)
+                                {
+                                    @Model.SortCode
+                                    ;
+                                }</p>
+                        </div>
+
+                    </div>
+                    <div class="col-6">
+                        <div class="p-2">
+                            <span class="text-secondary">Bank Name</span>
+                            <p class="card-text fw-bold">@Model?.BankName</p>
+                        </div>
+                        <div class="p-2">
+                            <span class="text-secondary">Bank Address</span>
+                            <p class="card-text fw-bold">@Model?.BankAddress</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row gap-4 mt-4 justify-content-center">
+        <div class="col-5">
+            <div class="card">
+                <h5 class="card-header">Address</h5>
+                <div class="card-body row">
+                    <div class="col-6">
+                        <div class="p-2">
+                            <span class="text-secondary">Address Line 1</span>
+                            <p class="card-text fw-bold">@Model?.Address1</p>
+                        </div>
+                        <div class="p-2">
+                            <span class="text-secondary">Address Line 2</span>
+                            <p class="card-text fw-bold">@Model?.Address2</p>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="p-2">
+                            <span class="text-secondary">Town</span>
+                            <p class="card-text fw-bold">@Model?.Town</p>
+                        </div>
+                        <div class="p-2">
+                            <span class="text-secondary">Post Code</span>
+                            <p class="card-text fw-bold">@Model?.PostCode</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-5">
+            <div class="card">
+                <h5 class="card-header">Contacts</h5>
+                <div class="card-body row">
+                    <div class="col-6">
+                        <div class="p-2">
+                            <span class="text-secondary">Mobile Number</span>
+                            <p class="card-text fw-bold">@if (Model?.MobileNumber > 0)
+                                {
+                                    @Model.MobileNumber
+                                    ;
+                                }</p>
+                        </div>
+                        <div class="p-2">
+                            <span class="text-secondary">Work Mobile Number</span>
+                            <p class="card-text fw-bold">@if (Model?.WorkMobileNumber > 0)
+                                {
+                                    @Model.WorkMobileNumber
+                                    ;
+                                }</p>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="p-2">
+                            <span class="text-secondary">Home Phone Number</span>
+                            <p class="card-text fw-bold">@if (Model?.HomePhoneNumber > 0)
+                                {
+                                    @Model.HomePhoneNumber
+                                    ;
+                                }</p>
+                        </div>
+                        <div class="p-2">
+                            <span class="text-secondary">Work Phone Number</span>
+                            <p class="card-text fw-bold">@if (Model?.WorkPhoneNumber > 0)
+                                {
+                                    @Model.WorkPhoneNumber
+                                    ;
+                                }</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<div class="toast-container position-fixed top-5 end-50 p-3">
+    <div id="successToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                Profile Updated Successfully
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>

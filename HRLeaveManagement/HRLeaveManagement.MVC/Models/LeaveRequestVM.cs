@@ -42,7 +42,7 @@ namespace HRLeaveManagement.MVC.Models
         public int LeaveTypeId { get; set; }
 
         [Display(Name = "Comments")]
-        [MaxLength(300)]
+        [StringLength(300)]
         public string RequestComments { get; set; }
     }
 

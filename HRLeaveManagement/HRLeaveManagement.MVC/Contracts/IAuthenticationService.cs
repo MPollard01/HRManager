@@ -1,11 +1,12 @@
 ﻿using HRLeaveManagement.MVC.Models;
+using HRLeaveManagement.MVC.Services.Base;
 
 namespace HRLeaveManagement.MVC.Contracts
 {
     public interface IAuthenticationService
     {
-        Task<bool> Authenticate(string email, string password);
-        Task<bool> Register(RegisterVM registration);
+        Task<Response<AuthResponse>> Authenticate(string email, string password);
+        Task<Response<RegistrationResponse>> Register(RegisterVM registration);
         Task Logout();
     }
 }

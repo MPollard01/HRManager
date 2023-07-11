@@ -69,7 +69,7 @@ namespace HRLeaveManagement.MVC.Middleware
         {
             switch (exception)
             {
-                case ApiException apiException:
+                case ApiException:
                     await SignOutAndRedirect(context);
                     break;
                 default:
@@ -84,7 +84,10 @@ namespace HRLeaveManagement.MVC.Middleware
         {
             await httpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             var path = $"/users/login";
+            
             httpContext.Response.Redirect(path);
+            if (httpContext.Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+                httpContext.Response.StatusCode = 401;
         }
     }
 }

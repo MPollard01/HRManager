@@ -61,6 +61,8 @@ namespace HRLeaveManagement.Application.UnitTests.LeaveRequests.Commands
 
             result.ShouldBeOfType<BaseCommandResponse>();
             leaveRequests.Count.ShouldBe(3);
+            leaveRequests.Last().CreatedDate.Kind.ShouldBe(DateTimeKind.Utc);
+            leaveRequests.Last().ModifiedDate.Kind.ShouldBe(DateTimeKind.Utc);
         }
 
         [Fact]

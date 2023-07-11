@@ -15,8 +15,8 @@
       "commandName": "DockerCompose",
       "commandVersion": "1.0",
       "composeLaunchAction": "LaunchBrowser",
-      "composeLaunchServiceName": "hrleavemanagement.api",
-      "composeLaunchUrl": "{Scheme}://localhost:{ServicePort}/swagger",
+      "composeLaunchServiceName": "hrleavemanagement.mvc",
+      "composeLaunchUrl": "{Scheme}://localhost:{ServicePort}",
       "serviceActions": {
         "hrleavemanagement.api": "StartDebugging",
         "hrleavemanagement.mvc": "StartDebugging"

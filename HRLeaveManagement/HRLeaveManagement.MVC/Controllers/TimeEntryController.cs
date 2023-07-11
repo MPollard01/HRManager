@@ -23,18 +23,23 @@ namespace HRLeaveManagement.MVC.Controllers
             _templateTimeService = templateTimeService;
         }
 
-        public async Task<ActionResult> Index(string? date)
+        public ActionResult Index(string? date)
         {
             var dateString = date ?? DateTime.Today.AddDays(-((int)DateTime.Today.DayOfWeek) + 1).ToString("dd-MM-yy");
             var entryDate = DateTime.ParseExact(dateString, "dd-MM-yy", null);
-            var entry = await _timeEntryService.GetTimeEntryByDate(entryDate);
+            return View(entryDate);
+        }
+
+        public async Task<ActionResult> TimeEntryPartialView(DateTime date)
+        {
+            var entry = await _timeEntryService.GetTimeEntryByDate(date);
             var template = await _templateTimeService.GetTemplateTime();
             var model = new TimeEntryWithTemplateVM { TemplateTime = template, TimeEntry = entry };
-            return View(model);
+            return PartialView("_TimeEntryPartial", model);
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(TimeEntryWithTemplateVM time)
         {
             if (ModelState.IsValid)
@@ -43,19 +48,19 @@ namespace HRLeaveManagement.MVC.Controllers
                 if (response.Success)
                 {
                     TempData["SuccessMessage"] = response.Message;
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction(nameof(Index), new { date = time.TimeEntry.StartWeek.ToString("dd-MM-yy") });
                 }
                 ModelState.AddModelError("", response.ValidationErrors);
             }
 
-            var entry = await _timeEntryService.GetTimeEntryByDate(time.TimeEntry.StartWeek);
-            var template = await _templateTimeService.GetTemplateTime();
-            var model = new TimeEntryWithTemplateVM { TemplateTime = template, TimeEntry = entry };
-            return View(nameof(Index), model);
+            //var entry = await _timeEntryService.GetTimeEntryByDate(time.TimeEntry.StartWeek);
+            //var template = await _templateTimeService.GetTemplateTime();
+            //var model = new TimeEntryWithTemplateVM { TemplateTime = template, TimeEntry = entry };
+            return View(nameof(Index));
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public async Task<ActionResult> SaveTemplate(TimeEntryWithTemplateVM template)
         {
             if (ModelState.IsValid)
@@ -69,7 +74,8 @@ namespace HRLeaveManagement.MVC.Controllers
                 if (response.Success)
                 {
                     TempData["SuccessMessage"] = response.Message;
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction(nameof(Index), 
+                        new { date = template.TimeEntry.StartWeek.ToString("dd-MM-yy") });
                 }
                 
                 ModelState.AddModelError("", response.ValidationErrors);
@@ -79,14 +85,16 @@ namespace HRLeaveManagement.MVC.Controllers
             return View(model);
         }
 
-        public async Task<ActionResult> Copy(string date)
+        public async Task<int[]> Copy(DateTime date)
         {
-            var entryDate = DateTime.ParseExact(date, "dd-MM-yy", null);
-            var entry = await _timeEntryService.GetCopyTimeEntryByDate(entryDate);
-            var template = await _templateTimeService.GetTemplateTime();
-            var model = new TimeEntryWithTemplateVM { TemplateTime = template, TimeEntry = entry };
+            //var entryDate = DateTime.ParseExact(date, "dd-MM-yy", null);
+            var entry = await _timeEntryService.GetCopyTimeEntryByDate(date);
+            //var template = await _templateTimeService.GetTemplateTime();
+            //var model = new TimeEntryWithTemplateVM { TemplateTime = template, TimeEntry = entry };
 
-            return View(nameof(Index), model);
+            //return View(nameof(Index), new { date = model.TimeEntry.StartWeek.ToString("dd-MM-yy") });
+
+            return entry.Hours.Select(x => x.Hours).ToArray();
         }
 
         [Authorize(Roles = "Administrator")]

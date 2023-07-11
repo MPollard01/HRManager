@@ -44,7 +44,8 @@ namespace HRLeaveManagement.MVC.Controllers
                 var response = await _leaveRequestService.CreateLeaveRequest(leaveRequest);
                 if (response.Success)
                 {
-                    return RedirectToAction(nameof(Index));
+                    TempData["SuccessMessage"] = response.Message;
+                    return RedirectToAction(nameof(Create));
                 }
                 ModelState.AddModelError("", response.ValidationErrors);
             }
@@ -64,16 +65,31 @@ namespace HRLeaveManagement.MVC.Controllers
             return View(model);
         }
 
-        public async Task<ActionResult> MyLeave(string searchString, string sortOrder, int? pageNumber)
+        [Authorize(Roles = "Employee")]
+        public ActionResult MyLeave(string searchString, string sortOrder, int? pageNumber)
         {
             ViewData["CurrentSort"] = sortOrder;
             ViewData["NameSortParm"] = sortOrder == "Name" ? "name_desc" : "Name";
             ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
             ViewData["TypeSortParm"] = sortOrder == "Type" ? "type_desc" : "Type";
+            ViewData["RequestedSortParm"] = sortOrder == "Requested" ? "requested_desc" : "Requested";
+            ViewData["CurrentFilter"] = searchString;
+
+            return View(pageNumber);
+        }
+
+        [Authorize(Roles = "Employee")]
+        public async Task<ActionResult> LeaveRequestPartialView(string searchString, string sortOrder, int? pageNumber)
+        {
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = sortOrder == "Name" ? "name_desc" : "Name";
+            ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
+            ViewData["TypeSortParm"] = sortOrder == "Type" ? "type_desc" : "Type";
+            ViewData["RequestedSortParm"] = sortOrder == "Requested" ? "requested_desc" : "Requested";
             ViewData["CurrentFilter"] = searchString;
 
             var model = await _leaveRequestService.GetUserLeaveRequests(searchString, sortOrder, pageNumber);
-            return View(model);
+            return PartialView("_LeaveRequestPartial", model);
         }
 
         public async Task<ActionResult> Details(int id)

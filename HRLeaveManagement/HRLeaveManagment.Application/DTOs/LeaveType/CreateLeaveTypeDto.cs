@@ -10,6 +10,6 @@ namespace HRLeaveManagment.Application.DTOs.LeaveType
     {
         public string Name { get; set; } = null!;
         public int DefaultDays { get; set; }
-        public DateTime DateCreated { get; set; } = DateTime.Now;
+        public DateTime DateCreated { get; set; } = DateTime.UtcNow;
     }
 }

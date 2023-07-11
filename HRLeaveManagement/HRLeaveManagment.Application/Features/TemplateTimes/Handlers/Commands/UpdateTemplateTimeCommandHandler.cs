@@ -4,11 +4,6 @@ using HRLeaveManagment.Application.Exceptions;
 using HRLeaveManagment.Application.Features.TemplateTimes.Requests.Commands;
 using HRLeaveManagment.Application.Persistence.Contracts;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HRLeaveManagment.Application.Features.TemplateTimes.Handlers.Commands
 {
@@ -40,6 +35,8 @@ namespace HRLeaveManagment.Application.Features.TemplateTimes.Handlers.Commands
 
             template.Total = template.Hours1 + template.Hours2 + template.Hours3 +
                     template.Hours4 + template.Hours5 + template.Hours6 + template.Hours7;
+
+            template.ModifiedDate = DateTime.UtcNow;
 
             await _unitOfWork.TemplateTimeRepository.Update(template);
             await _unitOfWork.Save();

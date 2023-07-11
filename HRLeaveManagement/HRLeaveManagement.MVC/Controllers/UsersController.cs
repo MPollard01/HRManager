@@ -10,7 +10,7 @@ namespace HRLeaveManagement.MVC.Controllers
 
         public UsersController(IAuthenticationService authService)
         {
-            this._authService = authService;
+            _authService = authService;
         }
 
         public IActionResult Login(string returnUrl = null)
@@ -24,10 +24,14 @@ namespace HRLeaveManagement.MVC.Controllers
             if (ModelState.IsValid)
             {
                 returnUrl ??= Url.Content("~/");
-                var isLoggedIn = await _authService.Authenticate(login.Email, login.Password);
-                if (isLoggedIn)
+                var auth = await _authService.Authenticate(login.Email, login.Password);
+                if (auth.Success)
                     return LocalRedirect(returnUrl);
+
+                ModelState.AddModelError("", auth.ValidationErrors);
+                return View(login);
             }
+
             ModelState.AddModelError("", "Log In Attempt Failed. Please try again.");
             return View(login);
         }
@@ -43,9 +47,12 @@ namespace HRLeaveManagement.MVC.Controllers
             if (ModelState.IsValid)
             {
                 var returnUrl = Url.Content("~/");
-                var isCreated = await _authService.Register(registration);
-                if (isCreated)
+                var resgister = await _authService.Register(registration);
+                if (resgister.Success)
                     return LocalRedirect(returnUrl);
+
+                ModelState.AddModelError("", resgister.ValidationErrors);
+                return View(registration);
             }
 
             ModelState.AddModelError("", "Registration Attempt Failed. Please try again.");
